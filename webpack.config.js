@@ -5,11 +5,19 @@ module.exports = {
   // this file depends on (and its dependencies depend on).
   entry: './app/app.js',
   // Package up the application as 'app.js' in the 'build/js' directory.
-  // __dirname is a magic Node.js variable that points to the directory of
-  // webpack.config.js itself.
+  // __dirname is a magic variable that contains the directory that webpack.config.js
+  // is located in.
   output: {
-    filename: path.resolve(__dirname, './build/js/app.js')
+    path: path.resolve(__dirname, "build", "js"),
+    publicPath: "/js/",
+    filename: "app.js"
   },
+  // Source Maps map locations in build/js/app.js back to individual application
+  // modules. Chrome Developer Tools uses this so you can see your original code
+  // in the development tools.
+  // We use the "inline-source-map" setting (as opposed to external source maps)
+  // so this works in a foolproof way.
+  devtool: 'inline-source-map',
   module: {
     // Transforms your application's code using Babel.
     // Babel lets you use new JavaScript features in browsers that do not
