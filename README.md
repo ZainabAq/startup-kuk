@@ -1,4 +1,4 @@
-# Team Project: Client Side
+# Startup Product: Client Side
 
-This repository will hold the *client side* of your team project. The client
-side of your project runs in the browser.
+This repository will hold the *client side* of your product. The client
+side of your product runs in the browser.
