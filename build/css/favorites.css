@@ -1,0 +1,34 @@
+.space {
+    margin-top:15px;
+    margin-bottom: 15px;
+}
+
+a:link {color: #074f57; text-decoration: none; }
+a:active {color: #074f57; text-decoration: none; }
+a:visited {color: #70ab8f; text-decoration: none; }
+a:hover {color: #70ab8f; text-decoration: none; }
+
+.navbar {
+background-color: #DC5B21;
+color: white;
+}
+
+.btn {
+    background-color: #074F57;
+    color: #E4DBBF;
+}
+head {
+  color: #383127;
+}
+body {
+  padding-top: 60px;
+  background-color: #E4DBBF;
+}
+
+h2 {
+  color: #383127;
+}
+
+.thumbnail {
+  background-color: #E4DBBF;
+}
