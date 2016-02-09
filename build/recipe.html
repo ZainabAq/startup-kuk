@@ -1,0 +1,244 @@
+<!-- Emma's Submission to Startup Submission 2 - recipe page -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Recipe Page</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="fonts/font-awesome-4.5.0/css/font-awesome.min.css">
+
+    <!-- Custom CSS goes here -->
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/recipe.css" rel="stylesheet"
+  </head>
+  <body>
+    <!-- Custom HTML goes here -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <!-- This code is only active when viewing the site on mobile. We will not
+             cover responsive design, but we'll leave this in, as it's part of the
+             example code.-->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">
+            KUK LOGO
+          </a>
+        </div>
+
+        <!-- On mobile, this div is hidden by default. The user hits the button
+             in the `navbar-header` to see the content of the div.
+             On desktop, this div is visible all of the time. -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-left nav-pills">
+            <!-- Left-aligned items. -->
+            <li class="presentation">
+              <a href="#"><span class="glyphicon glyphicon-cutlery"></span> Browse</a>
+            </li>
+            <li class="presentation">
+              <a href="#"><span class="glyphicon glyphicon-fire"></span> Insta-Recipe</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" role="search">
+            <!-- Right-aligned items. -->
+            <!-- Search bar. -->
+            <li class="presentation"><form class="navbar-form" role="search">
+              <div class="input-group">
+                <input type="text" class="form-control kuk-search" placeholder="Search Kuk">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                  </button>
+                </span>
+              </div>
+            </form></li>
+            <li class="presentation"><div class="btn-group"><button type="button"
+              class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              PIC
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Dashboard</a></li>
+              <li><a href="#">Favorites</a></li>
+              <li><a href="#">Calendar</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Log out</a></li>
+            </ul></div></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+        <!-- Left Sidebar -->
+        </div>
+        <div class="col-md-10">
+          <!-- Main Feed -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+               <!-- <h3 class="panel-title">Recipe!</h3> -->
+               <div class="row">
+                  <div class="col-xs-10">
+                     <h1 class="panel-title">Molten Lava Cake</h1>
+                     <br />
+
+                     <ul class="list-inline">
+                       <li class="rating">
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                          <span class="fa fa-star"></span>
+                       </li>
+                       <li class="time-icons">
+                           1.5 Hours
+                          <span class="fa fa-clock-o"></span>
+                       </li>
+
+                     </ul>
+                  </div>
+                  <div class="col-xs-2">
+                     <!-- Will need to put in a class here for the css -->
+                     <ul class="list-inline pull-right">
+                       <li class="presentation">
+                          <span class="fa fa-heart fa-lg social-but"></span>
+                       </li>
+                       <li class="presentation">
+                          <span class="fa fa-calendar-check-o fa-lg social-but"></span>
+                       </li>
+                       <li class="presentation">
+                          <span class="fa fa-share-square fa-lg social-but"></span>
+                       </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+            <div class="panel-body">
+
+               <!-- Dividing the second part of the div into 3 columns -->
+               <div class="row">
+                  <div class="col-md-3 ingredient-bar">
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">pat of butter</label>
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">2 egg yolks</label>
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">2 eggs</label>
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">3 tablespoons white sugar</label>
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">3 1/2 oz dark chocolate</label>
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">5 tablespoons butter</label>
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">4 teaspoons unsweetened cocoa powder</label>
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">3 tablespoons flour</label>
+                     </div>
+
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">1 pinch salt</label>
+                     </div>
+                     <div class="checkbox">
+                        <label><input type="checkbox" value="">1/8 teaspoons vanilla extract</label>
+                     </div>
+
+                  </div>
+            <div class="col-md-9">
+               <ul class="list-unstyled instruction-list">
+                 <li class="instruction">
+                    <img src="img/lavaCake.jpg" width="35%" align="right" class="img-rounded food-pic"/>
+                    1. Generously butter the inside of 4 (5 1/2 ounce) ramekins. Place them in a casserole dish.
+
+                 </li>
+                 <li class="instruction">
+                    2. Whisk together egg yolks, eggs, and sugar in a bowl until light, foamy, and lemon colored.
+                 </li>
+                 <li class="instruction">
+                    3. Melt chocolate and butter in a microwave-safe bowl in 30-second intervals, stirring after each melting, 1 to 3 minutes.
+                 </li>
+                 <li class="instruction">
+                    4. Stir melted chocolate mixture into egg and sugar mixture until combined.
+                 </li>
+                 <li class="instruction">
+                    5. Sift cocoa powder into the mixture; stir to combine.
+                 </li>
+                 <li class="instruction">
+                    6. Sift flour and salt into the mixture; stir to combine into a batter.
+                 </li>
+                 <li class="instruction">
+                    7. Stir vanilla extract into the batter.
+                 </li>
+                <li class="instruction">
+                    8. Transfer batter to a resealable plastic bag. Snip one corner of the bag with scissors to create a tip.
+                 </li>
+                 <li class="instruction">
+                    9. Divide batter evenly between the prepared ramekins; tap gently on the counter to remove any air bubbles.
+                 </li>
+                 <li class="instruction">
+                    10. Refrigerate 30 minutes.
+                 </li>
+                 <li class="instruction">
+                    11. Preheat an oven to 425 degrees F (220 degrees C).
+                 </li>
+                 <li class="instruction">
+                    12. Arrange the ramekins in a casserole dish. Pour enough hot tap water into the casserole dish to reach halfway up the sides of the ramekins.
+                 </li>
+                 <li class="instruction">
+                    13. Bake in the preheated over for 15-18 minutes. Set aside to cool for 15 minutes.
+                 </li>
+                 <li class="instruction">
+                    14. Loosen the edges from the ramekin with a knife. Invert each cake onto a plate and dust with powdered sugar.
+                 </li>
+               </ul>
+            </div>
+            <!-- Will want to add an image class here to control through css -->
+            <!-- <div class="col-md-4">
+               <img src="img/chocolateChipCookies.jpg" width="100%" />
+            </div> -->
+        </div>
+
+
+
+
+
+
+            </div>
+            <div class="panel-footer">
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- App code -->
+    <script src="js/bundle.js"></script>
+  </body>
+</html>

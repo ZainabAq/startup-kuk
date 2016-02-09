@@ -1,0 +1,63 @@
+body {
+   background-color:#E4DBBF;
+}
+
+.navbar {
+   background-color:#70AB8F !important;
+}
+
+.ingredient-bar {
+   border-right: thin solid #000000;
+   font-size: 1.1em;
+   /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
+   font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
+}
+
+.instruction-list {
+   font-size: 1.1em;
+   font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
+   /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
+}
+
+.food-pic {
+   border-color: #074F57;
+   border-width:medium;
+}
+
+.instruction {
+   padding-bottom: 15px;
+}
+
+.panel {
+   border-color: #074F57 !important;
+   border-width: thick; !important;
+}
+
+.panel-footer {
+   background-color: #074F57;
+}
+
+.panel-title {
+   font-size: 1.6em;
+   color: #074F57;
+}
+
+.social-but, .time-icons {
+   color: #074F57;
+}
+
+.rating {
+   color: #DC5B21
+}
+
+.panel-heading {
+   /*background-color: #074F57 !important;*/
+}
+
+/*
+#074F57 teal
+#E4DBBF cream
+#DC5B21 orange
+#70AB8F sea green
+#383127 brown
+*/
