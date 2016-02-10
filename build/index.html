@@ -4,17 +4,77 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap Template</title>
+    <title>Kuk</title>
+    <link rel="shortcut icon" href="img/logo.png">
 
-    <!-- Bootstrap -->
+    <!-- Bootstrap CSS-->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Custom CSS goes here -->
+    <!-- Custom CSS -->
+    <link href="css/main.css" rel="stylesheet">
   </head>
   <body>
     <!-- Custom HTML goes here -->
-    Hello world!
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <!-- This code is only active when viewing the site on mobile. We will not
+             cover responsive design, but we'll leave this in, as it's part of the
+             example code.-->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#home">
+            <img src="img/Kuk-logo.png" id="logo">
+          </a>
+        </div>
+
+        <!-- On mobile, this div is hidden by default. The user hits the button
+             in the `navbar-header` to see the content of the div.
+             On desktop, this div is visible all of the time. -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-left nav-pills">
+            <!-- Left-aligned items. -->
+            <li class="presentation">
+              <a href="#"><span class="glyphicon glyphicon-cutlery"></span> BROWSE</a>
+            </li>
+            <li class="presentation">
+              <a href="#"><span class="glyphicon glyphicon-fire"></span> INSTA-RECIPE</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" role="search">
+            <!-- Right-aligned items. -->
+            <!-- Search bar. -->
+            <li class="presentation"><form class="navbar-form" role="search">
+              <div class="input-group">
+                <input type="text" class="form-control kuk-search" placeholder="Search Kuk">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                  </button>
+                </span>
+              </div>
+            </form></li> 
+            <li class="presentation"><div class="btn-group"><button type="button"
+              class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              PIC
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Dashboard</a></li>
+              <li><a href="#">Favorites</a></li>
+              <li><a href="#">Calendar</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Log out</a></li>
+            </ul></div></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

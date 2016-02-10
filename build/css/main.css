@@ -1,13 +1,17 @@
 body {
   padding-top: 60px;
+  background-color: #c6d2d0;
+}
+
+/* NAVBAR */
+
+.navbar {
+  background-color: #9cb0ad;
+  border: none;
 }
 
 .navbar-left button {
   border-top: none;
-}
-
-.kuk-search {
-  width: 350px !important;
 }
 
 .navbar button,
@@ -24,3 +28,38 @@ body {
   outline: none;
   box-shadow: none;
 }
+
+.navbar-brand {
+  padding-top: 7px;
+}
+
+.navbar-default .navbar-nav>li>a,span {
+    color: #3D5467;
+    padding-right: 3px;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: #fff;
+}
+
+.presentation {
+  padding: 5px 0px;
+}
+
+.navbar-default .navbar-nav>li>a:hover span {
+  color: #fff;
+}
+
+.kuk-search {
+  border-radius: 20px;
+}
+
+#logo {
+  height: 40px;
+  padding: 0px;
+  margin: 0;
+}
+
+/*-------------*/
+
+
