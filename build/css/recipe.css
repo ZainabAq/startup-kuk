@@ -1,9 +1,10 @@
 body {
-   background-color:#E4DBBF;
+   background-color:#262626;
+   /*opacity: 0.5%;*/
 }
 
 .navbar {
-   background-color:#70AB8F !important;
+   background-color:#9cb0ad !important;
 }
 
 .ingredient-bar {
@@ -55,9 +56,9 @@ body {
 }
 
 /*
-#074F57 teal
-#E4DBBF cream
-#DC5B21 orange
-#70AB8F sea green
-#383127 brown
+#9C102E red
+#686963 grey
+#8AA29E light blue
+#3D5467 dark blue
+#EAD4A7 cream
 */
