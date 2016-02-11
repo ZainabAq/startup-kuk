@@ -1,0 +1,10 @@
+.img-thumbnail {
+  width: 35%;
+  height: 35%;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.list-group-item:first-child {
+  border-top: none;
+}
