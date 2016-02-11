@@ -1,34 +1,42 @@
+/*
+#9C102E red
+#686963 grey
+#9cb0ad seagreen (navbar)
+#3D5467 dark blue
+#EAD4A7 cream
+#c6d2d0 background color (lighter green)
+*/
+
 .space {
     margin-top:15px;
     margin-bottom: 15px;
 }
 
-a:link {color: #074f57; text-decoration: none; }
-a:active {color: #074f57; text-decoration: none; }
-a:visited {color: #70ab8f; text-decoration: none; }
-a:hover {color: #70ab8f; text-decoration: none; }
+a:link {color: #3D5467; text-decoration: none; }
+a:active {color: #3D5467; text-decoration: none; }
+a:visited {color: #686963; text-decoration: none; }
+a:hover {color: #9cb0ad; text-decoration: none; }
 
 .navbar {
-background-color: #DC5B21;
-color: white;
+background-color:#9cb0ad !important;
 }
 
 .btn {
-    background-color: #074F57;
-    color: #E4DBBF;
+    background-color: #9C102E;
+    color: #c6d2d0;
 }
-head {
-  color: #383127;
-}
+
 body {
   padding-top: 60px;
-  background-color: #E4DBBF;
+  background-color: #c6d2d0;
 }
 
 h2 {
-  color: #383127;
+  color: #9C102E;
 }
 
 .thumbnail {
-  background-color: #E4DBBF;
+  background-color: #c6d2d0;
+  float:left;
+  border: 0px;
 }
