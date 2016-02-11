@@ -22,7 +22,6 @@ table {
 
 .navbar {
 background-color: #9cb0ad;
-color: white;
 }
 
 .table-nonfluid {
@@ -39,18 +38,21 @@ table th {
 table thead {
   background-color: #3D5467;
   /*background-color: (100, 100, 100, 0)*/
-  color: black;
+  color: #c6d2d0;
 }
 
 table .heading {
   background-color: #3D5467;
-  color: black;
+  color: #c6d2d0;
 }
 
 table td {
-  background-color: #f1f4f3;
+  background-color: #c6d2d0;
 }
 
+h2 {
+  color: #9C102E;
+}
 
 body {
   padding-top: 60px;
@@ -64,4 +66,5 @@ body {
 
 .btn-toolbar .btn {
     background-color: #9C102E;
+    color: #c6d2d0;
 }
