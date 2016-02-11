@@ -59,3 +59,8 @@ body {
   padding: 0px;
   margin: 0;
 }
+
+.btn {
+    background-color: #9C102E;
+    color: #c6d2d0;
+}
