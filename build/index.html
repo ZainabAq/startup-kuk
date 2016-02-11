@@ -5,80 +5,92 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Kuk</title>
-    <link rel="shortcut icon" href="img/logo.png">
 
-    <!-- Bootstrap CSS-->
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap's CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom CSS -->
-    <link href="css/main.css" rel="stylesheet">
+    <link href="css/home.css" rel="stylesheet">
   </head>
   <body>
-    <!-- Custom HTML goes here -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <!-- This code is only active when viewing the site on mobile. We will not
-             cover responsive design, but we'll leave this in, as it's part of the
-             example code.-->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <div id="carousel-generic" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#carousel-generic" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-generic" data-slide-to="1"></li>
+        <li data-target="#carousel-generic" data-slide-to="2"></li>
+        <li data-target="#carousel-generic" data-slide-to="3"></li>
+        <li data-target="#carousel-generic" data-slide-to="4"></li>
+      </ol>
+
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="img/home-images/tart.jpg">
+        </div>
+        <div class="item">
+          <img src="img/home-images/ramen.jpg">
+        </div>
+        <div class="item">
+          <img src="img/home-images/sushi.jpg">
+        </div>
+        <div class="item">
+          <img src="img/home-images/steak.jpg">
+        </div>
+        <div class="item">
+          <img src="img/home-images/soup.jpg">
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <form class="form-wrapper cf">
+        <input type="text" placeholder="browse through your favorite recipes!" required>
+        <button type="submit">Search</button>
+      </form>
+
+      <!-- Controls -->
+      <a class="left carousel-control" href="#carousel-generic" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#carousel-generic" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
+    </div>
+
+    <!-- Text container -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 logo">
           <a class="navbar-brand" href="#home">
             <img src="img/Kuk-logo.png" id="logo">
           </a>
         </div>
+        <div class="col-md-6 description">
+          It’s 7 PM, and you’re hungry. It’s that time of the day when you have to decide
+          what you will make for dinner. Designed for those on the go and those with
+          dietary restrictions, kuk will help plan and address your cravings
+          in a manner suited to your lifestyle.
+        </div>
+        <div class="col-md-3 user">
+          <div class="row">
+            <div class="login-box">
+              <p class="login"><strong>LOG IN</strong></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="signup-box">
+              <p class="signup"><strong>SIGN UP</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <!-- On mobile, this div is hidden by default. The user hits the button
-             in the `navbar-header` to see the content of the div.
-             On desktop, this div is visible all of the time. -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-left nav-pills">
-            <!-- Left-aligned items. -->
-            <li class="presentation">
-              <a href="#"><span class="glyphicon glyphicon-cutlery"></span> BROWSE</a>
-            </li>
-            <li class="presentation">
-              <a href="#"><span class="glyphicon glyphicon-fire"></span> INSTA-RECIPE</a>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right" role="search">
-            <!-- Right-aligned items. -->
-            <!-- Search bar. -->
-            <li class="presentation"><form class="navbar-form" role="search">
-              <div class="input-group">
-                <input type="text" class="form-control kuk-search" placeholder="Search Kuk">
-                <span class="input-group-btn">
-                  <button type="submit" class="btn btn-default">
-                    <span class="glyphicon glyphicon-search"></span>
-                  </button>
-                </span>
-              </div>
-            </form></li>
-            <li class="presentation"><div class="btn-group"><button type="button"
-              class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              PIC
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">Profile</a></li>
-              <li><a href="#">Favorites</a></li>
-              <li><a href="#">Calendar</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#">Log out</a></li>
-            </ul></div></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container -->
-    </nav>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- App code -->
-    <script src="js/bundle.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </body>
 </html>
