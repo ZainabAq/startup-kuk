@@ -7,11 +7,6 @@
 #c6d2d0 background color (lighter green)
 */
 
-.space {
-    margin-top:15px;
-    margin-bottom: 15px;
-}
-
 a:link {color: #3D5467; text-decoration: none; }
 a:active {color: #3D5467; text-decoration: none; }
 a:visited {color: #686963; text-decoration: none; }
@@ -39,4 +34,8 @@ h2 {
   background-color: #c6d2d0;
   float:left;
   border: 0px;
+}
+
+.font1 {
+  font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
 }

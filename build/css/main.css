@@ -64,3 +64,10 @@ body {
     background-color: #9C102E;
     color: #c6d2d0;
 }
+
+.center {
+  text-align: center;
+  font-family: 'Alegreya Sans SC', sans-serif;
+  padding: 40px;
+  color: #9C102E;
+}
