@@ -8,3 +8,16 @@
 .list-group-item:first-child {
   border-top: none;
 }
+
+.panel-heading {
+  background-color: #3D5467 !important;
+}
+
+.panel-heading h4 {
+  color: white;
+}
+
+.panel-body,
+.list-group-item {
+  background-color: #F1F4F3;
+}
