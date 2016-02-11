@@ -68,6 +68,7 @@ body {
 .center {
   text-align: center;
   font-family: 'Alegreya Sans SC', sans-serif;
+  font-weight: bold;
   padding: 40px;
   color: #9C102E;
 }
