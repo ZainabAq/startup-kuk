@@ -1,19 +1,11 @@
 body {
-  background-color: #E4DBBF;
+  background-color: #c6d2d0;
 }
 
 .description {
   text-align: justify;
-  font: bold 17px/25px "bell mt";
+  font: 17px/25px "Century Gothic";
   margin-top: -5px;
-}
-
-.login {
-  padding-top: 10px;
-}
-
-.signin {
-  padding-top: 10px;
 }
 
 .login-box {
@@ -22,11 +14,9 @@ body {
   font-size: 20px;
   margin-left: 175px;
   margin-top: -10px;
-  background-color: #ffffff;
-  border: 1px solid white;
-  opacity: 0.5;
+  border: 0px;
   border-radius: 3px;
-  color: #DC5B21;
+  background: rgba(255,255,255, 0.5);
 }
 
 .signup-box {
@@ -35,12 +25,30 @@ body {
   font-size: 20px;
   margin-left: 175px;
   margin-top: 15px;
-  background-color: #ffffff;
-  border: 1px solid white;
-  opacity: 0.5;
+  border: 0px;
   border-radius: 3px;
-  color: #074F57;
+  background: rgba(255,255,255, 0.5);
 }
+
+.login {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 0px;
+  color: #9C102E
+}
+
+.signup {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #3D5467;
+}
+
+#logo {
+  height: 168px;
+  margin-top: -50px;
+  margin-left: -70px;
+}
+
 
 /* Carousel styling */
 #carousel {
@@ -69,7 +77,6 @@ body {
 
 
 /* Search bar */
-
 .cf:before, .cf:after{
   content:"";
   display:table;
