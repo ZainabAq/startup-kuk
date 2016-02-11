@@ -1,6 +1,5 @@
 body {
    background-color:#262626;
-   /*opacity: 0.5%;*/
 }
 
 .navbar {
@@ -30,25 +29,26 @@ body {
 }
 
 .panel {
-   border-color: #074F57 !important;
-   border-width: thick; !important;
+   margin-top: 30px;
+   border-color: #3D5467 !important;
+   border-width: thick !important;
 }
 
 .panel-footer {
-   background-color: #074F57;
+   background-color: #3D5467;
 }
 
 .panel-title {
    font-size: 1.6em;
-   color: #074F57;
+   color: #3D5467;
 }
 
 .social-but, .time-icons {
-   color: #074F57;
+   color: #3D5467;
 }
 
-.rating {
-   color: #DC5B21
+.fa-star {
+   color: #9C102E;
 }
 
 .panel-heading {
@@ -61,4 +61,6 @@ body {
 #8AA29E light blue
 #3D5467 dark blue
 #EAD4A7 cream
+
+#074F57 teal from earlier
 */
