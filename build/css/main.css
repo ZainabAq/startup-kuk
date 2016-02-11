@@ -72,3 +72,28 @@ body {
   padding: 40px;
   color: #9C102E;
 }
+
+.panel-heading {
+  background-color: #3D5467 !important;
+}
+
+.panel-heading h4 {
+  color: white;
+}
+
+.panel-body,
+.list-group-item {
+  background-color: #F1F4F3;
+}
+
+h2 {
+  color: #9C102E;
+}
+
+.font1 {
+  font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
+}
+
+.sidefilter {
+  padding-top: 60px;
+}
