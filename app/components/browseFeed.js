@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class BrowseFeed extends React.Componenet {
+export default class BrowseFeed extends React.Component {
   render() {
     return (
       <div>
