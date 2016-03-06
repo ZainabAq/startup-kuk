@@ -13,13 +13,10 @@ export default class Recipe extends React.Component {
          <div className="container">
            <div className="row">
              <div className="col-md-1">
-             <!-- Left Sidebar -->
              </div>
              <div className="col-md-10">
-               <!-- Main Feed -->
                <div className="panel panel-default">
                  <div className="panel-heading2">
-                    <!-- <h3 className="panel-title">Recipe!</h3> -->
                     <div className="row">
                        <div className="col-xs-10">
                           <h1 className="panel-title">Molten Lava Cake</h1>
@@ -41,7 +38,6 @@ export default class Recipe extends React.Component {
                           </ul>
                        </div>
                        <div className="col-xs-2">
-                          <!-- Will need to put in a className here for the css -->
                           <ul className="list-inline pull-right">
                            <li className="presentation">
                               <span className="fa fa-heart fa-lg social-but"></span>
@@ -58,39 +54,38 @@ export default class Recipe extends React.Component {
                  </div>
                  <div className="panel-body">
 
-                    <!-- Dividing the second part of the div into 3 columns -->
                     <div className="row">
                        <div className="col-md-3 ingredient-bar">
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">pat of butter</label>
+                             <label><input type="checkbox" value="" />pat of butter</label>
                           </div>
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">2 egg yolks</label>
+                             <label><input type="checkbox" value="" />2 egg yolks</label>
                           </div>
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">2 eggs</label>
+                             <label><input type="checkbox" value="" />2 eggs</label>
                           </div>
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">3 tablespoons white sugar</label>
+                             <label><input type="checkbox" value="" />3 tablespoons white sugar</label>
                           </div>
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">3 1/2 oz dark chocolate</label>
+                             <label><input type="checkbox" value="" />3 1/2 oz dark chocolate</label>
                           </div>
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">5 tablespoons butter</label>
+                             <label><input type="checkbox" value="" />5 tablespoons butter</label>
                           </div>
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">4 teaspoons unsweetened cocoa powder</label>
+                             <label><input type="checkbox" value="" />4 teaspoons unsweetened cocoa powder</label>
                           </div>
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">3 tablespoons flour</label>
+                             <label><input type="checkbox" value="" />3 tablespoons flour</label>
                           </div>
 
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">1 pinch salt</label>
+                             <label><input type="checkbox" value="" />1 pinch salt</label>
                           </div>
                           <div className="checkbox">
-                             <label><input type="checkbox" value="">1/8 teaspoons vanilla extract</label>
+                             <label><input type="checkbox" value="" />1/8 teaspoons vanilla extract</label>
                           </div>
 
                        </div>
@@ -141,21 +136,13 @@ export default class Recipe extends React.Component {
                       </li>
                     </ol>
                  </div>
-                 <!-- Will want to add an image className here to control through css -->
-                 <!-- <div className="col-md-4">
-                    <img src="img/chocolateChipCookies.jpg" width="100%" />
-                 </div> -->
              </div>
 
                  </div>
-                 <!-- <div className="panel-footer">
-
-                 </div> -->
                </div>
 
              </div>
              <div className="col-md-1">
-                <!-- Right Sidebar -->
              </div>
            </div>
          </div>
