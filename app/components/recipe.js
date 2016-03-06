@@ -1,12 +1,14 @@
 //recipe component
 import React from 'react';
+import ReactDOM from 'react-dom';
+import {Link} from 'react-router';
 
 export default class Recipe extends React.Component {
-   constructor(props) {
-      super(props);
-      // The recipe's initial state
-      this.state = props.data;
-   }
+   // constructor(props) {
+   //    super(props);
+   //    // The recipe's initial state
+   //    this.state = props.data;
+   // }
    render() {
       return (
          <div>
@@ -21,7 +23,6 @@ export default class Recipe extends React.Component {
                        <div className="col-xs-10">
                           <h1 className="panel-title">Molten Lava Cake</h1>
                           <br />
-
                           <ul className="list-inline">
                            <li className="rating">
                               <span className="fa fa-star"></span>

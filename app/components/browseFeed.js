@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router';
 
 export default class BrowseFeed extends React.Component {
   render() {

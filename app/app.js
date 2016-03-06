@@ -3,67 +3,50 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { IndexRoute, Router, Route, browserHistory } from 'react-router';
 import BrowseFeed from './components/browseFeed';
+import Recipe from './components/recipe';
 
-// class App extends React.Component {
-//    render() {
-//       return (
-//          <BrowseFeed />
-//       );
-//    }
-// }
-
-ReactDOM.render(
-   <BrowseFeed />,
-   document.getElementById('main-page')
-);
-//import browseFeed.js, navbar.js, filter, etc
-//will need a main component for every page
-//every page gets its own class here in app.js
 /**
- * A fake profile page.
+ * A recipe page
  */
-// class RecipePage extends React.Component {
-//   render() {
-//     return (
-//       <p>This is our hypothetical recipe page!</p>
-//     );
-//   }
-// }
-//
-// /**
-//  * The Browse page assumes that user 1 is logged in.
-//  * This doesn't matter much for browse though.
-//  */
-// class BrowsePage extends React.Component {
-//   render() {
-//      <p>HI I AM YOUR BROWSE PAGE</p>
-//    //  return <Browse />
-//   }
-// }
-//
-// /**
-//  * The primary component in our application.
-//  * The Router will give it different child Components as the user clicks
-//  * around the application.
-//  */
-// class App extends React.Component {
-//   render() {
-//     return (
-//       <div>{this.props.children}</div>
-//     )
-//   }
-// }
-//
-// ReactDOM.render((
-//   <Router history={browserHistory}>
-//     <Route path="/" component={App}>
-//       {/* Show the Feed at / */}
-//       <IndexRoute component={BrowsePage} />
-//       <Route path="profile/:id" component={RecipePage} />
-//     </Route>
-//   </Router>
-// ),document.getElementById('feed'));
-//
+class RecipePage extends React.Component {
+  render() {
+     console.log("In the recipePage render function");
+    return <Recipe />
+  }
+}
+
+/**
+ * The browse page - this is what loads when the user first goes to the site
+ */
+class BrowsePage extends React.Component {
+  render() {
+     console.log("In the BrowsePage render")
+    return <BrowseFeed />
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>{this.props.children}</div>
+    )
+  }
+}
+
+ReactDOM.render((
+  <Router history={browserHistory}>
+    <Route path="/" component={App}>
+      <IndexRoute component={BrowsePage} />
+      <Route path="recipe/:id" component={RecipePage} />
+    </Route>
+  </Router>
+),document.getElementById('main-page'));
+
+
+// ReactDOM.render(
+//    <BrowseFeed />,
+//    document.getElementById('main-page')
+// );
 
 
 // $(document).ready(function () {
