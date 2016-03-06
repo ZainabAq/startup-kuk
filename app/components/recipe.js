@@ -1,7 +1,7 @@
 //recipe component
 import React from 'react';
 
-export default classNameName Recipe extends React.Component {
+export default class Recipe extends React.Component {
    constructor(props) {
       super(props);
       // The recipe's initial state

@@ -24,7 +24,7 @@ class Results extends React.Component {
               <div className="col-md-10 col-md-offset-1">
                 <div className="media">
                 <div className="media-left">
-                  <img className="media-object img-thumbnail" src="img/lavaCake.jpg">
+                  <img className="media-object img-thumbnail" src="img/lavaCake.jpg" />
                 </div>
                 <div className="media-body row">
                   <div className="col-xs-8">
