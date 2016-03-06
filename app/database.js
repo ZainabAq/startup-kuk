@@ -8,7 +8,7 @@ var kuk = null;
 var initialData = {
   "users": {
     "1": {
-      "id": 1,
+      "_id": 1,
       "firstName": "John",
       "lastName": "Doe",
       "restrictions": [],
@@ -19,7 +19,7 @@ var initialData = {
   },
   "recipe": {
     "1": {
-      "id": 1,
+      "_id": 1,
       "name": "Brownies",
       "ingredients": ["1/2 cup butter", "1 cup white sugar", "2 eggs", "1 tablespoon vanilla extract", "1/3 cup unsweetened cocoa powder", "1/2 cup flour", "1/4 teaspoon salt", "1/4 teaspoon baking powder"],
       "cuisine": "American",
@@ -32,7 +32,7 @@ var initialData = {
       "img":"http://images.media-allrecipes.com/userphotos/600x600/432846.jpg"
     },
     "2": {
-      "id": 2,
+      "_id": 2,
       "name": "Chicken Parmesan",
       "ingredients": ["2 boneless skinless chicken breasts (1 pound)","1/4 cup all purpose flour", "1 egg", "3/4 cup panko breadcrumbs", "1/2 cup parmesan cheese, grated", "2 tablespoons extra virgin olive oil", "1 cup tomato sauce", "1/2 cup mozzarella cheese, shredded", "basil for serving, if desired"],
       "cuisine": "American",
@@ -45,7 +45,7 @@ var initialData = {
     },
 
     "3": {
-      "id": 3,
+      "_id": 3,
       "name": "Zha Jiang Mian",
       "ingredients": ["1/2 pound ground pork", "cooking oil", "1 medium onion (about 1 cup, finely diced)", "4 cups napa cabbage (green parts roughly cut, white parts 1/4 dice", "1 medium zucchini (about 1 cup, diced)", "2 slices ginger",  "1/3 cup ground bean sauce", "1/3 cup hoisin sauce", "4 tablespoons soy sauce", "1/4 cup chicken broth", "1/2 cup water", "3 tablespoons cornstarch, mixed with 3 tablespoons water", "1/2 tablespoons pure sesame oil", "udon noodles", "cucumber"],
       "cuisine": "Chinese",
@@ -58,7 +58,7 @@ var initialData = {
     },
 
     "4": {
-      "id": 4,
+      "_id": 4,
       "name": "Skillet Chicken Bulgogi",
       "ingredients": ["1/4 cup chopped onion", "5 tablespoons soy sauce", "2 1/2 tablespoons brown sugar", "2 tablespoons minced garlic", "2 tablespoons minced garlic", "2 tablespoons sesame oil",  "1 tablespoon sesame seeds", "1/2 teaspoon cayenne", "salt and ground black pepper to taste", "1  pound skinless, boneless chicken breasts, cut into thin strips"],
       "cuisine": "Korean",
@@ -71,7 +71,7 @@ var initialData = {
     },
 
     "5": {
-      "id": 5,
+      "_id": 5,
       "name": "Creamy Smoked Salmon Pasta",
       "ingredients": ["6 tablespoons butter", "1/2 onion, finely chopped", "2 tablespoons all-purpose flour", "2 teaspoons garlic powder", "2 cups skim milk", "1/2 cup grated Romano cheese",  "1  cup frozen green peas, thawed and drained", "1/2 cup canned mushrooms, drained", "10 ounces smoked salmon, chopped", "1 (16 ounce) package penne pasta"],
       "cuisine": "Italian",
@@ -85,19 +85,19 @@ var initialData = {
   },
   "calendar": {
     "1": {
-      "id": 1,
+      "_id": 1,
       "contents": {"Monday": [1,2,3,4], "Tuesday":[5], "Wednesday":[6], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
     },
     "2": {
-      "id": 2,
+      "_id": 2,
       "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
     },
     "3": {
-      "id": 3,
+      "_id": 3,
       "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
     },
     "4": {
-      "id": 4,
+      "_id": 4,
       "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
     }
   }
