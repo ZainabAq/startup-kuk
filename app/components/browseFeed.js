@@ -12,8 +12,9 @@ export default class BrowseFeed extends React.Component {
               <div>
                 <img src="http://images.media-allrecipes.com/userphotos/600x600/432846.jpg" alt=""/>
                 <h1>Baked Chicken</h1>
-                <p>Roast chicken pieces with sticky, sweet and tangy coating
-                  <i className="glyphicon glyphicon-time info pull-left">15min</i>
+                <p>
+                  <i className="glyphicon glyphicon-time info">15min</i>
+                  Roast chicken pieces with sticky, sweet and tangy coating
                 </p>
             </div>
           </li>
@@ -37,9 +38,7 @@ export default class BrowseFeed extends React.Component {
           </li>
           <li>
               <div>
-                <img src="img/logo2.png" className="special-logo" alt=""/>
-                <h1>Have a delicious day!</h1>
-                <p>Love from the Kuk team</p>
+                <img src="img/logo2.png" alt=""/>
             </div>
           </li>
           <li>

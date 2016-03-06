@@ -66,8 +66,8 @@
   bottom:-100px;
   font-size: 20px;
   color: #fff;
-  padding-top: 10px;
-  right: 10px;
+  padding: 5%;
+  right: 5%;
 }
 
 /* HEX CONTENT */
@@ -131,4 +131,5 @@
   color: #fff;
   left: 5%;
   right: 5%;
+  padding-top: 2%;
 }
