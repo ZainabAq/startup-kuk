@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class ResultsSearch extends React.Component {
   render() {
-    return {
+    return (
       <div>
         <form className="large-search" role="search">
           <div className="input-group">
@@ -15,7 +15,7 @@ export default class ResultsSearch extends React.Component {
           </div>
         </form>
       </div>
-    }
+    )
   }
 
 

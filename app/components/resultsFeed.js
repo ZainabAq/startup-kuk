@@ -14,12 +14,13 @@ export default class ResultsFeed extends React.Component {
     return (
       <div>
         <ResultsSearch />
-        //<ResultsItem />
-        {this.state.contents.map((id) => {
-          return (
-            <ResultsItem key={recipe._id} data={recipe} />
-          );
-        })}
+        <ResultsItem />
+         {//this.state.contents.map((id) => {
+        //   return (
+        //     <ResultsItem key={recipe._id} data={recipe} />
+        //   );
+        // })
+        }
       </div>
 
       // <div>

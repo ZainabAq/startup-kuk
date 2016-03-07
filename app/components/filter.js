@@ -18,57 +18,57 @@ export default class FilterBar extends React.Component {
              <div className="col-xs-10 col-xs-offset-1 row">
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Dairy
+                    <input type="checkbox" />Dairy
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Eggs
+                    <input type="checkbox" />Eggs
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Nuts
+                    <input type="checkbox" />Nuts
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Soy
+                    <input type="checkbox" />Soy
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Wheat
+                    <input type="checkbox" />Wheat
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Fish
+                    <input type="checkbox" />Fish
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Shellfish
+                    <input type="checkbox" />Shellfish
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Poultry
+                    <input type="checkbox" />Poultry
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Beef
+                    <input type="checkbox" />Beef
                   </label>
                 </div>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox">Pork
+                    <input type="checkbox" />Pork
                   </label>
                 </div>
              </div>
             </div>
-            <hr>
+            <hr />
             <button type="submit" className="btn btn-default pull-right">Filter</button>
           </form>
       </div>

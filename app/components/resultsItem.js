@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class ResultsItem extends React.Component {
   render() {
-    return {
+    return (
       <div>
         <div className="panel panel-default result">
           <div className="panel-body">
@@ -51,7 +51,7 @@ export default class ResultsItem extends React.Component {
           </div>
         </div>
       </div>
-    }
+    )
   }
 
 
