@@ -1,31 +1,31 @@
-.large-search button { /*Looking to change the color scheme here - shoudl not be red*/
+.results .large-search button { /*Looking to change the color scheme here - shoudl not be red*/
   background-color: inherit;
   color: inherit;
 }
 
-.result {
+.results .result {
   margin-top: 20px;
 }
 
-h4 a,
-h4 a:hover,
-h4 a:active,
-h4 a:focus {
+.results h4 a,
+.results h4 a:hover,
+.results h4 a:active,
+.results h4 a:focus {
   color: black;
 }
 
-li {
+.results li {
   padding-top: none;
 }
 
-.img-thumbnail {
+.results .img-thumbnail {
   width: 100px;
 }
 
-.social-but, .time-icons {
+.results .social-but, .time-icons {
    color: #3D5467;
 }
 
-.fa-star {
+.results .fa-star {
    color: #9C102E;
 }

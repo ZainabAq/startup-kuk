@@ -12,7 +12,7 @@ export default class ResultsFeed extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="results">
         <ResultsSearch />
         {this.state.contents.map(() => {
           return (

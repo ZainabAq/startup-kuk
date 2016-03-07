@@ -3,7 +3,7 @@ import React from 'react';
 export default class ResultsItem extends React.Component {
   render() {
     return (
-      <div>
+      <div className="results">
         <div className="panel panel-default result">
           <div className="panel-body">
             <div className="list-group">
