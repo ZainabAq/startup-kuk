@@ -4,8 +4,8 @@ export default class ProfileRestrictions extends React.Component {
   render() {
     return (
       <div className="panel panel-default">
-        <div className="panel-heading"><h4>Eating Restrictions</h4></div>
-        <div className="panel-body font1">
+        <div className="panel-heading panel-heading-profile"><h4>Eating Restrictions</h4></div>
+        <div className="panel-body panel-body-profile font1">
           <form role="form">
             <div className="row">
               <div className="col-xs-10 col-xs-offset-1">

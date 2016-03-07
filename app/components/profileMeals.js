@@ -4,10 +4,10 @@ export default class ProfileMeals extends React.Component {
   render() {
     return (
       <div className="panel panel-default">
-        <div classNameName="panel-heading"><h4>Upcoming Meals</h4></div>
-        <div className="panel-body font1">
+        <div className="panel-heading panel-heading-profile"><h4>Upcoming Meals</h4></div>
+        <div className="panel-body panel-body-profile font1">
           <div className="list-group">
-            <div className="list-group-item row">
+            <div className="list-group-item list-group-item-profile row">
               <div className="col-md-8">
                 <h4 className="list-group-item-heading">Monday Breakfast</h4>
                 <a href="#" className="list-group-item-text">Scrambled Tofu</a>
@@ -16,7 +16,7 @@ export default class ProfileMeals extends React.Component {
                 <img src="img/planning-images/scrambled-tofu.jpg" className="img-thumbnail pull-right" />
               </div>
             </div>
-            <div className="list-group-item row">
+            <div className="list-group-item list-group-item-profile row">
               <div className="col-md-8">
                 <h4 className="list-group-item-heading">Monday Lunch</h4>
                 <a href="#" className="list-group-item-text">Meatloaf</a>
@@ -25,7 +25,7 @@ export default class ProfileMeals extends React.Component {
                 <img src="img/planning-images/meatloaf.jpg" className="img-thumbnail pull-right" />
               </div>
             </div>
-            <div className="list-group-item row">
+            <div className="list-group-item list-group-item-profile row">
               <div className="col-md-8">
                 <h4 className="list-group-item-heading">Monday Dinner</h4>
                 <a href="#" className="list-group-item-text">Chicken Biryani</a>
@@ -34,7 +34,7 @@ export default class ProfileMeals extends React.Component {
                 <img src="img/planning-images/chicken-biryani.jpg" className="img-thumbnail pull-right" />
               </div>
             </div>
-            <div className="list-group-item row">
+            <div className="list-group-item list-group-item-profile row">
               <div className="col-md-8">
                 <h4 className="list-group-item-heading">Monday Snack</h4>
                 <a href="#" className="list-group-item-text">Homemade Granola</a>
