@@ -1,57 +1,57 @@
-body {
+.recipe body {
    background-color:#262626;
 }
 
-.navbar {
+.recipe .navbar {
    background-color:#9cb0ad !important;
 }
 
-.ingredient-bar {
+.recipe .ingredient-bar {
    border-right: thin solid #000000;
    font-size: 1.1em;
    /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
    font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
 }
 
-.instruction-list {
+.recipe .instruction-list {
    font-size: 1.1em;
    font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
    /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
 }
 
-.food-pic {
+.recipe .food-pic {
    border-color: #074F57;
    border-width:medium;
 }
 
-.instruction {
+.recipe .instruction {
    padding-bottom: 15px;
 }
 
-.panel {
+.recipe .panel {
    margin-top: 30px;
    border-color: #3D5467 !important;
    border-width: thick !important;
 }
 
-.panel-footer {
+.recipe .panel-footer {
    background-color: #3D5467;
 }
 
-.panel-title {
+.recipe .panel-title {
    font-size: 1.6em;
    color: #3D5467;
 }
 
-.social-but, .time-icons {
+.recipe .social-but, .time-icons {
    color: #3D5467;
 }
 
-.fa-star {
+.recipe .fa-star {
    color: #9C102E;
 }
 
-.panel-heading2 {
+.recipe .panel-heading2 {
   background-color: white !important;
   padding: 10px 10px 10px 10px;
 }

@@ -9,3 +9,11 @@ function emulateServerReturn(data, cb) {
     cb(data);
   }, 4);
 }
+//need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
+//modifyRestrictions (for the profile)
+export function getRecipe(recipeId, cb) {
+   //get the recipe object with the correct id
+   var recipeData = readDocument('recipes', recipeId);
+   emulateServerReturn(recipeData, cb);
+
+}

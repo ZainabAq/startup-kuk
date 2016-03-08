@@ -1,7 +1,7 @@
 //recipe component
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Link} from 'react-router';
+// import ReactDOM from 'react-dom';
+// import {Link} from 'react-router';
 
 export default class Recipe extends React.Component {
    // constructor(props) {
@@ -12,7 +12,7 @@ export default class Recipe extends React.Component {
    render() {
       return (
          <div>
-         <div className="container">
+         <div className="container recipe">
            <div className="row">
              <div className="col-md-1">
              </div>
@@ -57,43 +57,23 @@ export default class Recipe extends React.Component {
 
                     <div className="row">
                        <div className="col-md-3 ingredient-bar">
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />pat of butter</label>
-                          </div>
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />2 egg yolks</label>
-                          </div>
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />2 eggs</label>
-                          </div>
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />3 tablespoons white sugar</label>
-                          </div>
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />3 1/2 oz dark chocolate</label>
-                          </div>
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />5 tablespoons butter</label>
-                          </div>
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />4 teaspoons unsweetened cocoa powder</label>
-                          </div>
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />3 tablespoons flour</label>
-                          </div>
-
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />1 pinch salt</label>
-                          </div>
-                          <div className="checkbox">
-                             <label><input type="checkbox" value="" />1/8 teaspoons vanilla extract</label>
-                          </div>
-
-                       </div>
+                          <ul>
+                             <li> pat of butter</li>
+                             <li>2 egg yolks</li>
+                             <li>2 eggs</li>
+                             <li>3 tablespoons white sugar</li>
+                             <li>3 1/2 oz white chocolate</li>
+                             <li>5 tablespoons butter</li>
+                             <li>4 teaspoons unsweetened cocoa powder</li>
+                             <li>3 tablespoons flour</li>
+                             <li>1 pinch salt</li>
+                             <li>1/8 teaspoons vanilla extract</li>
+                       </ul>
+                    </div>
                  <div className="col-md-9">
                     <ol className="instruction-list">
                       <li className="instruction">
-                        <img src="img/lavaCake.jpg" width="35%" align="right" className="img-rounded food-pic"/>
+                        <img src="img/lavaCake.jpg" width="35%" align="right" className="img-rounded food-pic pull-right"/>
                         Generously butter the inside of 4 (5 1/2 ounce) ramekins. Place them in a casserole dish.
                       </li>
                       <li className="instruction">
