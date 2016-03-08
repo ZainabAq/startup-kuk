@@ -8,12 +8,12 @@
 */
 
 
-table.table td img{
+tableCal.table td img{
     width: 80%;
     height: auto;
 }
 
-table {
+tableCal {
     table-layout: fixed;
     word-wrap: break-word;
     text-align: center;
@@ -30,22 +30,22 @@ background-color: #9cb0ad;
 
 }
 
-table th {
+tableCal th {
   text-align: center;
 }
 
-table thead {
+tableCal thead {
   background-color: #3D5467;
   /*background-color: (100, 100, 100, 0)*/
   color: #c6d2d0;
 }
 
-table .heading {
+tableCal .heading {
   background-color: #3D5467;
   color: #c6d2d0;
 }
 
-table td {
+tableCal td {
   background-color: #c6d2d0;
   font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
 }
