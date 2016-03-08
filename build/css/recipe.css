@@ -2,10 +2,6 @@
    background-color:#262626;
 }
 
-.recipe .navbar {
-   background-color:#9cb0ad !important;
-}
-
 .recipe .ingredient-bar {
    border-right: thin solid #000000;
    font-size: 1.1em;
