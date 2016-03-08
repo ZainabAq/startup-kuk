@@ -13,7 +13,7 @@ export default class Calendar extends React.Component {
             </div>
         </div>
         <container>
-            <table className="calendar tableCal table-bordered table-condensed table-nonfluid">
+            <table className="calendar table table-bordered table-condensed table-nonfluid">
               <thead>
                 <tr>
                   <th>Meals</th>
