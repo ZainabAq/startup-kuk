@@ -5,20 +5,20 @@
   margin-right: 5px;
 }
 
-.list-group-item:first-child {
+.list-group-item-profile:first-child {
   border-top: none;
 }
 
-.panel-heading {
+.panel-heading-profile {
   background-color: #3D5467 !important;
 }
 
-.panel-heading h4 {
+.panel-heading-profile h4 {
   color: white;
 }
 
-.panel-body,
-.list-group-item {
+.panel-body-profile,
+.list-group-item-profile {
   background-color: #F1F4F3;
 }
 
