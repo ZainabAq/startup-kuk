@@ -160,22 +160,22 @@ export function resetDatabase() {
   data = JSONClone(initialData);
 }
 
-// /**
-// * Reset database button.
-// */
-// class ResetDatabase extends React.Component {
-//   render() {
-//     return (
-//       <button className="btn btn-default" type="button" onClick={() => {
-//           resetDatabase();
-//           window.alert("Database reset! Refreshing the page now...");
-//           document.location.reload(false);
-//         }}>Reset Mock DB</button>
-//       );
-//     }
-//   }
-//
-//   ReactDOM.render(
-//     <ResetDatabase />,
-//     document.getElementById('db-reset')
-//   );
+/**
+* Reset database button.
+*/
+class ResetDatabase extends React.Component {
+  render() {
+    return (
+      <button className="btn btn-default" type="button" onClick={() => {
+          resetDatabase();
+          window.alert("Database reset! Refreshing the page now...");
+          document.location.reload(false);
+        }}>Reset Mock DB</button>
+      );
+    }
+  }
+
+  ReactDOM.render(
+    <ResetDatabase />,
+    document.getElementById('db-reset')
+  );
