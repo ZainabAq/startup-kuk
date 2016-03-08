@@ -7,7 +7,7 @@ export default class ResultsFeed extends React.Component {
     super(props);
     this.state = {
       contents: []
-    }
+    };
   }
 
   render() {
