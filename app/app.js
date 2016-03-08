@@ -34,7 +34,7 @@ class BrowsePage extends React.Component {
  */
 class ProfilePage extends React.Component {
   render() {
-    return <ProfileFeed />
+    return <ProfileFeed user={1} />
   }
 }
 
@@ -98,13 +98,6 @@ ReactDOM.render((
     </Route>
   </Router>
 ),document.getElementById('main-page'));
-
-
-// ReactDOM.render(
-//    <BrowseFeed />,
-//    document.getElementById('main-page')
-// );
-
 
 // $(document).ready(function () {
 //   var trigger = $('.hamburger'),

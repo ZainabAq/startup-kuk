@@ -86,7 +86,7 @@ var initialData = {
   "calendar": {
     "1": {
       "_id": 1,
-      "contents": {"Monday": [1,2,3,4], "Tuesday":[5], "Wednesday":[6], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
+      "contents": {"Monday": [1,2,3,4], "Tuesday":[5], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
     },
     "2": {
       "_id": 2,
@@ -160,22 +160,22 @@ export function resetDatabase() {
   data = JSONClone(initialData);
 }
 
-/**
-* Reset database button.
-*/
-class ResetDatabase extends React.Component {
-  render() {
-    return (
-      <button className="btn btn-default" type="button" onClick={() => {
-          resetDatabase();
-          window.alert("Database reset! Refreshing the page now...");
-          document.location.reload(false);
-        }}>Reset Mock DB</button>
-      );
-    }
-  }
-
-  ReactDOM.render(
-    <ResetDatabase />,
-    document.getElementById('db-reset')
-  );
+// /**
+// * Reset database button.
+// */
+// class ResetDatabase extends React.Component {
+//   render() {
+//     return (
+//       <button className="btn btn-default" type="button" onClick={() => {
+//           resetDatabase();
+//           window.alert("Database reset! Refreshing the page now...");
+//           document.location.reload(false);
+//         }}>Reset Mock DB</button>
+//       );
+//     }
+//   }
+//
+//   ReactDOM.render(
+//     <ResetDatabase />,
+//     document.getElementById('db-reset')
+//   );

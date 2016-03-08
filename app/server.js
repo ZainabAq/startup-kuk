@@ -9,3 +9,57 @@ function emulateServerReturn(data, cb) {
     cb(data);
   }, 4);
 }
+
+/**
+ * Given a recipe ID, returns a recipe object with references resolved.
+ * Internal to the server, since it's synchronous.
+ */
+function getRecipeSync(recipeId) {
+  var recipe = readDocument('recipe', recipeId);
+  return recipe;
+}
+
+function getCalendarSync(calendarId) {
+  var calendar = readDocument('calendar',calendarId);
+  Object.keys(calendar.contents).map((day) => {
+    calendar.contents[day].map((meal, i) => {
+      // i is the meal's index
+      calendar.contents[day][i] = getRecipeSync(meal);
+    })
+  })
+  return calendar;
+}
+
+function getProfileSync(userId) {
+  var userItem = readDocument('users', userId);
+  // Resolve calendar
+  userItem.calendar = getCalendarSync(userItem.calendar);
+  return userItem;
+}
+
+/**
+ * Gets next 4 meals for a particular user.
+ * @param userId The ID of the user whose calendar we are requesting.
+ * @param cb A Function object which should (for now) take in an array of 4
+ * recipe objects.
+ */
+export function getUpcomingMeals(userId, cb) {
+  // Get the User object with the id "userId".
+  var userData = readDocument('users', userId);
+  // Get the calendar for the user.
+  var calendar = readDocument('calendar',userData.calendar);
+  // For now, static date is Monday.
+  var meals = [];
+  calendar.contents.Monday.forEach((recipeId) => {
+    meals.append(getRecipeSync(recipeId));
+  })
+  emulateServerReturn(meals, cb);
+}
+
+export function getProfileData(user, cb) {
+  // Get the User object with the id "user".
+  var userData = readDocument('users', user);
+  userData = getProfileSync(user);
+  // Return FeedData with resolved references.
+  emulateServerReturn(userData, cb);
+}

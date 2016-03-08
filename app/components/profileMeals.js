@@ -1,6 +1,14 @@
 import React from 'react';
+// import {getUpcomingMeals} from '../server';
 
 export default class ProfileMeals extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     contents : []
+  //   }
+  // }
+
   render() {
     return (
       <div className="panel panel-default">
