@@ -41,10 +41,9 @@ function getProfileSync(userId) {
 /**
  * Gets next 4 meals for a particular user.
  * @param userId The ID of the user whose calendar we are requesting.
- * @param cb A Function object which should (for now) take in an array of 4
- * recipe objects.
+ * @returns A 4-element array of the next 4 meals.
  */
-export function getUpcomingMeals(userId, cb) {
+function getUpcomingMeals(userId) {
   // Get the User object with the id "userId".
   var userData = readDocument('users', userId);
   // Get the calendar for the user.
@@ -52,15 +51,18 @@ export function getUpcomingMeals(userId, cb) {
   // For now, static date is Monday.
   var meals = [];
   calendar.contents.Monday.forEach((recipeId) => {
-    meals.append(getRecipeSync(recipeId));
+    meals.push(getRecipeSync(recipeId));
   })
-  emulateServerReturn(meals, cb);
+  return meals;
 }
 
 export function getProfileData(user, cb) {
   // Get the User object with the id "user".
   var userData = readDocument('users', user);
+  // Resolve profile data
   userData = getProfileSync(user);
+  // Add upcoming meals
+  userData.upcomingMeals = getUpcomingMeals(user)
   // Return FeedData with resolved references.
   emulateServerReturn(userData, cb);
 }
