@@ -5,7 +5,7 @@ export default class Calendar extends React.Component {
     return(
       <div>
         <div className="container">
-          <h1 className="center">Planning Page</h1>
+          <h1 className="center"></h1>
           <div className="btn-toolbar">
             <button type="button" className="btn btn-default prev pull-left font1">Previous week</button>
             <button type="button" className="btn btn-default next pull-right font1">Next week</button>

@@ -21,6 +21,7 @@ function getRecipeSync(recipeId) {
 
 function getCalendarSync(calendarId) {
   var calendar = readDocument('calendar',calendarId);
+  // Resolve meals
   Object.keys(calendar.contents).map((day) => {
     calendar.contents[day].map((meal, i) => {
       // i is the meal's index
@@ -62,4 +63,12 @@ export function getProfileData(user, cb) {
   userData = getProfileSync(user);
   // Return FeedData with resolved references.
   emulateServerReturn(userData, cb);
+}
+
+//need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
+//modifyRestrictions (for the profile)
+export function getRecipe(recipeId, cb) {
+   //get the recipe object with the correct id
+   var recipeData = readDocument('recipes', recipeId);
+   emulateServerReturn(recipeData, cb);
 }

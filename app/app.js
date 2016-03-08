@@ -1,4 +1,3 @@
-/* Empty for now. :) */
 import React from "react";
 import ReactDOM from "react-dom";
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';

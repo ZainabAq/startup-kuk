@@ -133,3 +133,15 @@
   right: 5%;
   padding-top: 2%;
 }
+
+#categories li h1 a{
+  color: #fff;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
+}
+
+/*#categories li h1 a:hover{
+  color: #fff;
+  text-shadow: 3px 2px #000;
+}*/
