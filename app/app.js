@@ -9,6 +9,7 @@ import ResultsFeed from './components/resultsFeed';
 import Instamode from './components/instamode';
 import Favorites from './components/favorites';
 import Calendar from './components/calendar';
+import Navbar from './components/navbar';
 
 /**
  * A recipe page
@@ -76,7 +77,10 @@ class CalendarPage extends React.Component {
 class App extends React.Component {
   render() {
     return (
-      <div>{this.props.children}</div>
+      <div>
+        <Navbar />
+        <div>{this.props.children}</div>
+      </div>
     )
   }
 }
