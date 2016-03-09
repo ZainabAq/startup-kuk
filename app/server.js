@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, addDocument} from './database.js';
+import {readDocument, writeDocument, addDocument, getCollection} from './database.js';
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -74,4 +74,25 @@ export function getRecipe(recipeId, cb) {
    var recipeData = readDocument('recipe', recipeId);
    emulateServerReturn(recipeData, cb);
 
+}
+
+export function findName(searchText, cb) {
+  var recipes = getCollection('recipe');
+  console.log(recipes);
+  var i, names=[];
+  for (i in recipes) {
+    if (recipes.hasOwnProperty(i)) {
+      names.push(recipes[i].name);
+    }
+   }
+
+  for (var j=0; j<names.length; j++) {
+    if (searchText == names[j]) {
+      console.log(names[j]);
+    }
+  }
+
+  // loop (add certain to arr)
+  //  return arr
+  emulateServerReturn(name, cb);
 }

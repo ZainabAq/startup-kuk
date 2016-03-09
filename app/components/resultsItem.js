@@ -1,7 +1,15 @@
 import React from 'react';
 
 export default class ResultsItem extends React.Component {
+  constructor(props) {
+    super(props);
+    // The FeedItem's initial state is what the Feed passed to us.
+    this.state = props.data;
+  }
+
+
   render() {
+    var data = this.state;
     return (
       <div className="results">
         <div className="panel panel-default result">
@@ -37,6 +45,7 @@ export default class ResultsItem extends React.Component {
                          <span className="fa fa-star"></span>
                          <span className="fa fa-star"></span>
                          <span className="fa fa-star"></span>
+                        //<a href="#">{data.averageRating.length} stars</a>
                       </li>
                       <li className="time-icons">
                           1.5 Hours

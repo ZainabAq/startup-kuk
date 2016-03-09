@@ -1,6 +1,7 @@
 import React from 'react';
 import ResultsItem from './resultsItem';
 import ResultsSearch from './resultsSearch';
+import {findName} from '../server';
 
 export default class ResultsFeed extends React.Component {
   constructor(props) {
@@ -10,10 +11,25 @@ export default class ResultsFeed extends React.Component {
     };
   }
 
+  onSearch(searchText) {
+    // If searchText is 'sandals', navigates to #/search/q?=sandals
+    this.context.router.push({ pathname: "/search", query: { q: searchText } });
+  }
+
+  refresh() {
+    findName("Zha Jiang Mian", (recipeName) => {
+      this.setState(recipeName);
+    });
+  }
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     return (
       <div className="results">
-        <ResultsSearch />
+        <ResultsSearch onSearch={(searchText) => this.onSearch(searchText)} />
         {this.state.contents.map(() => {
           return (
             <ResultsItem />
@@ -23,3 +39,7 @@ export default class ResultsFeed extends React.Component {
     );
   }
 }
+
+ResultsFeed.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};

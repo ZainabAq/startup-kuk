@@ -9,6 +9,7 @@ import Instamode from './components/instamode';
 import Favorites from './components/favorites';
 import Calendar from './components/calendar';
 import Navbar from './components/navbar';
+import Search from './components/search';
 
 /**
  * A recipe page
@@ -94,6 +95,7 @@ ReactDOM.render((
       <Route path="instamode" component={InstaPage} />
       <Route path="favorites/:id" component={FavoritesPage} />
       <Route path="calendar/:id" component={CalendarPage} />
+      <Route path="search" component={Search} />
     </Route>
   </Router>
 ),document.getElementById('main-page'));
