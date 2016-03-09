@@ -14,7 +14,7 @@ export default class BrowseFeed extends React.Component {
   }
 
   refresh() {
-    getFeedData("3", (recipeData) => {
+    getFeedData("5", (recipeData) => {
       this.setState({recipes : recipeData});
       // console.log("REFRESSSSHhh");
       console.log(this.state.recipes);
@@ -41,10 +41,9 @@ export default class BrowseFeed extends React.Component {
   // the animation when loaded is false, and set loaded to true once the server
   // response comes back in.
   render() {
-    // console.log(data);
-
     return (
       <div>
+        <h1 className="center">Browse Our Recipes</h1>
         <ul id="categories" className="clr">
           {this.state.recipes.map((recipe, i) => {
             return (

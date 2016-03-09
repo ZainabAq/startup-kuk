@@ -29,7 +29,7 @@ var initialData = {
       "userRating": 4,
       "time": "1 hour",
       "restrictions": [1,2,5],
-      "img":"http://images.media-allrecipes.com/userphotos/600x600/1090243.jpg",
+      "img":"http://s2.favim.com/orig/37/brownie-cake-candy-chocolate-delicious-Favim.com-298873.jpg",
       "description":"Some sample text about the recipe this hexagon leads to"
     },
     "2": {
