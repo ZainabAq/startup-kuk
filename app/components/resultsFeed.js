@@ -1,13 +1,13 @@
 import React from 'react';
 import ResultsItem from './resultsItem';
 import ResultsSearch from './resultsSearch';
-import {findName} from '../server';
+import {findRecipe} from '../server';
 
 export default class ResultsFeed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      contents: []
+      recipeList: []
     };
   }
 
@@ -17,8 +17,9 @@ export default class ResultsFeed extends React.Component {
   }
 
   refresh() {
-    findName("Zha Jiang Mian", (recipeName) => {
-      this.setState(recipeName);
+    findRecipe("Zha Jiang Mian", (newRecipeList) => {
+      this.setState({recipeList : newRecipeList});
+      console.log("fuck this shit");
     });
   }
 
@@ -30,7 +31,7 @@ export default class ResultsFeed extends React.Component {
     return (
       <div className="results">
         <ResultsSearch onSearch={(searchText) => this.onSearch(searchText)} />
-        {this.state.contents.map(() => {
+        {this.state.recipeList.map(() => {
           return (
             <ResultsItem />
           );

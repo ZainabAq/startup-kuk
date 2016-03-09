@@ -76,23 +76,30 @@ export function getRecipe(recipeId, cb) {
 
 }
 
-export function findName(searchText, cb) {
+/**
+ * Returns an array of the recipes whose names match the searched keyword.
+ */
+export function findRecipe(searchText, cb) {
   var recipes = getCollection('recipe');
-  console.log(recipes);
-  var i, names=[];
+  // append all recipes in an array
+  var i, recipeData = [];
   for (i in recipes) {
     if (recipes.hasOwnProperty(i)) {
-      names.push(recipes[i].name);
-    }
-   }
-
-  for (var j=0; j<names.length; j++) {
-    if (searchText == names[j]) {
-      console.log(names[j]);
+      recipeData.push(recipes[i]);
     }
   }
-
-  // loop (add certain to arr)
-  //  return arr
-  emulateServerReturn(name, cb);
+  // if recipe name matches search word, append its id
+  var j, match = [];
+  for (j=0; j<recipeData.length; j++) {
+    if (searchText == recipeData[j].name) {
+      match.push(recipeData[j]._id);
+    }
+  }
+  // map each recipe id
+  match.map((recipe, k) => {
+    // k is the index
+    match[k] = getRecipeSync(recipe);
+  });
+  // match = wanted recipe
+  emulateServerReturn(match, cb);
 }

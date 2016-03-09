@@ -3,7 +3,6 @@ import CalendarEntry from './calendarentry';
 import {getCalendarSync} from '../server';
 
 export default class Calendar extends React.Component {
-<<<<<<< HEAD
    //  constructor(props) {
    //    this.state = {
    //      meals = []
