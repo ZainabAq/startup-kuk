@@ -107,7 +107,6 @@ ReactDOM.render((
       <Route path="instamode" component={InstaPage} />
       <Route path="favorites/:id" component={FavoritesPage} />
       <Route path="calendar/:id" component={CalendarPage} />
-      <Route path="results" component={ResultsFeed} />
     </Route>
   </Router>
 ),document.getElementById('main-page'));
