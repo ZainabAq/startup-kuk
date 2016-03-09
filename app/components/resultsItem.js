@@ -39,12 +39,13 @@ export default class ResultsItem extends React.Component {
                     </div>
                     <ul className="list-inline">
                       <li className="rating">
-                         <span className="fa fa-star"></span>
-                         <span className="fa fa-star"></span>
-                         <span className="fa fa-star"></span>
-                         <span className="fa fa-star"></span>
-                         <span className="fa fa-star"></span>
-                         <span> {data.averageRating.length} stars</span>
+                        {(() => {
+                          var elements=[];
+                          for (var i=0; i<data.userRating; i++) {
+                            elements.push(<span key={i} className="fa fa-star"></span>)
+                          }
+                          return elements;
+                        })()}
                       </li>
                       <li className="time-icons">
                           {data.time}&nbsp;

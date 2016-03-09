@@ -8,7 +8,7 @@ export default class Recipe extends React.Component {
       // The recipe's initial state
       this.state = {
          ingredients:[],
-         instructions: [],
+         instructions: []
       };
    }
 
