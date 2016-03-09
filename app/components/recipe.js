@@ -1,15 +1,32 @@
 //recipe component
 import React from 'react';
-// import ReactDOM from 'react-dom';
-// import {Link} from 'react-router';
+import {getRecipe} from '../server';
 
 export default class Recipe extends React.Component {
-   // constructor(props) {
-   //    super(props);
-   //    // The recipe's initial state
-   //    this.state = props.data;
-   // }
+   constructor(props) {
+      super(props);
+      // The recipe's initial state
+      this.state = {};
+   }
+
+   refresh() {
+      console.log("in the refresh function");
+     getRecipe("1", (recipeData) => {
+        console.log(recipeData);
+      this.setState(recipeData);
+     });
+   }
+
+   componentDidMount() {
+     this.refresh();
+   }
+
+   findAverageRating() {
+      ratings = this.state.averageRating
+   }
+
    render() {
+      // var data = this.state;
       return (
          <div>
          <div className="container recipe">
@@ -21,7 +38,7 @@ export default class Recipe extends React.Component {
                  <div className="panel-heading2">
                     <div className="row">
                        <div className="col-xs-10">
-                          <h1 className="panel-title">Molten Lava Cake</h1>
+                          <h1 className="panel-title">{this.state.name}</h1>
                           <br />
                           <ul className="list-inline">
                            <li className="rating">
@@ -32,7 +49,7 @@ export default class Recipe extends React.Component {
                               <span className="fa fa-star"></span>
                            </li>
                            <li className="time-icons">
-                                1.5 Hours
+                                {this.state.time}
                               <span className="fa fa-clock-o"></span>
                            </li>
 
