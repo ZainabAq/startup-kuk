@@ -1,6 +1,6 @@
 import React from 'react';
 import ResultsItem from './resultsItem';
-import ResultsSearch from './resultsSearch';
+import Searchbar from './Searchbar';
 import {findRecipe} from '../server';
 
 export default class ResultsFeed extends React.Component {
@@ -19,7 +19,6 @@ export default class ResultsFeed extends React.Component {
   refresh() {
     findRecipe("Zha Jiang Mian", (newRecipeList) => {
       this.setState({recipeList : newRecipeList});
-      console.log("fuck this shit");
     });
   }
 
@@ -30,7 +29,7 @@ export default class ResultsFeed extends React.Component {
   render() {
     return (
       <div className="results">
-        <ResultsSearch onSearch={(searchText) => this.onSearch(searchText)} />
+        <Searchbar onSearch={(searchText) => this.onSearch(searchText)} />
         {this.state.recipeList.map(() => {
           return (
             <ResultsItem />
