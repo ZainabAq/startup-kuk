@@ -11,9 +11,9 @@ var initialData = {
       "_id": 1,
       "firstName": "John",
       "lastName": "Doe",
-      "restrictions": [1,4],
+      "restrictions": ["1","4"],
       "email": "jdoe@gmail.com",
-      "favorites": [],
+      "favorites": [2,3,5],
       "calendar": 1
     }
   },

@@ -14,12 +14,12 @@ export default class ResultsFeed extends React.Component {
   onSearch(searchText) {
     // If searchText is 'Brownies', navigates to #/results/q?=Brownies
     this.context.router.push({ pathname: "/results", query: { q: searchText } });
+    findRecipe(searchText, (newRecipeList) => {
+      this.setState({recipeList : newRecipeList});
+    });
   }
 
   refresh() {
-    findRecipe("Zha Jiang Mian", (newRecipeList) => {
-      this.setState({recipeList : newRecipeList});
-    });
   }
 
   componentDidMount() {

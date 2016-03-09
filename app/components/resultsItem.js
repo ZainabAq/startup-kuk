@@ -1,12 +1,11 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class ResultsItem extends React.Component {
   constructor(props) {
     super(props);
-    // The FeedItem's initial state is what the Feed passed to us.
     this.state = props.data;
   }
-
 
   render() {
     var data = this.state;
@@ -19,11 +18,11 @@ export default class ResultsItem extends React.Component {
                 <div className="col-md-10 col-md-offset-1">
                   <div className="media">
                   <div className="media-left">
-                    <img className="media-object img-thumbnail" src="img/lavaCake.jpg" />
+                    <img className="media-object img-thumbnail" src={data.img} />
                   </div>
                   <div className="media-body row">
                     <div className="col-xs-8">
-                      <h4 className="media-heading"><a href="#">Molten Lava Cake</a></h4>
+                      <h4 className="media-heading"><Link to={"/recipe/" + data._id}>{data.name}</Link></h4>
                     </div>
                     <div className="col-xs-4">
                        <ul className="list-inline pull-right">
@@ -48,7 +47,7 @@ export default class ResultsItem extends React.Component {
                         //<a href="#">{data.averageRating.length} stars</a>
                       </li>
                       <li className="time-icons">
-                          1.5 Hours
+                          {data.time}
                          <span className="fa fa-clock-o"></span>
                       </li>
                     </ul>
@@ -62,6 +61,4 @@ export default class ResultsItem extends React.Component {
       </div>
     )
   }
-
-
 }
