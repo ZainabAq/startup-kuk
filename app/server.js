@@ -71,6 +71,8 @@ export function getProfileData(user, cb) {
 //modifyRestrictions (for the profile)
 export function getRecipe(recipeId, cb) {
    //get the recipe object with the correct id
-   var recipeData = readDocument('recipes', recipeId);
+   var recipeData = readDocument('recipe', recipeId);
+   console.log(recipeData);
    emulateServerReturn(recipeData, cb);
+
 }

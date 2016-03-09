@@ -27,7 +27,7 @@ var initialData = {
       "averageRating": [4, 5, 2, 5, 4],
       "instructions": ["Preheat the oven to 350 degrees.", "Melt the butter.", "Bake for 30 minutes.", "Enjoy!"],
       "userRating": 4,
-      "time": "1hour",
+      "time": "1 hour",
       "restrictionTags": ["dairy", "gluten", "eggs"],
       "img":"http://images.media-allrecipes.com/userphotos/600x600/432846.jpg"
     },
@@ -40,7 +40,7 @@ var initialData = {
       "averageRating": [4,3],
       "instructions": ["Cut chicken in half horizontally. Pound each piece until 1/2 inch thick. Sprinkle with salt and pepper.", "Add flour to a shallow dish.", "Add egg to a shallow bowl and whisk, set aside.", "Add breadcrumbs and Parmesan cheese to a shallow bowl and mix to combine.", "Starting with the flour and ending with breadcrumbs, dip the chicken into the flour, egg and Parmesan breadcrumbs.", "Add oil to a large skillet.", "Add chicken two at a time to the skillet. Cook 2-3 minutes on each side or until golden grown and cooked all the way through.", "Place chicken in a pan or sheet tray and top with mozzarella cheese.", "Broil on high until melted and bubbly. Top with tomato sauce and and a sprinkle of basil for serving, if desired. Serve immediately."],
       "userRating": 3,
-      "time": "30mins",
+      "time": "30 mins",
       "restrictionTags": ["eggs", "poultry", "gluten", "dairy"]
     },
 
@@ -53,7 +53,7 @@ var initialData = {
       "averageRating": [4, 5, 5],
       "instructions": ["Wash and dry napa cabbage leaves. Green leafy parts may be left in larger pieces (2″ or so), but white parts must be diced small (cut white parts vertically into 1/4″ wide sticks, then cut sticks into 1/4″ dice).", "Cut zucchini in 1/4″ dice also (slice lengthwise into 1/4″ strips, then strips into 1/4″ sticks, then sticks into 1/4″ dice).", "Heat 2 tablespoons of cooking oil in a skillet over medium heat. Add onion and cook until softened; remove to a bowl. Add a bit more oil and cook cabbage until edges look translucent; remove and add to bowl. Add zucchini and cook briefly, just to coat with a bit of oil; remove and add to other vegetables.", "Heat a bit more oil and cook ground meat, breaking it up well with a spatula. When all traces of pink are gone, remove meat to a separate bowl.", "Heat 3 tablespoons of oil in the skillet with the ginger slices. Add ground bean sauce and hoisin sauce (also chunjang and miso, if using) and cook, stirring, until the sauces are bubbling hot and mostly mixed into the oil.", "Add meat back in (try and leave out any juice that may have accumulated), and mix well with sauce. Cook for another minute, then remove ginger slices. Add back vegetables and stir.", "Add soy sauce, water and chicken broth (you may substitute 3 tablespoons water plus 1 tablespoon soy sauce if you don’t have chicken broth) and stir. Cook to heat.", "Mix cornstarch with water, then stir into the skillet. Cook until sauce thickens. Add sesame oil to finish.", "Slice cucumber thinly on the diagonal. Then take one little stack of cucumber slices at a time and cut thin matchsticks. Set aside for garnish.", "Cook fresh noodles in boiling water (if you can’t read the directions, just know that fresh noodles cook quickly, so taste it after 3 minutes and check). Serve immediately, as the noodles get gummy and stick together as they cool. Top with meat sauce and garnish with slivered cucumber."],
       "userRating": 5,
-      "time": "1hour",
+      "time": "1 hour",
       "restrictionTags": ["gluten", "soy", "pork"]
     },
 
@@ -66,7 +66,7 @@ var initialData = {
       "averageRating": [4, 5, 5],
       "instructions": ["Whisk onion, soy sauce, brown sugar, garlic, sesame oil, sesame seeds, cayenne pepper, salt, and black pepper together in a bowl until marinade is smooth.", "Cook and stir chicken and marinade together in a large skillet over medium-high heat until chicken is cooked through, about 15 minutes."],
       "userRating": 5,
-      "time": "30mins",
+      "time": "30 mins",
       "restrictionTags": ["gluten", "pork", "dairy"]
     },
 
@@ -79,7 +79,7 @@ var initialData = {
       "averageRating": [4, 2, 5],
       "instructions": ["Bring a large pot of lightly salted water to a boil. Add pasta and cook for 8 to 10 minutes or until al dente; drain.", "Melt butter in a large skillet over medium heat. Saute onion in butter until tender.", "Stir flour and garlic powder into the butter and onions. Gradually stir in milk. Heat to just below boiling point, and then gradually stir in cheese until the sauce is smooth. Stir in peas and mushrooms., and cook over low heat for 4 minutes.", "Toss in smoked salmon, and cook for 2 more minutes. Serve over pasta."],
       "userRating": 2,
-      "time": "30mins",
+      "time": "30 mins",
       "restrictionTags": ["gluten", "pork"]
     }
   },
