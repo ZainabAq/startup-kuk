@@ -180,6 +180,13 @@ export function readDocument(collection, id) {
 }
 
 /**
+ * Get the entire collection.
+ */
+export function getCollection(collection) {
+  return JSONClone(data[collection]);
+}
+
+/**
 * Emulates writing a "document" to a NoSQL database.
 */
 export function writeDocument(collection, changedDocument) {
