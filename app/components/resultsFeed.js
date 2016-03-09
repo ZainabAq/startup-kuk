@@ -12,8 +12,8 @@ export default class ResultsFeed extends React.Component {
   }
 
   onSearch(searchText) {
-    // If searchText is 'sandals', navigates to #/search/q?=sandals
-    this.context.router.push({ pathname: "/search", query: { q: searchText } });
+    // If searchText is 'Brownies', navigates to #/results/q?=Brownies
+    this.context.router.push({ pathname: "/results", query: { q: searchText } });
   }
 
   refresh() {
@@ -27,12 +27,13 @@ export default class ResultsFeed extends React.Component {
   }
 
   render() {
+    // console.log(this.state.recipeList);
     return (
       <div className="results">
         <Searchbar onSearch={(searchText) => this.onSearch(searchText)} />
-        {this.state.recipeList.map(() => {
+        {this.state.recipeList.map((recipe) => {
           return (
-            <ResultsItem />
+            <ResultsItem key={recipe._id} data={recipe} />
           );
         })}
       </div>

@@ -5,7 +5,7 @@ export default class Search extends React.Component {
 
   render() {
     return (
-      <Link to={"/search?q="}></Link>
+      <Link to={"/results?q="}></Link>
     )
   }
 
