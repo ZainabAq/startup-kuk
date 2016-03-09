@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 export default class Navbar extends React.Component {
   render() {
@@ -13,18 +14,18 @@ export default class Navbar extends React.Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand" href="#home">
+              <Link to="/" className="navbar-brand">
                 <img src="img/Kuk-logo.png" id="logo" />
-              </a>
+              </Link>
             </div>
 
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav navbar-left nav-pills">
                 <li className="presentation">
-                  <a href="#"><span className="glyphicon glyphicon-cutlery"></span> Browse</a>
+                  <Link to={"/"}><span className="glyphicon glyphicon-cutlery"></span> Browse</Link>
                 </li>
                 <li className="presentation">
-                  <a href="#"><span className="glyphicon glyphicon-fire"></span> Insta-Recipe</a>
+                  <Link to={"/instamode"}><span className="glyphicon glyphicon-fire"></span> Insta-Recipe</Link>
                 </li>
               </ul>
               <ul className="nav navbar-nav navbar-right" role="search">
@@ -44,9 +45,9 @@ export default class Navbar extends React.Component {
                   PIC
                 </button>
                 <ul className="dropdown-menu">
-                  <li><a href="#">Profile</a></li>
-                  <li><a href="#">Favorites</a></li>
-                  <li><a href="#">Calendar</a></li>
+                  <li><Link to={"/profile/1"}>Profile</Link></li>
+                  <li><Link to="/favorites/1">Favorites</Link></li>
+                  <li><Link to="/calendar/1">Calendar</Link></li>
                   <li role="separator" className="divider"></li>
                   <li><a href="#">Log out</a></li>
                 </ul></div></li>
