@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 export default class Results extends React.Component {
   render() {
     return (
-      <Link to={"/results?q="}></Link>
+      <Link to={"/results"}></Link>
     )
   }
 }

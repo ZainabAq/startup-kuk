@@ -1,6 +1,11 @@
 import React from 'react';
 
-export default class ResultsSearch extends React.Component {
+// Issues to fix:
+// Do we really need another component for results.js? Figure out how this works...
+// Searched text doesn't stay in search bar
+// If you go to another page and then go back to the results page, the results aren't there anymore
+
+export default class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
