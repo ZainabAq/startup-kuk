@@ -143,6 +143,7 @@
   left: 10%;
   right: 10%;
   bottom: 10%;
+  text-decoration: none;
 }
 
 /*#categories li h1 a:hover{
