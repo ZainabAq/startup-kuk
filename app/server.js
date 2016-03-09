@@ -79,28 +79,13 @@ export function getRecipe(recipeId, cb) {
 export function getFeedData(amountofRecipes, cb) {
   // Get the recipe object with the correct id
   var feedData = getCollection('recipe');
-  console.log(feedData);
-  console.log("in feedData");
-
-  var i=1;
-  var recipeList=[];
+  var i=1, recipeList=[];
 
   while(amountofRecipes != 0) {
     recipeList.push([feedData[i]._id, feedData[i].name, feedData[i].img, feedData[i].description, feedData[i].time]);
     i++;
     amountofRecipes--;
   }
-
-  console.log(recipeList);
-
-  // var i, recipeList = [];
-  // for (var i=0; i<20; i++) {
-  //
-  // }
-  // var feedData = readDocument('recipe', recipeId);
-  // console.log(feedData);
-  // feedData.contents = feedData.contents.map(getFeedItemSync);
-  // var recipeData = readDocument('recipes', recipeId);
   emulateServerReturn(recipeList, cb);
 }
 
