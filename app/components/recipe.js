@@ -8,12 +8,12 @@ export default class Recipe extends React.Component {
       // The recipe's initial state
       this.state = {
          ingredients:[],
-         instructions: []
+         instructions: [],
       };
    }
 
    refresh() {
-     getRecipe("1", (recipeData) => {
+     getRecipe("3", (recipeData) => {
       this.setState(recipeData);
      });
    }
@@ -50,11 +50,13 @@ export default class Recipe extends React.Component {
                           <br />
                           <ul className="list-inline">
                            <li className="rating">
-                              <span className="fa fa-star"></span>
-                              <span className="fa fa-star"></span>
-                              <span className="fa fa-star"></span>
-                              <span className="fa fa-star"></span>
-                              <span className="fa fa-star"></span>
+                              {(() => {
+                                 var elements=[];
+                                 for (var i=0; i<this.state.userRating; i++) {
+                                    elements.push(<span className="fa fa-star"></span>)
+                                 }
+                                 return elements;
+                              })()}
                            </li>
                            <li className="time-icons">
                                 {this.state.time}
@@ -91,7 +93,7 @@ export default class Recipe extends React.Component {
                        </ul>
                     </div>
                  <div className="col-md-9">
-                    <img src="img/lavaCake.jpg" width="35%" align="right" className="img-rounded food-pic pull-right"/>
+                    <img src={this.state.img} width="35%" align="right" className="img-rounded food-pic pull-right"/>
                     <ol className="instruction-list">
                        {this.state.instructions.map((listItem, i) => {
                          return (
