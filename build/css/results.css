@@ -18,8 +18,14 @@
   padding-top: none;
 }
 
-.results .img-thumbnail {
-  width: 100px;
+.results .list-group {
+  margin: 0 !important;
+}
+
+.croppedimg {
+  width: 160px;
+  height: 120px;
+  overflow: hidden;
 }
 
 .results .social-but, .time-icons {
@@ -29,3 +35,16 @@
 .results .fa-star {
    color: #9C102E;
 }
+
+.padThai {
+  padding-top: 10px;
+}
+
+.searchButton {
+  background-color: #fff !important;
+}
+
+/*.omNomNom {
+  margin-right: 200px;
+  width: 100%;
+}*/

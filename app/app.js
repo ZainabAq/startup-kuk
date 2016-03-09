@@ -44,7 +44,13 @@ class ProfilePage extends React.Component {
  */
 class ResultsPage extends React.Component {
   render() {
-    return <ResultsFeed />
+    return (
+      <div className="padThai">
+        <div className="col-md-offset-1 col-md-2"><FilterBar /></div>
+        <div className="col-md-8"><ResultsFeed /></div>
+      </div>
+
+    )
   }
 }
 
