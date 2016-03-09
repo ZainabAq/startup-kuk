@@ -95,7 +95,7 @@ var initialData = {
   "calendar": {
     "1": {
       "_id": 1,
-      "contents": {"Monday": [1,2,3,4], "Tuesday":[5], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
+      "contents": {"Monday": [1,2,3,4], "Tuesday":[2, 3, 4, 5], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
     },
     "2": {
       "_id": 2,

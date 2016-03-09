@@ -82,7 +82,7 @@ class FavoritesPage extends React.Component {
  */
 class CalendarPage extends React.Component {
   render() {
-    return <Calendar />
+    return <Calendar user={1} />
   }
 }
 

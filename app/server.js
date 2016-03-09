@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, addDocument, getCollection} from './database.js';
+import {readDocument, writeDocument, getCollection} from './database.js';
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -57,6 +57,23 @@ function getUpcomingMeals(userId) {
 }
 
 /**
+* Gets the day's calendar for a particular user.
+* @param calendarId and the day
+* @returns A 4-element array of that day's meals
+*/
+
+function getCalendarData(userId) {
+  var userData = readDocument('users', userId);
+  var calendar = readDocument('calendar', userData.calendar);
+  var meals = [];
+  calendar.contents.Monday.forEach((recipeId) => {
+    meals.push(getRecipeSync(recipeId));
+  })
+  return meals;
+
+}
+
+/**
  * @param id An array of the ids of the restrictions to get
  * @returns An array holding the tag names of the restriction ids passed in
  */
@@ -80,7 +97,19 @@ export function getProfileData(user, cb) {
   // Resolve profile data
   userData = getProfileSync(user);
   // Add upcoming meals
-  userData.upcomingMeals = getUpcomingMeals(user)
+  userData.upcomingMeals = getUpcomingMeals(user);
+  // Return UserData with resolved references.
+  emulateServerReturn(userData, cb);
+}
+
+export function getProfileCalendarData(user, cb) {
+  // Get the User object with the id "user".
+  var userData = readDocument('users', user);
+  // Resolve profile data
+  userData = getProfileSync(user);
+  // Add upcoming calendar
+  userData.Monday = getCalendarData(user);
+  userData.Tuesday = getCalendarData(user);
   // Return UserData with resolved references.
   emulateServerReturn(userData, cb);
 }

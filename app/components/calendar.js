@@ -1,19 +1,25 @@
 import React from 'react';
 import CalendarEntry from './calendarentry';
-import {getCalendarSync} from '../server';
+import {getProfileCalendarData} from '../server';
+
+//import {Link} from 'react-router';
+
 
 export default class Calendar extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        meals: []
-      };
+  constructor(props) {
+    super(props);
+    this.state = {
+      _id : this.props.user,
+      loading : true,
+      week: 1,
+      Monday : [],
+      Tuesday: []
     }
-
+  }
     refresh() {
-      getCalendarSync(this.props.user, (calendarData) => {
-        this.setState(calendarData)
-      });
+       getProfileCalendarData(this.props.user, (profileData) => {
+         this.setState(profileData);
+       });
     }
 
     onEdit() {
@@ -28,8 +34,23 @@ export default class Calendar extends React.Component {
 
     }
 
-    componentsDidMount() {
+    checkMealType(i) {
+      if (i === 0){
+        return "Breakfast";
+      } else if (i === 1) {
+        return "Lunch";
+      } else if (i === 3) {
+        return "Dinner";
+      } else {
+        return "Snack";
+      }
+    }
+
+    componentDidMount() {
       this.refresh();
+      setTimeout(() => {
+        this.setState({loading : false});
+      }, 4);
     }
 
 
@@ -37,38 +58,32 @@ export default class Calendar extends React.Component {
     return(
       <div>
         <div className="container">
-          <h1 className="center"></h1>
+          <h1 className="center">Your Weekly Calendar</h1>
           <div className="btn-toolbar">
             <button type="button" className="btn btn-default prev pull-left font1">Previous week</button>
             <button type="button" className="btn btn-default next pull-right font1">Next week</button>
             <button type="button" className="btn btn-default pull-right font1">Edit this week's menu</button>
-            </div>
+          </div>
         </div>
-        <container>
-            <table className="calendar table table-bordered table-condensed table-nonfluid">
-              <thead>
-                <tr>
-                  <th>Meals</th>
-                  <th>Monday</th>
-                  <th>Tuesday</th>
-                  <th>Wednesday</th>
-                  <th>Thursday</th>
-                  <th>Friday</th>
-                  <th>Saturday</th>
-                  <th>Sunday</th>
-                </tr>
-              </thead>
-              <div>
-                <CalendarEntry onPost={(postContents) => this.onPost(postContents)} />
-                    {this.state.meals.map((recipe) => {
-                      return (
-                        <CalendarEntry key={recipe.id} data={recipe} />
-                      )
-                    })}
-              </div>
-            </table>
-            </container>
-            </div>
+        <ul className = "list-inline">
+          <li> Monday </li>
+            {this.state.Monday.map((meal, i) => {
+                            // i is the index
+              return (
+                <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} />
+              )
+            })}
+        </ul>
+        <ul className = "list-inline">
+          <li> Tuesday </li>
+            {this.state.Tuesday.map((meal, i) => {
+                            // i is the index
+              return (
+                <CalendarEntry key={i} data={meal} day="Tuesday" type={this.checkMealType(i)} />
+              )
+            })}
+        </ul>
+          </div>
           )
         }
       }
