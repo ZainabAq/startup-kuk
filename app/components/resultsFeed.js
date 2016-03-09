@@ -1,25 +1,46 @@
 import React from 'react';
 import ResultsItem from './resultsItem';
-import ResultsSearch from './resultsSearch';
+import Searchbar from './Searchbar';
+import {findRecipe} from '../server';
 
 export default class ResultsFeed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      contents: []
+      recipeList: []
     };
   }
 
+  onSearch(searchText) {
+    // If searchText is 'Brownies', navigates to #/results/q?=Brownies
+    this.context.router.push({ pathname: "/results", query: { q: searchText } });
+    findRecipe(searchText, (newRecipeList) => {
+      this.setState({recipeList : newRecipeList});
+    });
+  }
+
+  refresh() {
+  }
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
+    // console.log(this.state.recipeList);
     return (
       <div className="results">
-        <ResultsSearch />
-        {this.state.contents.map(() => {
+        <Searchbar onSearch={(searchText) => this.onSearch(searchText)} />
+        {this.state.recipeList.map((recipe) => {
           return (
-            <ResultsItem />
+            <ResultsItem key={recipe._id} data={recipe} />
           );
         })}
       </div>
     );
   }
 }
+
+ResultsFeed.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};

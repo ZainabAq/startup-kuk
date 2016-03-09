@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, addDocument} from './database.js';
+import {readDocument, writeDocument, addDocument, getCollection} from './database.js';
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -90,7 +90,6 @@ export function getProfileData(user, cb) {
 export function getRecipe(recipeId, cb) {
    //get the recipe object with the correct id
    var recipeData = readDocument('recipe', recipeId);
-   console.log(recipeData);
    emulateServerReturn(recipeData, cb);
 
 }
@@ -139,4 +138,59 @@ export function removeUserRestriction(checkbox, userId, cb) {
   }
   var result = {"restrictions":userData.restrictions, "target":checkbox};
   emulateServerReturn(result, cb);
+}
+
+export function getFeedData(amountofRecipes, cb) {
+  // Get the recipe object with the correct id
+  var feedData = getCollection('recipe');
+  var i=1, recipeList=[];
+
+  while(amountofRecipes != 0) {
+    recipeList.push([feedData[i]._id, feedData[i].name, feedData[i].img, feedData[i].description, feedData[i].time]);
+    i++;
+    amountofRecipes--;
+  }
+  emulateServerReturn(recipeList, cb);
+}
+
+/**
+ * Returns an array of the recipes whose names match the searched keyword.
+ */
+export function findRecipe(searchText, cb) {
+  var recipes = getCollection('recipe');
+  // append all recipes in an array
+  var i, recipeData = [];
+  for (i in recipes) {
+    if (recipes.hasOwnProperty(i)) {
+      recipeData.push(recipes[i]);
+    }
+  }
+  // if recipe name matches search word, append its id
+  var j, match = [];
+  for (j=0; j<recipeData.length; j++) {
+    if (searchText == recipeData[j].name) {
+      match.push(recipeData[j]._id);
+    }
+  }
+  // map each recipe id
+  match.map((recipe, k) => {
+    // k is the index
+    match[k] = getRecipeSync(recipe);
+  });
+  // match = wanted recipe
+  emulateServerReturn(match, cb);
+}
+
+/**
+ * Returns an array of the recipes whose ids match the list of recipe ids.
+ */
+export function findRecipesFromId(recipeIDs, cb) {
+  // will contain the list of recipes
+  var recipes = [];
+  // map each recipe id
+  recipeIDs.map((recipeID, i) => {
+    // i is the index
+    recipes[i] = getRecipeSync(recipeID);
+  });
+  emulateServerReturn(recipes, cb);
 }

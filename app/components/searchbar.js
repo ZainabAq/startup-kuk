@@ -8,13 +8,10 @@ export default class ResultsSearch extends React.Component {
     };
   }
 
-  // need: handleClick, handleKeyUp, handleChange
-  // call onSearch in handleClick + handleKeyUp
-
-  onSearch(searchText) {
-    // If searchText is 'sandals', navigates to #/search/q?=sandals
-    this.context.router.push({ pathname: "/search", query: { q: searchText } });
-  }
+  // onSearch(searchText) {
+  //   // If searchText is 'sandals', navigates to #/search/q?=sandals
+  //   this.context.router.push({ pathname: "/search", query: { q: searchText } });
+  // }
 
   handleChange(e) {
     e.preventDefault();
@@ -63,6 +60,6 @@ export default class ResultsSearch extends React.Component {
   }
 }
 
-ResultsSearch.contextTypes = {
-  router: React.PropTypes.object.isRequired
-};
+// ResultsSearch.contextTypes = {
+//   router: React.PropTypes.object.isRequired
+// };

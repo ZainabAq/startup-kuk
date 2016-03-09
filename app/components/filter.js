@@ -9,6 +9,7 @@ export default class FilterBar extends React.Component {
    }
 
    render() {
+     return(
       <div>
       <div className="panel panel-default">
         <div className="panel-heading"><h4>Dietary Restrictions</h4></div>
@@ -74,7 +75,7 @@ export default class FilterBar extends React.Component {
       </div>
   </div>
   </div>
-
+);
    }
 
 }
