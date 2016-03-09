@@ -48,7 +48,7 @@ export default class BrowseFeed extends React.Component {
         <ul id="categories" className="clr">
           {this.state.recipes.map((recipe, i) => {
             return (
-              <li key={i}><FeedItem info={recipe} /></li>
+              <li><FeedItem info={recipe} /></li>
             )
           })}
         </ul>
