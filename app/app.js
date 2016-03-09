@@ -10,6 +10,7 @@ import Favorites from './components/favorites';
 import Calendar from './components/calendar';
 import Navbar from './components/navbar';
 import Search from './components/search';
+import FilterBar from './components/filter';
 
 /**
  * A recipe page
@@ -61,7 +62,13 @@ class InstaPage extends React.Component {
  */
 class FavoritesPage extends React.Component {
   render() {
-    return <Favorites />
+    return (
+      <div>
+        <div className="col-md-2"><FilterBar /></div>
+        <div><Favorites /></div>
+      </div>
+
+      )
   }
 }
 
