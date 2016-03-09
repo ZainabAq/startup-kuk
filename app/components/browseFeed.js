@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FeedItem from './feeditem';
+import FilterBar from './filter';
 import {Link} from 'react-router';
 import {getFeedData} from '../server';
 
@@ -8,16 +9,18 @@ export default class BrowseFeed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // empty Feed for now
+      // empty Feed initially
       recipes: []
     };
   }
 
-  refresh() {
-    getFeedData("5", (recipeData) => {
+  /**
+   *  refreshes the feed
+   *  populates the feed with first 5 recipes from the database
+   */
+  refresh(value) {
+    getFeedData(value, (recipeData) => {
       this.setState({recipes : recipeData});
-      // console.log("REFRESSSSHhh");
-      console.log(this.state.recipes);
     });
   }
 
@@ -32,7 +35,7 @@ export default class BrowseFeed extends React.Component {
   // }
 
   componentDidMount() {
-    this.refresh();
+    this.refresh("5");
   }
 
   // NOTE:If we wanted to get fancy, we could modify the Feed’s render() function to
@@ -43,6 +46,7 @@ export default class BrowseFeed extends React.Component {
   render() {
     return (
       <div>
+        // <div className="col-md-2"><FilterBar /></div>
         <h1 className="center">Browse Our Recipes</h1>
         <ul id="categories" className="clr">
           {this.state.recipes.map((recipe, i) => {
