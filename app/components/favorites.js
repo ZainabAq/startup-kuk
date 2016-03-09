@@ -1,5 +1,6 @@
 import React from 'react';
 import {getProfileData, findRecipesFromId} from '../server';
+import FavoritesItem from './favoritesItem';
 
 export default class Favorites extends React.Component {
   constructor(props) {
@@ -13,10 +14,8 @@ export default class Favorites extends React.Component {
   refresh() {
     getProfileData("1", (newFavoritesList) => {
       this.setState({favoritesList : newFavoritesList.favorites});
-
       findRecipesFromId(this.state.favoritesList, (newRecipeList) => {
         this.setState({recipeList : newRecipeList});
-        console.log(this.state.recipeList);
       });
 
     });
@@ -45,47 +44,17 @@ export default class Favorites extends React.Component {
               </ul>
             </div>
           </div>
-          <div className="row font1">
-            <div className="col-md-2">
-              <a href="#" className="thumbnail">
-                <h5 align="center">Fried Rice</h5>
-                <img src="http://cookdiary.net/wp-content/uploads/images/Chicken-Fried-Rice_16905.jpg" alt="Fried Rice" className="img-rounded croppedimg" />
-              </a>
-            </div>
-            <div className="col-md-2">
-              <a href="#" className="thumbnail">
-                <h5 align="center">Eggs and Bacon</h5>
-                <img src="http://hoosieragtoday.com.s3.amazonaws.com/wp-content/uploads/2015/10/bacon-and-eggs.jpg" alt="Eggs and Bacon" className="img-rounded croppedimg" />
-              </a>
-            </div>
-            <div className="col-md-2">
-              <a href="#" className="thumbnail">
-                <h5 align="center">Roast Beef</h5>
-                <img src="http://www.simplyrecipes.com/wp-content/uploads/2014/11/roast-beef-horiz-a-1200.jpg" alt="Roast Beef" className="img-rounded croppedimg" />
-              </a>
-            </div>
-            <div className="col-md-2">
-              <a href="#" className="thumbnail">
-                <h5 align="center">Mug Cake</h5>
-                <img src="https://cdn2.hubspot.net/hub/293166/file-376074849-jpg/images/mug_cake-resized-600.jpg" alt="Mug Cake" className="img-rounded croppedimg" />
-              </a>
-            </div>
-            <div className="col-md-2">
-              <a href="#" className="thumbnail">
-                <h5 align="center">Pumpkin Ravioli</h5>
-                <img src="http://a.dilcdn.com/bl/wp-content/uploads/sites/8/2010/10/Ravioli-w-Brown-Butter-Sage-Sauce-iStock1.jpg" alt="Pumpkin Ravioli" className="img-rounded croppedimg" />
-              </a>
-            </div>
-          </div>
-          <div className="row font1">
-            <div className="col-md-2">
-              <a href="#" className="thumbnail">
-                <h5 align="center">Smoothie and Bagel</h5>
-                <img src="img/planning-images/bagel-smoothie.jpg" alt="Smoothie and Bagel" className="img-rounded croppedimg" />
-              </a>
-            </div>
-          </div>
+          <div className="font1">
+
+              {this.state.recipeList.map((recipe, i) => {
+                return (
+                  <FavoritesItem key={i} data={recipe} />
+                );
+              })
+            }
+
         </div>
+      </div>
       </div>
     );
   }

@@ -15,10 +15,10 @@ export default class ResultsItem extends React.Component {
           <div className="panel-body">
             <div className="list-group">
               <div className="row">
-                <div className="col-md-10 col-md-offset-1">
+                <div className="col-md-12">
                   <div className="media">
                   <div className="media-left">
-                    <img className="media-object img-thumbnail" src={data.img} />
+                    <img className="media-object croppedimg img-rounded" src={data.img} />
                   </div>
                   <div className="media-body row">
                     <div className="col-xs-8">
@@ -44,10 +44,10 @@ export default class ResultsItem extends React.Component {
                          <span className="fa fa-star"></span>
                          <span className="fa fa-star"></span>
                          <span className="fa fa-star"></span>
-                        //<a href="#">{data.averageRating.length} stars</a>
+                         <span> {data.averageRating.length} stars</span>
                       </li>
                       <li className="time-icons">
-                          {data.time}
+                          {data.time}&nbsp;
                          <span className="fa fa-clock-o"></span>
                       </li>
                     </ul>

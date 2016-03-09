@@ -8,11 +8,6 @@ export default class ResultsSearch extends React.Component {
     };
   }
 
-  // onSearch(searchText) {
-  //   // If searchText is 'sandals', navigates to #/search/q?=sandals
-  //   this.context.router.push({ pathname: "/search", query: { q: searchText } });
-  // }
-
   handleChange(e) {
     e.preventDefault();
     this.setState({value: e.target.value});
@@ -49,7 +44,7 @@ export default class ResultsSearch extends React.Component {
               value={this.state.value} onChange={(e) => this.handleChange(e)}
               onKeyUp={(e) => this.handleKeyUp(e)} />
             <span className="input-group-btn">
-              <button type="submit" className="btn btn-default" onClick={(e) => this.handleClick(e)}>
+              <button type="submit" className="btn btn-default searchButton" onClick={(e) => this.handleClick(e)}>
                 <span className="glyphicon glyphicon-search"></span>
               </button>
             </span>
@@ -59,7 +54,3 @@ export default class ResultsSearch extends React.Component {
     )
   }
 }
-
-// ResultsSearch.contextTypes = {
-//   router: React.PropTypes.object.isRequired
-// };
