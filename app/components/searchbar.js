@@ -1,11 +1,13 @@
 import React from 'react';
 
+// Search bar that shows up on results page
+
 // Issues to fix:
-// Do we really need another component for results.js? Figure out how this works...
 // Searched text doesn't stay in search bar
 // If you go to another page and then go back to the results page, the results aren't there anymore
+// How to combine navbar search bar with this one?
 
-export default class SearchBar extends React.Component {
+export default class Searchbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
