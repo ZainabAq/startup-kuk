@@ -7,32 +7,29 @@
 #c6d2d0 background color (lighter green)
 */
 
-a:link {color: #3D5467; text-decoration: none; }
-a:active {color: #3D5467; text-decoration: none; }
-a:visited {color: #686963; text-decoration: none; }
-a:hover {color: #9cb0ad; text-decoration: none; }
+.favorites a:link {color: #3D5467; text-decoration: none; }
+.favorites a:active {color: #3D5467; text-decoration: none; }
+.favorites a:visited {color: #686963; text-decoration: none; }
+.favorites a:hover {color: #9cb0ad; text-decoration: none; }
 
-.navbar {
-background-color:#9cb0ad !important;
-}
-
-.btn {
-    background-color: #9C102E;
-    color: #c6d2d0;
-}
-
-h2 {
-  color: #9C102E;
-}
-
-.thumbnail {
+.favorites .thumbnail {
   background-color: #c6d2d0;
   float:left;
   border: 0px;
 }
 
-.font1 {
+.favorites .font1 {
   font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
+}
+
+.favorites h5 {
+  text-align: center;
+}
+
+.favorites .croppedimg {
+  width: 160px;
+  height: 120px;
+  overflow: hidden;
 }
 
 #filter {
