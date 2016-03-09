@@ -6,13 +6,14 @@ export default class Recipe extends React.Component {
    constructor(props) {
       super(props);
       // The recipe's initial state
-      this.state = {};
+      this.state = {
+         ingredients:[],
+         instructions: []
+      };
    }
 
    refresh() {
-      console.log("in the refresh function");
      getRecipe("1", (recipeData) => {
-        console.log(recipeData);
       this.setState(recipeData);
      });
    }
@@ -22,11 +23,18 @@ export default class Recipe extends React.Component {
    }
 
    findAverageRating() {
-      ratings = this.state.averageRating
+      var ratings = this.state.averageRating;
+      var sum = 0;
+      for( var i = 0; i < ratings.length; i++ ){
+         sum += parseInt(ratings[i], 10 );
+      }
+      var average = sum/ratings.length;
+      return average;
    }
 
    render() {
       // var data = this.state;
+      // var ratingInRecipe = this.findAverageRating();
       return (
          <div>
          <div className="container recipe">
@@ -75,63 +83,21 @@ export default class Recipe extends React.Component {
                     <div className="row">
                        <div className="col-md-3 ingredient-bar">
                           <ul>
-                             <li> pat of butter</li>
-                             <li>2 egg yolks</li>
-                             <li>2 eggs</li>
-                             <li>3 tablespoons white sugar</li>
-                             <li>3 1/2 oz white chocolate</li>
-                             <li>5 tablespoons butter</li>
-                             <li>4 teaspoons unsweetened cocoa powder</li>
-                             <li>3 tablespoons flour</li>
-                             <li>1 pinch salt</li>
-                             <li>1/8 teaspoons vanilla extract</li>
+                             {this.state.ingredients.map((listItem, i) => {
+                                return (
+                                   <li key={i}>{listItem}</li>
+                                );
+                             })}
                        </ul>
                     </div>
                  <div className="col-md-9">
+                    <img src="img/lavaCake.jpg" width="35%" align="right" className="img-rounded food-pic pull-right"/>
                     <ol className="instruction-list">
-                      <li className="instruction">
-                        <img src="img/lavaCake.jpg" width="35%" align="right" className="img-rounded food-pic pull-right"/>
-                        Generously butter the inside of 4 (5 1/2 ounce) ramekins. Place them in a casserole dish.
-                      </li>
-                      <li className="instruction">
-                        Whisk together egg yolks, eggs, and sugar in a bowl until light, foamy, and lemon colored.
-                      </li>
-                      <li className="instruction">
-                        Melt chocolate and butter in a microwave-safe bowl in 30-second intervals, stirring after each melting, 1 to 3 minutes.
-                      </li>
-                      <li className="instruction">
-                        Stir melted chocolate mixture into egg and sugar mixture until combined.
-                      </li>
-                      <li className="instruction">
-                        Sift cocoa powder into the mixture; stir to combine.
-                      </li>
-                      <li className="instruction">
-                        Sift flour and salt into the mixture; stir to combine into a batter.
-                      </li>
-                      <li className="instruction">
-                        Stir vanilla extract into the batter.
-                      </li>
-                     <li className="instruction">
-                        Transfer batter to a resealable plastic bag. Snip one corner of the bag with scissors to create a tip.
-                      </li>
-                      <li className="instruction">
-                        Divide batter evenly between the prepared ramekins; tap gently on the counter to remove any air bubbles.
-                      </li>
-                      <li className="instruction">
-                        Refrigerate 30 minutes.
-                      </li>
-                      <li className="instruction">
-                        Preheat an oven to 425 degrees F (220 degrees C).
-                      </li>
-                      <li className="instruction">
-                        Arrange the ramekins in a casserole dish. Pour enough hot tap water into the casserole dish to reach halfway up the sides of the ramekins.
-                      </li>
-                      <li className="instruction">
-                        Bake in the preheated over for 15-18 minutes. Set aside to cool for 15 minutes.
-                      </li>
-                      <li className="instruction">
-                        Loosen the edges from the ramekin with a knife. Invert each cake onto a plate and dust with powdered sugar.
-                      </li>
+                       {this.state.instructions.map((listItem, i) => {
+                         return (
+                            <li key={i}>{listItem}</li>
+                         );
+                       })}
                     </ol>
                  </div>
              </div>

@@ -25,7 +25,7 @@ var initialData = {
       "cuisine": "American",
       "mealType": "Dessert",
       "averageRating": [4, 5, 2, 5, 4],
-      "instructions": ["Preheat the oven to 350 degrees.", "Melt the butter.", "Bake for 30 minutes.", "Enjoy!"],
+      "instructions": ["Preheat the oven to 350 degrees.", "Melt the butter.", "Bake for 30 minutes.", "Mix the remaining ingredients together.", "Enjoy!"],
       "userRating": 4,
       "time": "1 hour",
       "restrictionTags": ["dairy", "gluten", "eggs"],
