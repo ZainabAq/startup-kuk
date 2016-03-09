@@ -131,3 +131,17 @@ export function findRecipe(searchText, cb) {
   // match = wanted recipe
   emulateServerReturn(match, cb);
 }
+
+/**
+ * Returns an array of the recipes whose ids match the list of recipe ids.
+ */
+export function findRecipesFromId(recipeIDs, cb) {
+  // will contain the list of recipes
+  var recipes = [];
+  // map each recipe id
+  recipeIDs.map((recipeID, i) => {
+    // i is the index
+    recipes[i] = getRecipeSync(recipeID);
+  });
+  emulateServerReturn(recipes, cb);
+}
