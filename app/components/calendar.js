@@ -3,12 +3,12 @@ import CalendarEntry from './calendarentry';
 import {getCalendarSync} from '../server';
 
 export default class Calendar extends React.Component {
-    constructor(props) {
-      this.state = {
-        meals = []
-        meals: []
-      };
-    }
+    // constructor(props) {
+    //   this.state = {
+    //     meals = []
+    //     meals: []
+    //   };
+    // }
 
     refresh() {
       getCalendarSync(this.props.user, (calendarData) => {
