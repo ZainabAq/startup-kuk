@@ -166,16 +166,22 @@ export function findRecipe(searchText, cb) {
     }
   }
   // if recipe name contains search word, append its id
-  var j, match = [];
+  var text = searchText.toLowerCase().split(" ");
+  var j, k, h, match = [];
   for (j=0; j<recipeData.length; j++) {
-    if (recipeData[j].name.toLowerCase().indexOf(searchText.toLowerCase()) != -1) {
-      match.push(recipeData[j]._id);
+    var name = recipeData[j].name.toLowerCase().split(" ");
+    for (k=0; k<text.length; k++) {
+      for (h=0; h<name.length; h++) {
+        if (text[k] == name[h]) {
+          match.push(recipeData[j]._id);
+        }
+      }
     }
   }
   // map each recipe id
-  match.map((recipe, k) => {
+  match.map((recipe, m) => {
     // k is the index
-    match[k] = getRecipeSync(recipe);
+    match[m] = getRecipeSync(recipe);
   });
   // match = wanted recipe
   emulateServerReturn(match, cb);
