@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ResultsSearch extends React.Component {
+export default class Searchbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,6 +60,6 @@ export default class ResultsSearch extends React.Component {
   }
 }
 
-// ResultsSearch.contextTypes = {
+// Searchbar.contextTypes = {
 //   router: React.PropTypes.object.isRequired
 // };

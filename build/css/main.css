@@ -33,7 +33,7 @@ body {
   padding-top: 7px;
 }
 
-.navbar-default .navbar-nav>li>a,span {
+.navbar-default .navbar-nav>li>a {
     color: #3D5467;
     padding-right: 3px;
 }
