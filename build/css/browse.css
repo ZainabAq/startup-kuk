@@ -134,6 +134,10 @@
   padding-top: 2%;
 }
 
+#categories li p i {
+  word-spacing: -15px;
+}
+
 #categories li h1 a{
   color: #fff;
   left: 10%;
