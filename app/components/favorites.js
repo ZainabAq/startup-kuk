@@ -4,7 +4,7 @@ export default class Favorites extends React.Component {
   render() {
     return (
       <div className="favorites">
-        <div className="col-md-10 col-md-offset-2">
+        <div className="col-md-10">
           <h1 className="center">Favorites</h1>
           <div className="pull-right">
             <div className="btn-group">
