@@ -56,6 +56,24 @@ function getUpcomingMeals(userId) {
   return meals;
 }
 
+/**
+ * @param id An array of the ids of the restrictions to get
+ * @returns An array holding the tag names of the restriction ids passed in
+ */
+function getRestrictionStrings(ids) {
+  var strings = [];
+  ids.forEach((id => {
+    var restrictionData = readDocument("restrictions",id);
+    strings.push(restrictionData.tag);
+  }));
+  return strings;
+}
+
+/**
+ * @param user The id of the user
+ * @param cb The callback function to be called at the end
+ * Calls cb on a UserData object that is resolved except for the restriction references.
+ */
 export function getProfileData(user, cb) {
   // Get the User object with the id "user".
   var userData = readDocument('users', user);
@@ -63,7 +81,7 @@ export function getProfileData(user, cb) {
   userData = getProfileSync(user);
   // Add upcoming meals
   userData.upcomingMeals = getUpcomingMeals(user)
-  // Return FeedData with resolved references.
+  // Return UserData with resolved references.
   emulateServerReturn(userData, cb);
 }
 
@@ -75,4 +93,50 @@ export function getRecipe(recipeId, cb) {
    console.log(recipeData);
    emulateServerReturn(recipeData, cb);
 
+}
+
+/**
+ * @param user The id of the user
+ * @param cb The callback function to be called at the end
+ */
+export function getUserRestrictions(user, cb) {
+  var userData = readDocument("users", user);
+  var restrictions = userData.restrictions;
+  restrictions = getRestrictionStrings(restrictions);
+  emulateServerReturn(restrictions, cb);
+}
+
+/**
+ * @param checkbox The DOM object triggering this call
+ * @param userId The id of the user whose restrictions are to be modified
+ * @param cb The callback function to be called at the end
+ * Calls cb on an object holding the user's modified restrictions array (unresolved)
+ * and the checkbox.
+ */
+export function addUserRestriction(checkbox, userId, cb) {
+  var restrictionId = checkbox.value;
+  var userData = readDocument("users", userId);
+  userData.restrictions.push(restrictionId);
+  writeDocument('users', userData);
+  var result = {"restrictions":userData.restrictions, "target":checkbox};
+  emulateServerReturn(result, cb);
+}
+
+/**
+ * @param restrictionId The id of the restriction to be removed
+ * @param userId The id of the user whose restrictions are to be modified
+ * @param cb The callback function to be called at the end
+ * Calls cb on an object holding the user's modified restrictions array (unresolved)
+ * and the checkbox.
+ */
+export function removeUserRestriction(checkbox, userId, cb) {
+  var restrictionId = checkbox.value;
+  var userData = readDocument('users', userId);
+  var restrictionIndex = userData.restrictions.indexOf(restrictionId);
+  if (restrictionIndex != -1) {
+    userData.restrictions.splice(restrictionIndex, 1);
+    writeDocument('users', userData);
+  }
+  var result = {"restrictions":userData.restrictions, "target":checkbox};
+  emulateServerReturn(result, cb);
 }

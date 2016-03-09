@@ -7,7 +7,9 @@ export default class ProfileFeed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      upcomingMeals : []
+      _id : this.props.user,
+      upcomingMeals : [],
+      loading : true
     }
   }
 
@@ -19,6 +21,9 @@ export default class ProfileFeed extends React.Component {
 
   componentDidMount() {
     this.refresh();
+    setTimeout(() => {
+      this.setState({loading : false});
+    }, 4);
   }
 
   checkMealType(i) {
@@ -34,10 +39,11 @@ export default class ProfileFeed extends React.Component {
   }
 
   render() {
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-8 col-md-offset-2">
+    if (this.state.loading) {
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 col-md-offset-2">
               <h1 className="center">Profile</h1>
 
               <div className="panel panel-default">
@@ -45,7 +51,7 @@ export default class ProfileFeed extends React.Component {
                 <div className="panel-body panel-body-profile font1">
                   <div className="list-group">
                     {this.state.upcomingMeals.map((meal, i) => {
-                      // i is the index (?)
+                      // i is the index
                       return (
                         <ProfileMeal key={i} data={meal} day="Monday" type={this.checkMealType(i)} />
                       )
@@ -54,11 +60,37 @@ export default class ProfileFeed extends React.Component {
                   <button type="button" className="btn btn-default pull-right">See More</button>
                 </div>
               </div>
-
-              <ProfileRestrictions />
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 col-md-offset-2">
+                <h1 className="center">Profile</h1>
+
+                <div className="panel panel-default">
+                  <div className="panel-heading panel-heading-profile"><h4>Upcoming Meals</h4></div>
+                  <div className="panel-body panel-body-profile font1">
+                    <div className="list-group">
+                      {this.state.upcomingMeals.map((meal, i) => {
+                        // i is the index
+                        return (
+                          <ProfileMeal key={i} data={meal} day="Monday" type={this.checkMealType(i)} />
+                        )
+                      })}
+                    </div>
+                    <button type="button" className="btn btn-default pull-right">See More</button>
+                  </div>
+                </div>
+
+                <ProfileRestrictions user={this.state._id} restrictions={this.state.restrictions} />
+            </div>
+          </div>
+        </div>
+      )
+    }
   }
 }
