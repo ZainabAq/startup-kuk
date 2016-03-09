@@ -165,10 +165,10 @@ export function findRecipe(searchText, cb) {
       recipeData.push(recipes[i]);
     }
   }
-  // if recipe name matches search word, append its id
+  // if recipe name contains search word, append its id
   var j, match = [];
   for (j=0; j<recipeData.length; j++) {
-    if (searchText == recipeData[j].name) {
+    if (recipeData[j].name.toLowerCase().indexOf(searchText.toLowerCase()) != -1) {
       match.push(recipeData[j]._id);
     }
   }
