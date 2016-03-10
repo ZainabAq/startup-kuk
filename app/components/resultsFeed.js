@@ -1,6 +1,7 @@
 import React from 'react';
 import ResultsItem from './resultsItem';
 import Searchbar from './searchbar';
+//import Navbar from './navbar';
 import {findRecipe} from '../server';
 
 export default class ResultsFeed extends React.Component {
@@ -14,6 +15,7 @@ export default class ResultsFeed extends React.Component {
   onSearch(searchText) {
     // If searchText is 'Brownies', navigates to #/results/q?=Brownies
     this.context.router.push({ pathname: "/results", query: { q: searchText } });
+    // set state of recipeList to the results (newRecipeList) of findRecipe
     findRecipe(searchText, (newRecipeList) => {
       this.setState({recipeList : newRecipeList});
     });
