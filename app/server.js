@@ -50,7 +50,7 @@ function getUpcomingMeals(userId) {
   var calendar = readDocument('calendar',userData.calendar);
   // For now, static date is Monday.
   var meals = [];
-  calendar.contents.Monday.forEach((recipeId) => {
+  calendar.Monday.forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
@@ -120,7 +120,6 @@ export function getRecipe(recipeId, cb) {
    //get the recipe object with the correct id
    var recipeData = readDocument('recipe', recipeId);
    emulateServerReturn(recipeData, cb);
-
 }
 
 /**
