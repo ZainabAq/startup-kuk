@@ -2,6 +2,7 @@ import React from 'react';
 import ProfileMeal from './profileMeal';
 import ProfileRestrictions from './profileRestrictions';
 import {getProfileData} from '../server';
+import {Link} from 'react-router';
 
 export default class ProfileFeed extends React.Component {
   constructor(props) {
@@ -82,7 +83,9 @@ export default class ProfileFeed extends React.Component {
                         )
                       })}
                     </div>
-                    <button type="button" className="btn btn-default pull-right">See More</button>
+                    <Link to={"/calendar/" + this.props.user}><button type="button" className="btn btn-default pull-right">
+                      See More
+                    </button></Link>
                   </div>
                 </div>
 
