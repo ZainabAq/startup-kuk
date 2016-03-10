@@ -19,22 +19,22 @@ function getRecipeSync(recipeId) {
   return recipe;
 }
 
-function getCalendarSync(calendarId) {
-  var calendar = readDocument('calendar',calendarId);
-  // Resolve meals
-  Object.keys(calendar.contents).map((day) => {
-    calendar.contents[day].map((meal, i) => {
-      // i is the meal's index
-      calendar.contents[day][i] = getRecipeSync(meal);
-    })
-  })
-  return calendar;
-}
+// function getCalendarSync(calendarId) {
+//   var calendar = readDocument('calendar',calendarId);
+//   // Resolve meals
+//   Object.keys(calendar.contents).map((day) => {
+//     calendar.contents[day].map((meal, i) => {
+//       // i is the meal's index
+//       calendar.contents[day][i] = getRecipeSync(meal);
+//     })
+//   })
+//   return calendar;
+// }
 
 function getProfileSync(userId) {
   var userItem = readDocument('users', userId);
   // Resolve calendar
-  userItem.calendar = getCalendarSync(userItem.calendar);
+  //userItem.calendar = getCalendarSync(userItem.calendar);
   return userItem;
 }
 
@@ -62,11 +62,11 @@ function getUpcomingMeals(userId) {
 * @returns A 4-element array of that day's meals
 */
 
-function getCalendarData(userId) {
-  var userData = readDocument('users', userId);
-  var calendar = readDocument('calendar', userData.calendar);
+function getCalendarData(userId, week) {
+  //var userData = readDocument('users', userId);
+  var calendar = readDocument('calendar', week);
   var meals = [];
-  calendar.contents.Monday.forEach((recipeId) => {
+  calendar.Monday.forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
@@ -102,14 +102,14 @@ export function getProfileData(user, cb) {
   emulateServerReturn(userData, cb);
 }
 
-export function getProfileCalendarData(user, cb) {
+export function getProfileCalendarData(user, week, cb) {
   // Get the User object with the id "user".
   var userData = readDocument('users', user);
   // Resolve profile data
   userData = getProfileSync(user);
   // Add upcoming calendar
-  userData.Monday = getCalendarData(user);
-  userData.Tuesday = getCalendarData(user);
+  userData.Monday = getCalendarData(user, week);
+  userData.Tuesday = getCalendarData(user, week);
   // Return UserData with resolved references.
   emulateServerReturn(userData, cb);
 }

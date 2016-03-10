@@ -92,24 +92,19 @@ var initialData = {
       "description":"Some sample text about the recipe this hexagon leads to"
     }
   },
+
   "calendar": {
     "1": {
-      "_id": 1,
-      "contents": {"Monday": [1,2,3,4], "Tuesday":[2, 3, 4, 5], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
+      "Monday": [1,2,3,4], "Tuesday":[2, 3, 4, 5], "Wednesday":[1, 2, 3, 4], "Thursday":[4, 3, 1, 2], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
     },
     "2": {
-      "_id": 2,
-      "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
+      "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 1], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
     },
     "3": {
-      "_id": 3,
-      "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
-    },
-    "4": {
-      "_id": 4,
-      "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
+        "Monday": [5, 3, 1, 2], "Tuesday":[5, 4, 5, 1], "Wednesday":[1, 2, 4, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
     }
   },
+
   "restrictions": {
     "1": {
       "_id": 1,

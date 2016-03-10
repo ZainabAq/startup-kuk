@@ -11,13 +11,13 @@ export default class Calendar extends React.Component {
     this.state = {
       _id : this.props.user,
       loading : true,
-      week: 1,
+      week: 2,
       Monday : [],
       Tuesday: []
     }
   }
     refresh() {
-       getProfileCalendarData(this.props.user, (profileData) => {
+       getProfileCalendarData(this.props.user, this.state.week, (profileData) => {
          this.setState(profileData);
        });
     }
@@ -53,6 +53,17 @@ export default class Calendar extends React.Component {
       }, 4);
     }
 
+    handleCalChangePrevious(e) {
+      e.stopPropagation();
+      this.setState({week: 1});
+      this.refresh();
+        }
+
+    handleCalChangeNext(e) {
+      e.stopPropagation();
+      this.setState({week: 3});
+      this.refresh();
+    }
 
   render() {
     return(
@@ -60,8 +71,8 @@ export default class Calendar extends React.Component {
         <div className="container">
           <h1 className="center">Your Weekly Calendar</h1>
           <div className="btn-toolbar">
-            <button type="button" className="btn btn-default prev pull-left font1">Previous week</button>
-            <button type="button" className="btn btn-default next pull-right font1">Next week</button>
+            <button type="button" className="btn btn-default prev pull-left font1" onClick={(e) =>this.handleCalChangePrevious(e)}>Previous week</button>
+            <button type="button" className="btn btn-default next pull-right font1" onClick={(e) =>this.handleCalChangeNext(e)}>Next week</button>
             <button type="button" className="btn btn-default pull-right font1">Edit this week's menu</button>
           </div>
         </div>
