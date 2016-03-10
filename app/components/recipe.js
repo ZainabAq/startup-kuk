@@ -13,7 +13,7 @@ export default class Recipe extends React.Component {
    }
 
    refresh() {
-     getRecipe("3", (recipeData) => {
+     getRecipe(this.props.param, (recipeData) => {
       this.setState(recipeData);
      });
    }
