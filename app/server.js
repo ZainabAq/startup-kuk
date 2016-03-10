@@ -73,6 +73,12 @@ function getCalendarData(userId, week) {
 
 }
 
+// function getCalendarData(userId, week) {
+//   //var userData = readDocument('users', userId);
+//   var calendar = readDocument ('calendar', week);
+//   return calendar;
+// }
+
 /**
  * @param id An array of the ids of the restrictions to get
  * @returns An array holding the tag names of the restriction ids passed in
@@ -110,9 +116,25 @@ export function getProfileCalendarData(user, week, cb) {
   // Add upcoming calendar
   userData.Monday = getCalendarData(user, week);
   userData.Tuesday = getCalendarData(user, week);
+  userData.Wednesday = getCalendarData(user, week);
+  userData.Thursday = getCalendarData(user, week);
+  userData.Friday = getCalendarData(user, week);
+  userData.Saturday = getCalendarData(user, week);
+  userData.Sunday = getCalendarData(user, week);
   // Return UserData with resolved references.
   emulateServerReturn(userData, cb);
 }
+
+// export function getProfileCalendarData(user, week, cb) {
+//   // Get the User object with the id "user".
+//   var userData = readDocument('users', user);
+//   // Resolve profile data
+//   userData = getProfileSync(user);
+//   // Add upcoming calendar
+//   userData.calendar = getCalendarData(user, week);
+//   // Return UserData with resolved references.
+//   emulateServerReturn(userData, cb);
+// }
 
 //need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
 //modifyRestrictions (for the profile)

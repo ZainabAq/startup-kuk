@@ -13,13 +13,19 @@ export default class Calendar extends React.Component {
       loading : true,
       week: 2,
       Monday : [],
-      Tuesday: []
+      Tuesday: [],
+      Wednesday : [],
+      Thursday : [],
+      Friday : [],
+      Saturday : [],
+      Sunday: []
     }
+
   }
     refresh() {
        getProfileCalendarData(this.props.user, this.state.week, (profileData) => {
          this.setState(profileData);
-       });
+              });
     }
 
     onEdit() {
@@ -78,7 +84,7 @@ export default class Calendar extends React.Component {
         </div>
         <ul className = "list-inline">
           <li> Monday </li>
-            {this.state.Monday.map((meal, i) => {
+             {this.state.Monday.map((meal, i) => {
                             // i is the index
               return (
                 <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} />
@@ -94,7 +100,52 @@ export default class Calendar extends React.Component {
               )
             })}
         </ul>
-          </div>
+        <ul className = "list-inline">
+          <li> Wednesday </li>
+            {this.state.Wednesday.map((meal, i) => {
+                            // i is the index
+              return (
+                <CalendarEntry key={i} data={meal} day="Wednesday" type={this.checkMealType(i)} />
+              )
+            })}
+        </ul>
+        <ul className = "list-inline">
+          <li> Thursday </li>
+            {this.state.Thursday.map((meal, i) => {
+                            // i is the index
+              return (
+                <CalendarEntry key={i} data={meal} day="Thursday" type={this.checkMealType(i)} />
+              )
+            })}
+        </ul>
+        <ul className = "list-inline">
+          <li> Friday </li>
+            {this.state.Friday.map((meal, i) => {
+                            // i is the index
+              return (
+                <CalendarEntry key={i} data={meal} day="Friday" type={this.checkMealType(i)} />
+              )
+            })}
+        </ul>
+        <ul className = "list-inline">
+          <li> Saturday </li>
+            {this.state.Saturday.map((meal, i) => {
+                            // i is the index
+              return (
+                <CalendarEntry key={i} data={meal} day="Saturday" type={this.checkMealType(i)} />
+              )
+            })}
+        </ul>
+        <ul className = "list-inline">
+          <li> Sunday </li>
+            {this.state.Sunday.map((meal, i) => {
+                            // i is the index
+              return (
+                <CalendarEntry key={i} data={meal} day="Sunday" type={this.checkMealType(i)} />
+              )
+            })}
+        </ul>
+      </div>
           )
         }
       }
