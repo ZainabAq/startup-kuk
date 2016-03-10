@@ -10,6 +10,7 @@ export default class Calendar extends React.Component {
     super(props);
     this.state = {
       _id : this.props.user,
+      Edit: false,
       loading : true,
       week: 2,
       Monday : [],
@@ -61,14 +62,22 @@ export default class Calendar extends React.Component {
 
     handleCalChangePrevious(e) {
       e.stopPropagation();
-      this.setState({week: 1});
+      this.state.week = 1;
+
+      //this.setState({week: 1});
       this.refresh();
       }
 
     handleCalChangeNext(e) {
       e.stopPropagation();
-      this.setState({week: 3});
+      //this.setState({week: 3});
+      this.state.week = 3;
       this.refresh();
+    }
+
+    handleCalChangeEdit(e) {
+      e.stopPropagation();
+      this.setState( {edit:true});
     }
 
   render() {
@@ -79,7 +88,7 @@ export default class Calendar extends React.Component {
           <div className="btn-toolbar">
             <button type="button" className="btn btn-default prev pull-left font1" onClick={(e) =>this.handleCalChangePrevious(e)}>Previous week</button>
             <button type="button" className="btn btn-default next pull-right font1" onClick={(e) =>this.handleCalChangeNext(e)}>Next week</button>
-            <button type="button" className="btn btn-default pull-right font1">Edit this week's menu</button>
+            <button type="button" className="btn btn-default pull-right font1" onClick={(e) =>this.handleCalChangeEdit(e)}>Edit calendar</button>
           </div>
         </div>
         <ul className = "list-inline">
