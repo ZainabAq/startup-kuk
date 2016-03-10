@@ -29,18 +29,6 @@ export default class Calendar extends React.Component {
               });
     }
 
-    onEdit() {
-
-    }
-
-    onPreviousWeek() {
-
-    }
-
-    onNextWeek() {
-
-    }
-
     checkMealType(i) {
       if (i === 0){
         return "Breakfast";
