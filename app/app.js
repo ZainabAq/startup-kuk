@@ -16,7 +16,7 @@ import FilterBar from './components/filter';
  */
 class RecipePage extends React.Component {
   render() {
-    return <Recipe />
+     return <Recipe param={this.props.params.id} />
   }
 }
 

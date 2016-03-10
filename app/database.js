@@ -43,7 +43,7 @@ var initialData = {
       "userRating": 3,
       "time": "30 mins",
       "restrictions": [1,2,5,8],
-      "img": "http://images.media-allrecipes.com/userphotos/600x600/432846.jpg",
+      "img": "http://farm3.static.flickr.com/2786/4280658636_a707c75ebc.jpg",
       "description":"Some sample text about the recipe this hexagon leads to"
     },
 
