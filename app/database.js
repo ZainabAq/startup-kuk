@@ -30,7 +30,7 @@ var initialData = {
       "time": "1 hour",
       "restrictions": [1,2,5],
       "img":"http://images.media-allrecipes.com/userphotos/600x600/1090243.jpg",
-      "description":"Some sample text about the recipe this hexagon leads to"
+      "description":"Delicous fudge-like brownies"
     },
     "2": {
       "_id": 2,
@@ -44,7 +44,7 @@ var initialData = {
       "time": "30 mins",
       "restrictions": [1,2,5,8],
       "img": "http://farm3.static.flickr.com/2786/4280658636_a707c75ebc.jpg",
-      "description":"Some sample text about the recipe this hexagon leads to"
+      "description":"A traditional Italian dish, this chicken parmesan is seasonally flavored"
     },
 
     "3": {
@@ -59,7 +59,7 @@ var initialData = {
       "time": "1 hour",
       "restrictions": [4,5,9],
       "img": "http://www.sbs.com.au/food/sites/sbs.com.au.food/files/styles/full/public/bejing-zha-pork-noodles_2.jpg?itok=ov2ONR2x&mtime=1382441740",
-      "description":"Some sample text about the recipe this hexagon leads to"
+      "description":"The bestest best dish on the website"
     },
 
     "4": {
@@ -74,7 +74,7 @@ var initialData = {
       "time": "30 mins",
       "restrictions": [1,5,9],
       "img": "http://www.chowstatic.com/assets/recipe_photos/25679_korean_grilled_chicken.jpg",
-      "description":"Some sample text about the recipe this hexagon leads to"
+      "description":"A Korean dish renowened for its simplicity and flavor"
     },
 
     "5": {
@@ -89,8 +89,23 @@ var initialData = {
       "time": "30 mins",
       "restrictions": [5,9],
       "img": "http://images.media-allrecipes.com/userphotos/600x600/131597.jpg",
-      "description":"Some sample text about the recipe this hexagon leads to"
-    }
+      "description":"Using only fresh salmon, this recipe is the best in Alaskan cooking"
+   },
+   "6": {
+      "_id": 6,
+      "name": "Avocado Strawberry Smoothie",
+      "ingredients": ["1 avocado, peeled and pitted", "1 cup orange juice", "1/2 cup vanilla yogurt", "5 ice cubes", "4 frozen whole strawberries", "1 teaspoon honey", "1 teaspoon flax seed meal (optional)"],
+      "cuisine": "American",
+      "mealType": "Snack",
+      "averageRating": [4, 4, 3],
+      "instructions": ["Blend avocado, orange juice, vanilla yogurt, ice cubes, strawberries, honey, and flax seed meal together in a blender until smooth, at least 45 seconds."],
+      "userRating": 4,
+      "time": "10 mins",
+      "restrictions": [],
+      "img": "http://www.eat-yourself-skinny.com/wp-content/uploads/2013/09/113.jpg",
+      "description": "This healthy, tasty smoothie is the perfect way to start your work week"
+   }
+
   },
 
   "calendar": {

@@ -1,6 +1,12 @@
 //recipe component
 import React from 'react';
 import {getRecipe} from '../server';
+import {addFavorite} from '../server';
+import {removeFavorite} from '../server';
+import {checkUserFavorites} from '../server';
+//TODO
+//make the ratings work (this will require pulling from the database, and changing the database)
+//make the calendar and favorites buttons work
 
 export default class Recipe extends React.Component {
    constructor(props) {
@@ -30,6 +36,41 @@ export default class Recipe extends React.Component {
       }
       var average = sum/ratings.length;
       return average;
+   }
+
+
+   /**
+   * The button that handles the user clicking the favorite tag
+   */
+   handleFavoriteClick(clickEvent) {
+      console.log("in the handleFavoriteClick");
+      clickEvent.preventDefault();
+      if (clickEvent.button === 0) {
+         var callbackFunction = () => {};
+
+         if (this.didUserFavorite()) {
+            // User clicked 'unlike' button.
+            removeFavorite(this.state._id, 1, callbackFunction);
+         } else {
+            // User clicked 'like' button.
+            addFavorite(this.state._id, 1, callbackFunction);
+         }
+      }
+   }
+
+   /*
+   * Determining if the user already clicked on the favorite button
+   */
+   didUserFavorite() {
+      console.log("in the didUserFavorites");
+      //server function that will call the user's information when given the id
+      //and check to see if the recipe is already in the favorites
+      //server function to getUserFavorites
+      var result = false;
+      checkUserFavorites(this.state._id, 1, (isFavorite) => {
+         result = (isFavorite);
+      });
+      return result;
    }
 
    render() {
@@ -68,13 +109,10 @@ export default class Recipe extends React.Component {
                        <div className="col-xs-2">
                           <ul className="list-inline pull-right">
                            <li className="presentation">
-                              <span className="fa fa-heart fa-lg social-but"></span>
+                              <button type="button" className="btn btn-default" onClick={(e)=>this.handleFavoriteClick(e)}><span className="fa fa-heart fa-lg social-but"></span></button>
                            </li>
                            <li className="presentation">
-                              <span className="fa fa-calendar-check-o fa-lg social-but"></span>
-                           </li>
-                           <li className="presentation">
-                              <span className="fa fa-share-square fa-lg social-but"></span>
+                              <button type="button" className="btn btn-default"><span className="fa fa-calendar-check-o fa-lg social-but"></span></button>
                            </li>
                           </ul>
                        </div>
