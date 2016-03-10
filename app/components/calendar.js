@@ -63,7 +63,7 @@ export default class Calendar extends React.Component {
       e.stopPropagation();
       this.setState({week: 1});
       this.refresh();
-        }
+      }
 
     handleCalChangeNext(e) {
       e.stopPropagation();

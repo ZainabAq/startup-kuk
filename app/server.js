@@ -62,22 +62,16 @@ function getUpcomingMeals(userId) {
 * @returns A 4-element array of that day's meals
 */
 
-function getCalendarData(userId, week) {
+function getCalendarData(userId, week, day) {
   //var userData = readDocument('users', userId);
   var calendar = readDocument('calendar', week);
   var meals = [];
-  calendar.Monday.forEach((recipeId) => {
+  calendar[day].forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
 
 }
-
-// function getCalendarData(userId, week) {
-//   //var userData = readDocument('users', userId);
-//   var calendar = readDocument ('calendar', week);
-//   return calendar;
-// }
 
 /**
  * @param id An array of the ids of the restrictions to get
@@ -114,27 +108,16 @@ export function getProfileCalendarData(user, week, cb) {
   // Resolve profile data
   userData = getProfileSync(user);
   // Add upcoming calendar
-  userData.Monday = getCalendarData(user, week);
-  userData.Tuesday = getCalendarData(user, week);
-  userData.Wednesday = getCalendarData(user, week);
-  userData.Thursday = getCalendarData(user, week);
-  userData.Friday = getCalendarData(user, week);
-  userData.Saturday = getCalendarData(user, week);
-  userData.Sunday = getCalendarData(user, week);
+  userData.Monday = getCalendarData(user, week, "Monday");
+  userData.Tuesday = getCalendarData(user, week, "Tuesday");
+  userData.Wednesday = getCalendarData(user, week, "Wednesday");
+  userData.Thursday = getCalendarData(user, week, "Thursday");
+  userData.Friday = getCalendarData(user, week, "Friday");
+  userData.Saturday = getCalendarData(user, week, "Saturday");
+  userData.Sunday = getCalendarData(user, week, "Sunday");
   // Return UserData with resolved references.
   emulateServerReturn(userData, cb);
 }
-
-// export function getProfileCalendarData(user, week, cb) {
-//   // Get the User object with the id "user".
-//   var userData = readDocument('users', user);
-//   // Resolve profile data
-//   userData = getProfileSync(user);
-//   // Add upcoming calendar
-//   userData.calendar = getCalendarData(user, week);
-//   // Return UserData with resolved references.
-//   emulateServerReturn(userData, cb);
-// }
 
 //need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
 //modifyRestrictions (for the profile)
