@@ -8,8 +8,8 @@ export default class CalenderEntry extends React.Component {
     return (
       <li>
         <div className="col-md-10 ">
-        <h5 align="center"><Link to={"/recipe/" + this.props.data._id} className="list-group-item-text">{this.props.data.name}</Link></h5>
-          <img src={this.props.data.img} alt={this.props.data._id} className="img-rounded croppedimg" />
+        <Link to={"/recipe/" + this.props.data._id} className="list-group-item-text"><h5 align="center">{this.props.data.name}</h5>
+          <img src={this.props.data.img} alt={this.props.data._id} className="img-rounded croppedimg" /></Link>
           </div>
         </li>
   )
