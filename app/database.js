@@ -45,6 +45,7 @@ var initialData = {
       "restrictions": [1,2,5,8],
       "img": "http://farm3.static.flickr.com/2786/4280658636_a707c75ebc.jpg",
       "description":"A traditional Italian dish, this chicken parmesan is seasonally flavored"
+
     },
 
     "3": {

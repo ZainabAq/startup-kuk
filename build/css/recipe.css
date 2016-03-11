@@ -47,6 +47,9 @@
    color: #9C102E;
 }
 
+.recipe .btn {
+   color: black !important;
+}
 .recipe .panel-heading2 {
   background-color: white !important;
   padding: 10px 10px 10px 10px;

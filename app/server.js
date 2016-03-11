@@ -238,15 +238,45 @@ export function findRecipesFromId(recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   console.log("FUCK YEAH");
+   console.log("IN THE ADD FAVORITES FUNCTION IN SERVER");
    //getting both the user and the recipe from the database
    // var recipe = readDocument("recipes", recipeId);
    var user = readDocument("users", userId);
+   console.log("favorites before adding:", user.favorites);
    user.favorites.push(recipeId);
    writeDocument('users', user);
-   console.log("New favorites list:", user.favorites);
+   console.log("favorites after adding:", user.favorites);
    emulateServerReturn(user, cb);
 }
+
+/**
+* The function that removes recipes from the user's list of favorites
+*/
+export function removeFavorite (recipeId, userId, cb) {
+   console.log("IN THE REMOVE FAVORITES IN SERVER")
+
+   var user = readDocument("users", userId);
+   console.log("favorites before:", user.favorites);
+   //now need to remove the favorite from the user's list of favorites
+   var favoriteIndex = user.favorites.indexOf(recipeId);
+   if (favoriteIndex !== -1) {
+      user.favorites.splice(favoriteIndex, 1);
+      writeDocument("users", user);
+      console.log("favorites after:", user.favorites);
+   }
+   emulateServerReturn(user, cb);
+}
+
+// var userIndex = feedItem.comments[index].likeCounter.indexOf(userId);
+// // -1 means the user is *not* in the likeCounter, so we can simply avoid updating
+// // anything if that is the case: the user already doesn't like the item.
+// if (userIndex !== -1) {
+//   // 'splice' removes items from an array. This removes 1 element starting from userIndex.
+//   feedItem.comments[index].likeCounter.splice(userIndex, 1);
+//   writeDocument('feedItems', feedItem);
+// }
+// // Return a resolved version of the commentLikeCounter
+// emulateServerReturn(getFeedItemSync(feedItemId), cb);
 
 // /**
 //  * @param user The id of the user
@@ -271,9 +301,7 @@ export function checkUserFavorites(recipeId, userId, cb) {
   if (favorites.includes(recipeId)) {
      isRecipeIn = true;
  }
- console.log("IN THE SERVER METHODS");
- console.log("favorites are: ", favorites);
- console.log("value of isRecipeIn=", isRecipeIn);
+ console.log("checkUserFavorites:", isRecipeIn);
   //assuming that favorites is an array here
   // favorites = getRestrictionStrings(favorites);
   emulateServerReturn(isRecipeIn, cb);
