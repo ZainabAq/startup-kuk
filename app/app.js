@@ -34,7 +34,7 @@ class BrowsePage extends React.Component {
  */
 class ProfilePage extends React.Component {
   render() {
-    return <ProfileFeed user={1} />
+    return <ProfileFeed user={this.props.params.id} />
   }
 }
 
@@ -81,7 +81,7 @@ class FavoritesPage extends React.Component {
  */
 class CalendarPage extends React.Component {
   render() {
-    return <Calendar user={1} />
+    return <Calendar user={this.props.params.id} />
   }
 }
 
