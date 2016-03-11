@@ -1,20 +1,19 @@
 import React from 'react';
 import {Link} from 'react-router';
 import Searchbar from './searchbar';
-//import {findRecipe} from '../server';
-//import ResultsItem from './resultsItem';
 
 export default class Navbar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      values: ""
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     query: this.props.query
+  //   };
+  // }
 
   onSearch(searchText) {
     // If searchText is 'Brownies', navigates to #/results/q?=Brownies
     this.context.router.push({ pathname: "/results", query: { q: searchText } });
+    // this.setState({query : searchText});
   }
 
   render() {
