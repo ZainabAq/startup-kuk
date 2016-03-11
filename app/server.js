@@ -233,3 +233,48 @@ export function findRecipesFromId(recipeIDs, cb) {
   });
   emulateServerReturn(recipes, cb);
 }
+
+/**
+* The function that adds recipes to the user's list of favorites
+*/
+export function addFavorite(recipeId, userId, cb) {
+   console.log("FUCK YEAH");
+   //getting both the user and the recipe from the database
+   // var recipe = readDocument("recipes", recipeId);
+   var user = readDocument("users", userId);
+   user.favorites.push(recipeId);
+   writeDocument('users', user);
+   console.log("New favorites list:", user.favorites);
+   emulateServerReturn(user, cb);
+}
+
+// /**
+//  * @param user The id of the user
+//  * @param cb The callback function to be called at the end
+//  */
+// export function getUserFavorites(user, cb) {
+//   var userData = readDocument("users", user);
+//   var favorites = userData.favorites;
+//   // favorites = getRestrictionStrings(favorites);
+//   emulateServerReturn(favorites, cb);
+// }
+
+
+/**
+ * @param user The id of the user
+ * @param cb The callback function to be called at the end
+ */
+export function checkUserFavorites(recipeId, userId, cb) {
+  var user = readDocument("users", userId);
+  var favorites = user.favorites;
+  var isRecipeIn = false;
+  if (favorites.includes(recipeId)) {
+     isRecipeIn = true;
+ }
+ console.log("IN THE SERVER METHODS");
+ console.log("favorites are: ", favorites);
+ console.log("value of isRecipeIn=", isRecipeIn);
+  //assuming that favorites is an array here
+  // favorites = getRestrictionStrings(favorites);
+  emulateServerReturn(isRecipeIn, cb);
+}
