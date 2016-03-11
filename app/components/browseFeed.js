@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import FeedItem from './feeditem';
 import FilterBar from './filter';
-import {Link} from 'react-router';
 import {getFeedData} from '../server';
 
 export default class BrowseFeed extends React.Component {
@@ -46,15 +44,27 @@ export default class BrowseFeed extends React.Component {
   render() {
     return (
       <div>
-        // <div className="col-md-2"><FilterBar /></div>
-        <h1 className="center">Browse Our Recipes</h1>
-        <ul id="categories" className="clr">
-          {this.state.recipes.map((recipe, i) => {
-            return (
-              <li><FeedItem info={recipe} /></li>
-            )
-          })}
-        </ul>
+        <div id="wrapper" className="toggled">
+          <div id="sidebar-wrapper">
+            <FilterBar />
+          </div>
+          <div id="page-content-wrapper">
+            <div className="container-fluid">
+              <h1 className="center">Browse Our Recipes</h1>
+              <button className="btn btn-default" id="menu-toggle">
+                <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
+                Filter
+              </button>
+              <ul id="categories" className="clr">
+                {this.state.recipes.map((recipe, i) => {
+                  return (
+                    <li><FeedItem key={i} info={recipe} /></li>
+                  )
+                })}
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
