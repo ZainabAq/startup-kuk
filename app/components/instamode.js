@@ -20,13 +20,20 @@ export default class Instamode extends React.Component {
       for (var i=0; i < this.state.ingredients.length; i++) {
         if (this.state.ingredients[i].toLowerCase() === ingredient.toLowerCase()) {
           isAlreadyInside = true;
+          alert(ingredient.charAt(0).toUpperCase()+ingredient.slice(1)+" is already included in the ingredients list. Please choose another ingredient that you have not added.");
         }
       }
       if (isAlreadyInside === false) {
         this.state.ingredients.push(ingredient);
       }
     }
-    this.setState({ ingredients: this.state.ingredients});
+    this.setState({ingredients: this.state.ingredients});
+  }
+
+  handleIngredientDelete(ingredient){
+    var index = this.state.ingredients.indexOf(ingredient);
+    this.state.ingredients.splice(index,1);
+    this.setState({ingredients: this.state.ingredients});
   }
 
   render() {
@@ -44,8 +51,9 @@ export default class Instamode extends React.Component {
                 </div>
                 <InstaIngredientsList
                     ingredients = {this.state.ingredients}
-                    onPost={(commentText) => this.handleIngredientPost(commentText)}>
-                </InstaIngredientsList>
+                    onPost={(commentText) => this.handleIngredientPost(commentText)}
+                    onDelete={(ingredient) => this.handleIngredientDelete(ingredient)}>
+               </InstaIngredientsList>
               </div>
             </div>
           </div>
