@@ -2,7 +2,6 @@ import React from 'react';
 import ResultsItem from './resultsItem';
 import Searchbar from './searchbar';
 import {findRecipe} from '../server';
-import Navbar from './navbar';
 
 export default class ResultsFeed extends React.Component {
   constructor(props) {
@@ -33,7 +32,6 @@ export default class ResultsFeed extends React.Component {
   }
 
   render() {
-    // console.log(this.state.recipeList);
     return (
       <div className="results">
         <Searchbar type="resultsPage" onSearch={(searchText) => this.onSearch(searchText)} />
