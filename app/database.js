@@ -30,7 +30,7 @@ var initialData = {
       "time": "1 hour",
       "restrictions": [1,2,5],
       "img":"http://s2.favim.com/orig/37/brownie-cake-candy-chocolate-delicious-Favim.com-298873.jpg",
-      "description":"Some sample text about the recipe this hexagon leads to"
+      "description":"Delicous fudge-like brownies"
     },
     "2": {
       "_id": 2,
@@ -43,8 +43,8 @@ var initialData = {
       "userRating": 3,
       "time": "30 mins",
       "restrictions": [1,2,5,8],
-      "img": "http://images.media-allrecipes.com/userphotos/600x600/432846.jpg",
-      "description":"Some sample text about the recipe this hexagon leads to"
+      "img": "http://farm3.static.flickr.com/2786/4280658636_a707c75ebc.jpg",
+      "description":"A traditional Italian dish, this chicken parmesan is seasonally flavored"
     },
 
     "3": {
@@ -59,7 +59,7 @@ var initialData = {
       "time": "1 hour",
       "restrictions": [4,5,9],
       "img": "http://www.sbs.com.au/food/sites/sbs.com.au.food/files/styles/full/public/bejing-zha-pork-noodles_2.jpg?itok=ov2ONR2x&mtime=1382441740",
-      "description":"Some sample text about the recipe this hexagon leads to"
+      "description":"The bestest best dish on the website"
     },
 
     "4": {
@@ -74,7 +74,7 @@ var initialData = {
       "time": "30 mins",
       "restrictions": [1,5,9],
       "img": "http://www.chowstatic.com/assets/recipe_photos/25679_korean_grilled_chicken.jpg",
-      "description":"Some sample text about the recipe this hexagon leads to"
+      "description":"A Korean dish renowened for its simplicity and flavor"
     },
 
     "5": {
@@ -89,27 +89,37 @@ var initialData = {
       "time": "30 mins",
       "restrictions": [5,9],
       "img": "http://images.media-allrecipes.com/userphotos/600x600/131597.jpg",
-      "description":"Some sample text about the recipe this hexagon leads to"
-    }
+      "description":"Using only fresh salmon, this recipe is the best in Alaskan cooking"
+   },
+   "6": {
+      "_id": 6,
+      "name": "Avocado Strawberry Smoothie",
+      "ingredients": ["1 avocado, peeled and pitted", "1 cup orange juice", "1/2 cup vanilla yogurt", "5 ice cubes", "4 frozen whole strawberries", "1 teaspoon honey", "1 teaspoon flax seed meal (optional)"],
+      "cuisine": "American",
+      "mealType": "Snack",
+      "averageRating": [4, 4, 3],
+      "instructions": ["Blend avocado, orange juice, vanilla yogurt, ice cubes, strawberries, honey, and flax seed meal together in a blender until smooth, at least 45 seconds."],
+      "userRating": 4,
+      "time": "10 mins",
+      "restrictions": [],
+      "img": "http://www.eat-yourself-skinny.com/wp-content/uploads/2013/09/113.jpg",
+      "description": "This healthy, tasty smoothie is the perfect way to start your work week"
+   }
+
   },
+
   "calendar": {
     "1": {
-      "_id": 1,
-      "contents": {"Monday": [1,2,3,4], "Tuesday":[5], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
+      "Monday": [1,2,3,4], "Tuesday":[2, 3, 4, 5], "Wednesday":[1, 2, 3, 4], "Thursday":[4, 3, 1, 2], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
     },
     "2": {
-      "_id": 2,
-      "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
+      "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 1], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
     },
     "3": {
-      "_id": 3,
-      "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
-    },
-    "4": {
-      "_id": 4,
-      "contents": {"Monday": [], "Tuesday":[], "Wednesday":[], "Thursday":[], "Friday":[], "Saturday":[], "Sunday":[]}
+        "Monday": [5, 3, 1, 2], "Tuesday":[5, 4, 5, 1], "Wednesday":[1, 2, 4, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
     }
   },
+
   "restrictions": {
     "1": {
       "_id": 1,

@@ -16,7 +16,7 @@ import FilterBar from './components/filter';
  */
 class RecipePage extends React.Component {
   render() {
-    return <Recipe />
+     return <Recipe param={this.props.params.id} />
   }
 }
 
@@ -34,7 +34,7 @@ class BrowsePage extends React.Component {
  */
 class ProfilePage extends React.Component {
   render() {
-    return <ProfileFeed user={1} />
+    return <ProfileFeed user={this.props.params.id} />
   }
 }
 
@@ -46,9 +46,8 @@ class ResultsPage extends React.Component {
     return (
       <div className="padThai">
         <div className="col-md-offset-1 col-md-2"><FilterBar /></div>
-        <div className="col-md-8"><ResultsFeed /></div>
+        <div className="col-md-8"><ResultsFeed query={this.props.location.query} /></div>
       </div>
-
     )
   }
 }
@@ -82,7 +81,7 @@ class FavoritesPage extends React.Component {
  */
 class CalendarPage extends React.Component {
   render() {
-    return <Calendar />
+    return <Calendar user={this.props.params.id} />
   }
 }
 

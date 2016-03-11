@@ -1,23 +1,40 @@
 import React from 'react';
+import InstaIngredientsList from './instaIngredientsList';
+
 
 export default class Instamode extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ingredients: []
+    };
+  }
 
-  // handleChange(e) {
-  //   this.setState({ value: e.target.value });
-  // }
-  //
-  // handleKeyUp(e) {
-  //   if (e.key === "Enter") {
-  //     var comment = this.state.value.trim();
-  //     if (comment !== "") {
-  //       // post comment
-  //       this.props.onPost(this.state.value);
-  //       this.setState({ value: "" });
-  //     }
-  //   }
-  // }
+  handleIngredientPost(ingredient) {
+    // if the ingredients list is zero, just add the ingredient
+    if (this.state.ingredients.length === 0) {
+      this.state.ingredients.push(ingredient);
+    } else {
+      // otherwise, check to see if it's already inside the list, if so, then do not push it in
+      var isAlreadyInside = false;
+      for (var i=0; i < this.state.ingredients.length; i++) {
+        if (this.state.ingredients[i].toLowerCase() === ingredient.toLowerCase()) {
+          isAlreadyInside = true;
+          alert(ingredient.charAt(0).toUpperCase()+ingredient.slice(1)+" is already included in the ingredients list. Please choose another ingredient that you have not added.");
+        }
+      }
+      if (isAlreadyInside === false) {
+        this.state.ingredients.push(ingredient);
+      }
+    }
+    this.setState({ingredients: this.state.ingredients});
+  }
 
-  // value={this.state.value} onChange={(e) => this.handleChange(e)} onKeyUp={(e) => this.handleKeyUp(e)}
+  handleIngredientDelete(ingredient){
+    var index = this.state.ingredients.indexOf(ingredient);
+    this.state.ingredients.splice(index,1);
+    this.setState({ingredients: this.state.ingredients});
+  }
 
   render() {
     return (
@@ -32,16 +49,11 @@ export default class Instamode extends React.Component {
                 <div className="description">
                   Looking for a recipe, but don't want to run to the grocery store? Enter in your ingredients down below, and kuk will help you find a recipe that best fits your needs!
                 </div>
-                <form className="form-wrapper cf">
-                  <div className="row ingredients-search">
-                    <input className="enter-ingredients" type="text" placeholder="What ingredients do you have?" />
-                  </div>
-                  <h4> My Ingredients:<span className="glyphicon glyiphicon-remove"></span> </h4>
-                  <ul className="ingredients-box list-inline">
-
-                  </ul>
-                  <button type="submit" className="findrecipe-btn">Find a Recipe! </button>
-                </form>
+                <InstaIngredientsList
+                    ingredients = {this.state.ingredients}
+                    onPost={(commentText) => this.handleIngredientPost(commentText)}
+                    onDelete={(ingredient) => this.handleIngredientDelete(ingredient)}>
+               </InstaIngredientsList>
               </div>
             </div>
           </div>

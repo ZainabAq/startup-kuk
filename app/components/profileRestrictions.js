@@ -27,15 +27,6 @@ export default class ProfileRestrictions extends React.Component {
     }
   }
 
-  restrictionsContain(key) {
-    this.state.restrictions.forEach((restriction) => {
-      if (restriction === key) {
-        return true;
-      }
-    });
-    return false;
-  }
-
   render() {
     return (
       <div className="panel panel-default">
