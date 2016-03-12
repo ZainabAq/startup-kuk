@@ -80,7 +80,7 @@ export default class Calendar extends React.Component {
       return (
       <div>
         <div className="container">
-          <h1 className="center">Your Weekly Calendar</h1>
+          <h2 className="center">Your Weekly Calendar</h2>
           <div className="btn-toolbar">
             <button type="button" className="btn btn-default prev pull-left font1" onClick={(e) =>this.handleCalChangePrevious(e)}>Previous week</button>
               <Link to={"/favorites/" + this.props.user}><button type="button" className="btn btn-default pull-left font1">Add recipes</button></Link>
@@ -156,14 +156,14 @@ export default class Calendar extends React.Component {
     return (
       <div>
         <div className="container">
-          <h1 className="center">Your Weekly Calendar</h1>
+          <h2 className="center">Your Weekly Calendar</h2>
           <div className="btn-toolbar">
             <button type="button" className="btn btn-default prev pull-left font1" onClick={(e) =>this.handleCalChangePrevious(e)}>Previous week</button>
               <Link to={"/favorites/" + this.props.user}><button type="button" className="btn btn-default pull-left font1">Add recipes</button></Link>
             <button type="button" className="btn btn-default next pull-right font1" onClick={(e) =>this.handleCalChangeNext(e)}>Next week</button>
           </div>
         <ul className = "list-inline">
-          <li> Monday </li>
+          <li><h4 className="days"> Monday </h4></li>
              {this.state.Monday.map((meal, i) => {
                             // i is the index
               return (
@@ -172,7 +172,7 @@ export default class Calendar extends React.Component {
             })}
         </ul>
         <ul className = "list-inline">
-          <li> Tuesday </li>
+          <li><h4 className="days">Tuesday</h4></li>
             {this.state.Tuesday.map((meal, i) => {
                             // i is the index
               return (
@@ -181,7 +181,7 @@ export default class Calendar extends React.Component {
             })}
         </ul>
         <ul className = "list-inline">
-          <li> Wednesday </li>
+          <li><h4 className="days">Wednesday</h4></li>
             {this.state.Wednesday.map((meal, i) => {
                             // i is the index
               return (
@@ -190,7 +190,7 @@ export default class Calendar extends React.Component {
             })}
         </ul>
         <ul className = "list-inline">
-          <li> Thursday </li>
+          <li><h4 className="days">Thursday</h4></li>
             {this.state.Thursday.map((meal, i) => {
                             // i is the index
               return (
@@ -199,7 +199,7 @@ export default class Calendar extends React.Component {
             })}
         </ul>
         <ul className = "list-inline">
-          <li> Friday </li>
+          <li><h4 className="days">Friday</h4></li>
             {this.state.Friday.map((meal, i) => {
                             // i is the index
               return (
@@ -208,7 +208,7 @@ export default class Calendar extends React.Component {
             })}
         </ul>
         <ul className = "list-inline">
-          <li> Saturday </li>
+          <li><h4 className="days">Saturday</h4></li>
             {this.state.Saturday.map((meal, i) => {
                             // i is the index
               return (
@@ -217,7 +217,7 @@ export default class Calendar extends React.Component {
             })}
         </ul>
         <ul className = "list-inline">
-          <li> Sunday </li>
+          <li><h4 className="days">Sunday</h4></li>
             {this.state.Sunday.map((meal, i) => {
                             // i is the index
               return (

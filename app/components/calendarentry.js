@@ -23,7 +23,7 @@ onRemove(e, id) {
             <h4 className="list-group-item-heading text-center">{this.props.type}</h4>
             <Link to={"/recipe/" + this.props.data._id} className="list-group-item-text"><h5 className="text-center">{this.props.data.name}</h5>
             <img src={this.props.data.img} alt={this.props.data._id} className="img-rounded croppedimg" /></Link>
-            <button className="btn btn-info" type="button" align = "center" onClick={(e) =>this.onRemove(e, this.props.data._id)}><span className="glyphicon glyphicon-remove"></span></button>
+            <button className="btn-sm btn-transparent" type="button" onClick={(e) =>this.onRemove(e, this.props.data._id)}><span className="glyphicon glyphicon-remove onImage"></span></button>
             </div>
           </li>
         )
