@@ -7,8 +7,17 @@ export default class ResultsItem extends React.Component {
     this.state = props.data;
   }
 
+  findAverageRating() {
+     var ratings = this.state.averageRating;
+     var sum = 0;
+     for( var i = 0; i < ratings.length; i++ ){
+        sum += parseInt(ratings[i], 10 );
+     }
+     var average = sum/ratings.length;
+     return average;
+  }
+
   render() {
-    var data = this.state;
     return (
       <div className="results">
         <div className="panel panel-default result">
@@ -18,11 +27,11 @@ export default class ResultsItem extends React.Component {
                 <div className="col-md-12">
                   <div className="media">
                   <div className="media-left">
-                    <img className="media-object croppedimg img-rounded" src={data.img} />
+                    <img className="media-object croppedimg img-rounded" src={this.state.img} />
                   </div>
                   <div className="media-body row">
                     <div className="col-xs-8">
-                      <h4 className="media-heading"><Link to={"/recipe/" + data._id}>{data.name}</Link></h4>
+                      <h4 className="media-heading"><Link to={"/recipe/" + this.state._id}>{this.state.name}</Link></h4>
                     </div>
                     <div className="col-xs-4">
                        <ul className="list-inline pull-right">
@@ -41,14 +50,14 @@ export default class ResultsItem extends React.Component {
                       <li className="rating">
                         {(() => {
                           var elements=[];
-                          for (var i=0; i<data.userRating; i++) {
+                          for (var i=0; i<this.findAverageRating(); i++) {
                             elements.push(<span key={i} className="fa fa-star"></span>)
                           }
                           return elements;
                         })()}
                       </li>
                       <li className="time-icons">
-                          {data.time}&nbsp;
+                          {this.state.time}&nbsp;
                          <span className="fa fa-clock-o"></span>
                       </li>
                     </ul>
