@@ -17,8 +17,7 @@ onRemove(e, id) {
 
   render () {
     if (this.state.remove === false) {
-      console.log(this.state.remove);
-      return (
+            return (
         <li>
           <div className="col-md-10 ">
             <Link to={"/recipe/" + this.props.data._id} className="list-group-item-text"><h5 align="center">{this.props.data.name}</h5>
@@ -30,7 +29,11 @@ onRemove(e, id) {
       }
       else {
         return (
+          <li>
+          <div className="col-md-10 ">
         <h5>Please add a recipe!</h5>
+      </div>
+    </li>
         )
       }
 }
