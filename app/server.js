@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, getCollection} from './database.js';
+import {readDocument, writeDocument, getCollection, writeCalendar} from './database.js';
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -19,13 +19,13 @@ function getRecipeSync(recipeId) {
   return recipe;
 }
 
-// function getCalendarSync(calendarId) {
-//   var calendar = readDocument('calendar',calendarId);
+// function getCalendarSync(week, day) {
+//   var calendar = readDocument('calendar', week);
 //   // Resolve meals
-//   Object.keys(calendar.contents).map((day) => {
-//     calendar.contents[day].map((meal, i) => {
+//   Object.keys(calendar).map((day) => {
+//     calendar[day].map((meal, i) => {
 //       // i is the meal's index
-//       calendar.contents[day][i] = getRecipeSync(meal);
+//       calendar[day][i] = getRecipeSync(meal);
 //     })
 //   })
 //   return calendar;
@@ -71,6 +71,14 @@ function getCalendarData(userId, week, day) {
   })
   return meals;
 
+}
+
+export function removeRecipefromCalendar(id, week, day) {
+  var calendar = readDocument('calendar', week);
+  if (id !== -1) {
+    calendar[day].splice(id, 1);
+    writeCalendar('calendar', calendar, week);
+  }
 }
 
 /**

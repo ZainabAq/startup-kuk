@@ -1,6 +1,6 @@
 import React from 'react';
 import CalendarEntry from './calendarentry';
-import {getProfileCalendarData} from '../server';
+import {getProfileCalendarData, removeRecipefromCalendar} from '../server';
 import {Link} from 'react-router';
 
 
@@ -12,7 +12,7 @@ export default class Calendar extends React.Component {
     super(props);
     this.state = {
       _id : this.props.user,
-      Edit: false,
+      edit: false,
       loading : true,
       week: 2,
       Monday : [],
@@ -45,9 +45,9 @@ export default class Calendar extends React.Component {
 
     componentDidMount() {
       this.refresh();
-      setTimeout(() => {
-        this.setState({loading : false});
-      }, 4);
+      // setTimeout(() => {
+      //   this.setState({loading : false});
+      // }, 4);
     }
 
     handleCalChangePrevious(e) {
@@ -56,10 +56,15 @@ export default class Calendar extends React.Component {
       this.refresh();
       }
 
-    handleCalChangeNext(e) {
+    // handleCalChangeNext(e) {
+    //   e.stopPropagation();
+    //   this.setState({week: 3});
+    //   this.refresh();
+    // }
+
+    onRemoveRecipe(e, id, day) {
       e.stopPropagation();
-      this.setState({week: 3});
-      this.refresh();
+      removeRecipefromCalendar(id, this.state.week, day)
     }
 
     handleCalChangeEdit(e) {
@@ -67,16 +72,17 @@ export default class Calendar extends React.Component {
       this.setState( {edit:true});
     }
 
+
   render() {
-    return(
+      return (
       <div>
         <div className="container">
-          <h1 className="center">Your Weekly Calendar</h1>
+          <h1 className="center">Your Editable Weekly Calendar</h1>
           <div className="btn-toolbar">
             <button type="button" className="btn btn-default prev pull-left font1" onClick={(e) =>this.handleCalChangePrevious(e)}>Previous week</button>
               <Link to={"/favorites/" + this.props.user}><button type="button" className="btn btn-default pull-left font1">Add recipes</button></Link>
             <button type="button" className="btn btn-default next pull-right font1" onClick={(e) =>this.handleCalChangeNext(e)}>Next week</button>
-            <button type="button" className="btn btn-default pull-right font1" onClick={(e) =>this.handleCalChangeEdit(e)}>Edit calendar</button>
+            <button type="button" className="btn btn-default pull-right font1" onClick={(e) =>this.handleCalChangeRemoveRecipe(e)}>Edit calendar</button>
           </div>
         </div>
         <ul className = "list-inline">
@@ -84,7 +90,7 @@ export default class Calendar extends React.Component {
              {this.state.Monday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} />
+                <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Monday")}/>
               )
             })}
         </ul>
@@ -93,7 +99,7 @@ export default class Calendar extends React.Component {
             {this.state.Tuesday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Tuesday" type={this.checkMealType(i)} />
+                <CalendarEntry key={i} data={meal} day="Tuesday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Tuesday")} />
               )
             })}
         </ul>
@@ -102,7 +108,7 @@ export default class Calendar extends React.Component {
             {this.state.Wednesday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Wednesday" type={this.checkMealType(i)} />
+                <CalendarEntry key={i} data={meal} day="Wednesday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Wednesday")} />
               )
             })}
         </ul>
@@ -111,7 +117,7 @@ export default class Calendar extends React.Component {
             {this.state.Thursday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Thursday" type={this.checkMealType(i)} />
+                <CalendarEntry key={i} data={meal} day="Thursday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Thursday")}/>
               )
             })}
         </ul>
@@ -120,7 +126,7 @@ export default class Calendar extends React.Component {
             {this.state.Friday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Friday" type={this.checkMealType(i)} />
+                <CalendarEntry key={i} data={meal} day="Friday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Friday")}/>
               )
             })}
         </ul>
@@ -129,7 +135,7 @@ export default class Calendar extends React.Component {
             {this.state.Saturday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Saturday" type={this.checkMealType(i)} />
+                <CalendarEntry key={i} data={meal} day="Saturday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Saturday")}/>
               )
             })}
         </ul>
@@ -138,11 +144,10 @@ export default class Calendar extends React.Component {
             {this.state.Sunday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Sunday" type={this.checkMealType(i)} />
+                <CalendarEntry key={i} data={meal} day="Sunday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Sunday")}/>
               )
             })}
         </ul>
       </div>
-          )
-        }
-      }
+    ) }
+  }
