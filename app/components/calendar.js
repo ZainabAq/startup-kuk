@@ -82,7 +82,6 @@ export default class Calendar extends React.Component {
             <button type="button" className="btn btn-default prev pull-left font1" onClick={(e) =>this.handleCalChangePrevious(e)}>Previous week</button>
               <Link to={"/favorites/" + this.props.user}><button type="button" className="btn btn-default pull-left font1">Add recipes</button></Link>
             <button type="button" className="btn btn-default next pull-right font1" onClick={(e) =>this.handleCalChangeNext(e)}>Next week</button>
-            <button type="button" className="btn btn-default pull-right font1" onClick={(e) =>this.handleCalChangeRemoveRecipe(e)}>Edit calendar</button>
           </div>
         </div>
         <ul className = "list-inline">
