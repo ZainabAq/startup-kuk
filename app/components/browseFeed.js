@@ -1,23 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import FeedItem from './feeditem';
-import {Link} from 'react-router';
+import FilterBar from './filter';
 import {getFeedData} from '../server';
 
 export default class BrowseFeed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // empty Feed for now
+      // empty Feed initially
       recipes: []
     };
   }
 
-  refresh() {
-    getFeedData("3", (recipeData) => {
+  /**
+   *  refreshes the feed
+   *  populates the feed with first 5 recipes from the database
+   */
+  refresh(value) {
+    getFeedData(value, (recipeData) => {
       this.setState({recipes : recipeData});
-      // console.log("REFRESSSSHhh");
-      console.log(this.state.recipes);
     });
   }
 
@@ -32,7 +33,7 @@ export default class BrowseFeed extends React.Component {
   // }
 
   componentDidMount() {
-    this.refresh();
+    this.refresh("5");
   }
 
   // NOTE:If we wanted to get fancy, we could modify the Feed’s render() function to
@@ -41,17 +42,29 @@ export default class BrowseFeed extends React.Component {
   // the animation when loaded is false, and set loaded to true once the server
   // response comes back in.
   render() {
-    // console.log(data);
-
     return (
       <div>
-        <ul id="categories" className="clr">
-          {this.state.recipes.map((recipe, i) => {
-            return (
-              <li><FeedItem info={recipe} /></li>
-            )
-          })}
-        </ul>
+        <div id="wrapper" className="toggled">
+          <div id="sidebar-wrapper">
+            <FilterBar />
+          </div>
+          <div id="page-content-wrapper">
+            <div className="container-fluid">
+              <h1 className="center">Browse Our Recipes</h1>
+              <button className="btn btn-default" id="menu-toggle">
+                <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
+                Filter
+              </button>
+              <ul id="categories" className="clr">
+                {this.state.recipes.map((recipe, i) => {
+                  return (
+                    <li><FeedItem key={i} info={recipe} /></li>
+                  )
+                })}
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

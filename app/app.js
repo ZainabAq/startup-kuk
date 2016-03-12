@@ -46,9 +46,8 @@ class ResultsPage extends React.Component {
     return (
       <div className="padThai">
         <div className="col-md-offset-1 col-md-2"><FilterBar /></div>
-        <div className="col-md-8"><ResultsFeed /></div>
+        <div className="col-md-8"><ResultsFeed query={this.props.location.query} /></div>
       </div>
-
     )
   }
 }

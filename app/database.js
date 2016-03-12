@@ -29,7 +29,7 @@ var initialData = {
       "userRating": 4,
       "time": "1 hour",
       "restrictions": [1,2,5],
-      "img":"http://images.media-allrecipes.com/userphotos/600x600/1090243.jpg",
+      "img":"http://s2.favim.com/orig/37/brownie-cake-candy-chocolate-delicious-Favim.com-298873.jpg",
       "description":"Delicous fudge-like brownies"
     },
     "2": {
@@ -45,7 +45,6 @@ var initialData = {
       "restrictions": [1,2,5,8],
       "img": "http://farm3.static.flickr.com/2786/4280658636_a707c75ebc.jpg",
       "description":"A traditional Italian dish, this chicken parmesan is seasonally flavored"
-
     },
 
     "3": {

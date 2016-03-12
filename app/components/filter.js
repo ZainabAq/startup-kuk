@@ -12,7 +12,7 @@ export default class FilterBar extends React.Component {
      return(
       <div>
       <div className="panel panel-default">
-        <div className="panel-heading"><h4>Dietary Restrictions</h4></div>
+        <div className="panel-heading sidebar-brand"><h4>Dietary<br /> Restrictions</h4></div>
         <div className="panel-body font1">
           <form role="form">
             <div className="row">
@@ -70,7 +70,7 @@ export default class FilterBar extends React.Component {
              </div>
             </div>
             <hr />
-            <button type="submit" className="btn btn-default pull-right">Filter</button>
+            <button type="submit" className="btn btn-default pull-right">Apply Filter</button>
           </form>
       </div>
   </div>

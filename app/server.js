@@ -174,10 +174,11 @@ export function removeUserRestriction(checkbox, userId, cb) {
 }
 
 export function getFeedData(amountofRecipes, cb) {
-  // Get the recipe object with the correct id
+  // Get the recipe collection
   var feedData = getCollection('recipe');
   var i=1, recipeList=[];
 
+  // get an arbitray number of recipes and their specific properties
   while(amountofRecipes != 0) {
     recipeList.push([feedData[i]._id, feedData[i].name, feedData[i].img, feedData[i].description, feedData[i].time]);
     i++;
