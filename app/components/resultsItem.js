@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
+//import {getRecipe} from '../server';
 
 export default class ResultsItem extends React.Component {
   constructor(props) {
@@ -16,6 +17,17 @@ export default class ResultsItem extends React.Component {
      var average = sum/ratings.length;
      return average;
   }
+
+  // refresh() {
+  //    getRecipe(this.state, (recipeData) => {
+  //       this.setState(recipeData);
+  //       this.findAverageRating()
+  //    });
+  // }
+  //
+  // componentDidMount() {
+  //    this.refresh();
+  // }
 
   render() {
     return (
@@ -49,11 +61,19 @@ export default class ResultsItem extends React.Component {
                     <ul className="list-inline">
                       <li className="rating">
                         {(() => {
-                          var elements=[];
-                          for (var i=0; i<this.findAverageRating(); i++) {
-                            elements.push(<span key={i} className="fa fa-star"></span>)
-                          }
-                          return elements;
+                           var elements=[];
+                           for (var i=0; i<this.findAverageRating()-1; i++) {
+                              elements.push(<span key={i} className="fa fa-star fa-lg"></span>)
+                           }
+                           return elements;
+                        })()}
+                        {(() => {
+                           var secondElements=[];
+                           var lessFive = 5-this.findAverageRating();
+                           for (var i=0; i<lessFive; i++) {
+                              secondElements.push(<span key={i} className="fa fa-star-o fa-lg"></span>)
+                           }
+                           return secondElements;
                         })()}
                       </li>
                       <li className="time-icons">
