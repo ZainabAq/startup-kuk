@@ -7,8 +7,14 @@ export default class Favorites extends React.Component {
     super(props);
     this.state = {
       favoritesList: [],
-      recipeList: []
+      recipeList: [],
+      condition: true
     };
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+    this.setState({condition: !this.state.condition});
   }
 
   refresh() {
@@ -28,13 +34,18 @@ export default class Favorites extends React.Component {
 
   render() {
     return (
-      <div className="favorites">
-        <div className="col-md-10">
+      <div className="favorites" id="wrapper">
+        <div id="page-content-wrapper">
           <h1 className="center">Favorites</h1>
-          <div className="pull-right">
-            <div className="btn-group">
-              <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Sort <span className="caret"></span></button>
+          <div>
+              <button className="btn btn-default pull-left" id="menu-toggle" onClick={(e)=>this.handleClick(e)}>
+                <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
+                Filter
+              </button>
+              <div className="btn-group sortbuttonspace">
+              <button type="button" className="btn btn-default dropdown-toggle sortbutton pull-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort <span className="caret"></span>
+                </button>
               <ul className="dropdown-menu pull-right">
                 <li><a href="#">By Cuisine</a></li>
                 <li><a href="#">By Meal</a></li>
@@ -43,7 +54,7 @@ export default class Favorites extends React.Component {
                 <li><a href="#">By Date Added</a></li>
               </ul>
             </div>
-          </div>
+          <div className="container-fluid" id="favoriteslisting">
           <div className="font1">
 
               {this.state.recipeList.map((recipe, i) => {
@@ -56,6 +67,8 @@ export default class Favorites extends React.Component {
         </div>
       </div>
       </div>
+      </div>
+    </div>
     );
   }
 }
