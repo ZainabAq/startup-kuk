@@ -68,7 +68,7 @@ class FavoritesPage extends React.Component {
   render() {
     return (
       <div>
-        <div className="col-md-2"><FilterBar /></div>
+        <div id="sidebar-wrapper"><FilterBar /></div>
         <div><Favorites /></div>
       </div>
 

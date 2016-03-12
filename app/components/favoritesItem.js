@@ -7,7 +7,6 @@ export default class FavoritesItem extends React.Component {
   }
 
   render() {
-console.log(this.props.data);
     return (
       <div className="col-md-2 thumbnail">
         <h5 align="center"><Link to={"/recipe/" + this.props.data._id}>{this.props.data.name}</Link></h5>

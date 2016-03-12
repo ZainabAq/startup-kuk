@@ -76,7 +76,7 @@ function getCalendarData(userId, week, day) {
 export function removeRecipefromCalendar(id, week, day) {
   var calendar = readDocument('calendar', week);
   if (id !== -1) {
-    calendar[day].splice(id, 1);
+    calendar[day].splice(-1, 1);
     writeCalendar('calendar', calendar, week);
   }
 }

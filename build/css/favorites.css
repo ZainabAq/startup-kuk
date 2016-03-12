@@ -15,7 +15,24 @@
 .favorites .thumbnail {
   background-color: #c6d2d0;
   float:left;
+  border-bottom: 20px;
   border: 0px;
+  display: inline;
+  width: 20%;
+}
+
+.favorites .sortbutton {
+  float:auto;
+}
+
+#favoriteslisting {
+  padding-right:200px;
+}
+
+.favorites .sortbuttonspace {
+  display:inline;
+  padding-right: 0px;
+
 }
 
 .favorites .font1 {
