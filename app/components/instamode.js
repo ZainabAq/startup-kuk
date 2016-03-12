@@ -48,6 +48,7 @@ export default class Instamode extends React.Component {
                 <h1>Instant Recipes <img src="img/logo.png" id="logo2" /></h1>
                 <div className="description">
                   Looking for a recipe, but don't want to run to the grocery store? Enter in your ingredients down below, and kuk will help you find a recipe that best fits your needs!
+                  *Note: Please enter up to 5 ingredients max.
                 </div>
                 <InstaIngredientsList
                     ingredients = {this.state.ingredients}

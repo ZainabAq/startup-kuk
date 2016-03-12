@@ -1,6 +1,8 @@
 import React from 'react';
 import EnterInstaIngredient from './enterInstaIngredient'
-import InstaIngredient from './instaIngredient.js'
+import InstaIngredient from './instaIngredient'
+// import {findRecipeByIngredients} from '../server'
+import InstaResults from './instaResults'
 
 export default class InstaIngredientsList extends React.Component {
   constructor(props) {
@@ -19,8 +21,8 @@ export default class InstaIngredientsList extends React.Component {
                   <li className="ingredient" key={this.props.ingredients.indexOf(ingredient)}><InstaIngredient ingredient={ingredient} onDelete={(ingredient) => this.props.onDelete(ingredient)}/></li>
               )}
             </ul>
-            <button type="submit" className="findrecipe-btn">Find a Recipe! </button>
           </form>
+          < InstaResults ingredients={this.props.ingredients}/>
         </div>
       </div>
     );

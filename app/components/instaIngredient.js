@@ -5,11 +5,15 @@ export default class Instamode extends React.Component {
     super(props);
   }
 
+  handleDelete(){
+    this.props.onDelete(this.props.ingredient);
+  }
+
   render() {
     return (
       <div>
         <div className="instamode">
-          {this.props.ingredient} <a onClick={(e) => this.props.onDelete(e)}><span className="glyphicon glyphicon-remove remove-btn navbar-btn"></span></a>
+          {this.props.ingredient} <a onClick={() => this.handleDelete()}><span className="glyphicon glyphicon-remove remove-btn navbar-btn"></span></a>
         </div>
       </div>
     );
