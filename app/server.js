@@ -31,13 +31,6 @@ function getRecipeSync(recipeId) {
 //   return calendar;
 // }
 
-function getProfileSync(userId) {
-  var userItem = readDocument('users', userId);
-  // Resolve calendar
-  //userItem.calendar = getCalendarSync(userItem.calendar);
-  return userItem;
-}
-
 /**
  * Gets next 4 meals for a particular user.
  * @param userId The ID of the user whose calendar we are requesting.
@@ -102,8 +95,6 @@ function getRestrictionStrings(ids) {
 export function getProfileData(user, cb) {
   // Get the User object with the id "user".
   var userData = readDocument('users', user);
-  // Resolve profile data
-  userData = getProfileSync(user);
   // Add upcoming meals
   userData.upcomingMeals = getUpcomingMeals(user);
   // Return UserData with resolved references.
@@ -113,8 +104,6 @@ export function getProfileData(user, cb) {
 export function getProfileCalendarData(user, week, cb) {
   // Get the User object with the id "user".
   var userData = readDocument('users', user);
-  // Resolve profile data
-  userData = getProfileSync(user);
   // Add upcoming calendar
   userData.Monday = getCalendarData(user, week, "Monday");
   userData.Tuesday = getCalendarData(user, week, "Tuesday");
