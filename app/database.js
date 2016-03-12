@@ -25,7 +25,7 @@ var initialData = {
       "cuisine": "American",
       "mealType": "Dessert",
       "averageRating": [4, 5, 2, 5, 4],
-      "instructions": ["Preheat the oven to 350 degrees.", "Melt the butter.", "Bake for 30 minutes.", "Mix the remaining ingredients together.", "Enjoy!"],
+      "instructions": ["Preheat the oven to 350 degrees.", "Melt the butter.",  "Mix all ingredients together.", "Bake for 30 minutes.", "Enjoy!"],
       "userRating": 4,
       "time": "1 hour",
       "restrictions": [1,2,5],

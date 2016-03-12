@@ -42,6 +42,9 @@
 .recipe .social-but, .time-icons {
    color: #3D5467;
 }
+.recipe .btn-default {
+   background-color: white;
+}
 
 .recipe .fa-star {
    color: #9C102E;

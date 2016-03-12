@@ -4,12 +4,10 @@ import {getRecipe} from '../server';
 import {addFavorite} from '../server';
 import {removeFavorite} from '../server';
 import {checkUserFavorites} from '../server';
+import {addRecipeToCalendar} from '../server';
 // import {getProfileData} from '../server';
 //TODO
 //make the ratings work (this will require pulling from the database, and changing the database)
-//make the calendar and favorites buttons work
-//if time: be able to have the user click on the stars to enter their user rating
-//force a re-render: this.setState = this.state
 
 export default class Recipe extends React.Component {
    constructor(props) {
@@ -18,14 +16,15 @@ export default class Recipe extends React.Component {
       this.state = {
          ingredients:[],
          instructions: [],
-         loading: false,
-         currentFavorite: false
+         currentFavorite: false,
+         currentRating: 0
       };
    }
 
    refresh() {
      getRecipe(this.props.param, (recipeData) => {
       this.setState(recipeData);
+      this.findAverageRating()
      });
    }
 
@@ -33,26 +32,30 @@ export default class Recipe extends React.Component {
      this.refresh();
    }
 
+   /**This method loops over the list of ratings in the recipe and returns their average*/
    findAverageRating() {
       var ratings = this.state.averageRating;
       var sum = 0;
       for( var i = 0; i < ratings.length; i++ ){
          sum += parseInt(ratings[i], 10 );
       }
-      var average = sum/ratings.length;
-      return average;
+      var average = Math.floor(sum/ratings.length);
+      // return average;
+      this.setState({currentRating: average});
    }
 
 
    /**
-   * The button that handles the user clicking the favorite tag
+   * The method that handles the user clicking the favorite button
+   * relies on the state of the recipe to see if it should be added to the user's
+   * favorites - this will have to be changed later
    */
    handleFavoriteClick(clickEvent) {
       clickEvent.preventDefault();
       if (clickEvent.button === 0) {
          var callbackFunction = () => {};
          // this.didUserFavoriteTwo();
-         console.log("this.state.currentFavorite=", this.state.currentFavorite);
+         // console.log("this.state.currentFavorite=", this.state.currentFavorite);
          if (!this.state.currentFavorite) {
             addFavorite(this.state._id, 1, callbackFunction);
             this.setState({currentFavorite: true});
@@ -73,23 +76,8 @@ export default class Recipe extends React.Component {
       }
    }
 
-   //take two at handling clicks
-   handleFavoriteClickTwo(clickEvent) {
-      console.log("in the second click handler");
-      clickEvent.preventDefault();
-      if (clickEvent.button === 0) {
-         checkUserFavorites(this.state._id, 1, (isFavorite) => {
-         if (isFavorite) {
-            removeFavorite(this.state._id, 1, finishCb);
-         } else {
-            addFavorite(this.state._id, 1, finishCb);
-         }
-         });
-      }
-   }
-
    /*
-   * The button that handles the user clicking the unfavorite button
+   * The button that handles the user clicking the unfavorite button (this was a test)
    */
    // handleUnfavoriteClick(clickEvent) {
    //    console.log("in the handleUnfavoriteClick event");
@@ -102,7 +90,7 @@ export default class Recipe extends React.Component {
 
 
    //second stab at seeing if the user has favorited - just passing in the results
-   //to setState in recipe. seems to be working.
+   //to setState in recipe. not really working either - had to click twice.
    didUserFavoriteTwo() {
       checkUserFavorites(this.state._id, 1, (data) => {
          this.setState({currentFavorite: data})
@@ -116,12 +104,10 @@ export default class Recipe extends React.Component {
    * is therefore fucking things up.
    */
    didUserFavorite() {
-      console.log("in the didUserFavorites");
+      // console.log("in the didUserFavorites");
       //server function that will call the user's information when given the id
       //and check to see if the recipe is already in the favorites
       //server function to getUserFavorites
-      //this method right here is fucking up - need to get ellie to look at it (think that maybe the result isn't
-   //working the way I think it should work)
       var result = false;
       checkUserFavorites(this.state._id, 1, (isFavorite) => {
          result = (isFavorite.isRecipeIn);
@@ -134,7 +120,15 @@ export default class Recipe extends React.Component {
          return result
       }
    }
-   //result always returns false - does the syntax I have work to reset it?
+
+
+   /** adds a recipe to the user's calender (in the dinner slot) when the user
+   * clicks on the calendar button
+   */
+   handleCalendarClick(clickEvent, day) {
+      // just adds to the calendar so it doesn't return anything
+      addRecipeToCalendar(this.state._id, 1, day, (data) => {});
+   }
 
    render() {
       var favButtonIcon = "fa fa-heart fa-lg social-but";
@@ -158,14 +152,14 @@ export default class Recipe extends React.Component {
                            <li className="rating">
                               {(() => {
                                  var elements=[];
-                                 for (var i=0; i<this.state.userRating; i++) {
+                                 for (var i=0; i<this.state.currentRating; i++) {
                                     elements.push(<span className="fa fa-star fa-lg"></span>)
                                  }
                                  return elements;
                               })()}
                               {(() => {
                                  var secondElements=[];
-                                 var lessFive = 5-this.state.userRating;
+                                 var lessFive = 5-this.state.currentRating;
                                  for (var i=0; i<lessFive; i++) {
                                     secondElements.push(<span className="fa fa-star-o fa-lg"></span>)
                                  }
@@ -185,7 +179,18 @@ export default class Recipe extends React.Component {
                               <button type="button" className="btn btn-default" onClick={(e)=>this.handleFavoriteClick(e)}><span className={favButtonIcon}></span></button>
                            </li>
                            <li className="presentation">
-                              <button type="button" className="btn btn-default"><span className="fa fa-calendar-check-o fa-lg social-but"></span></button>
+                              <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-calendar-check-o fa-lg"></i>
+                              </button>
+
+                              <ul className="dropdown-menu multiple">
+                          <li><a onClick={(e)=>this.handleCalendarClick(e, "Monday")}>Monday</a></li>
+                          <li><a onClick={(e)=>this.handleCalendarClick(e, "Tuesday")}>Tuesday</a></li>
+                          <li><a onClick={(e)=>this.handleCalendarClick(e, "Wednesday")}>Wednesday</a></li>
+                          <li><a onClick={(e)=>this.handleCalendarClick(e, "Thursday")}>Thursday</a></li>
+                          <li><a onClick={(e)=>this.handleCalendarClick(e, "Friday")}>Friday</a></li>
+                          <li><a onClick={(e)=>this.handleCalendarClick(e, "Saturday")}>Saturday</a></li>
+                          <li><a onClick={(e)=>this.handleCalendarClick(e, "Sunday")}>Sunday</a></li>
+                          </ul>
                            </li>
                           </ul>
                        </div>
