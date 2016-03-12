@@ -15,7 +15,6 @@ export default class ResultsFeed extends React.Component {
   onSearch(searchText) {
     // If searchText is 'Brownies', navigates to #/results?q=Brownies
     this.context.router.push({ pathname: "/results", query: { q: searchText } });
-    // set state of recipeList to the results (newRecipeList) of findRecipe
   }
 
   refresh() {

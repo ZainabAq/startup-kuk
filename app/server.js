@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, getCollection} from './database.js';
+import {readDocument, writeDocument, getCollection, writeCalendar} from './database.js';
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -19,13 +19,13 @@ function getRecipeSync(recipeId) {
   return recipe;
 }
 
-// function getCalendarSync(calendarId) {
-//   var calendar = readDocument('calendar',calendarId);
+// function getCalendarSync(week, day) {
+//   var calendar = readDocument('calendar', week);
 //   // Resolve meals
-//   Object.keys(calendar.contents).map((day) => {
-//     calendar.contents[day].map((meal, i) => {
+//   Object.keys(calendar).map((day) => {
+//     calendar[day].map((meal, i) => {
 //       // i is the meal's index
-//       calendar.contents[day][i] = getRecipeSync(meal);
+//       calendar[day][i] = getRecipeSync(meal);
 //     })
 //   })
 //   return calendar;
@@ -71,6 +71,14 @@ function getCalendarData(userId, week, day) {
   })
   return meals;
 
+}
+
+export function removeRecipefromCalendar(id, week, day) {
+  var calendar = readDocument('calendar', week);
+  if (id !== -1) {
+    calendar[day].splice(-1, 1);
+    writeCalendar('calendar', calendar, week);
+  }
 }
 
 /**
@@ -239,14 +247,14 @@ export function findRecipesFromId(recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   console.log("IN THE ADD FAVORITES FUNCTION IN SERVER");
+   // console.log("IN THE ADD FAVORITES FUNCTION IN SERVER");
    //getting both the user and the recipe from the database
    // var recipe = readDocument("recipes", recipeId);
    var user = readDocument("users", userId);
-   console.log("favorites before adding:", user.favorites);
+   // console.log("favorites before adding:", user.favorites);
    user.favorites.push(recipeId);
    writeDocument('users', user);
-   console.log("favorites after adding:", user.favorites);
+   // console.log("favorites after adding:", user.favorites);
    emulateServerReturn(user, cb);
 }
 
@@ -254,16 +262,16 @@ export function addFavorite(recipeId, userId, cb) {
 * The function that removes recipes from the user's list of favorites
 */
 export function removeFavorite (recipeId, userId, cb) {
-   console.log("IN THE REMOVE FAVORITES IN SERVER")
+   // console.log("IN THE REMOVE FAVORITES IN SERVER")
 
    var user = readDocument("users", userId);
-   console.log("favorites before:", user.favorites);
+   // console.log("favorites before:", user.favorites);
    //now need to remove the favorite from the user's list of favorites
    var favoriteIndex = user.favorites.indexOf(recipeId);
    if (favoriteIndex !== -1) {
       user.favorites.splice(favoriteIndex, 1);
       writeDocument("users", user);
-      console.log("favorites after:", user.favorites);
+      // console.log("favorites after:", user.favorites);
    }
    emulateServerReturn(user, cb);
 }
@@ -302,8 +310,24 @@ export function checkUserFavorites(recipeId, userId, cb) {
   if (favorites.includes(recipeId)) {
      isRecipeIn = true;
  }
- console.log("checkUserFavorites:", isRecipeIn);
+ // console.log("checkUserFavorites:", isRecipeIn);
   //assuming that favorites is an array here
   // favorites = getRestrictionStrings(favorites);
   emulateServerReturn(isRecipeIn, cb);
+}
+
+/**
+* Adding a recipe to the user's calendar when given the user's id, the recipe's id,
+* and the day you want to add the recipe to
+*/
+export function addRecipeToCalendar(recipeId, userId, day, cb) {
+   var user = readDocument("users", userId);
+   // var recipe = readDocument("recipes", recipeId);
+   var calendar = readDocument("calendar", 2);
+   // console.log("calendar before: ", calendar[day]);
+   // calendar[day].push(recipeId);
+   calendar[day][3] = recipeId;
+   writeDocument('users', user);
+   // console.log("calendar after: ", calendar[day]);
+   emulateServerReturn(user, cb);
 }
