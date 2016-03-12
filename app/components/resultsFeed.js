@@ -16,9 +16,6 @@ export default class ResultsFeed extends React.Component {
     // If searchText is 'Brownies', navigates to #/results?q=Brownies
     this.context.router.push({ pathname: "/results", query: { q: searchText } });
     // set state of recipeList to the results (newRecipeList) of findRecipe
-    findRecipe(searchText, (newRecipeList) => {
-      this.setState({recipeList : newRecipeList});
-    });
   }
 
   refresh() {
@@ -27,7 +24,17 @@ export default class ResultsFeed extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      query: nextProps.query.q
+    });
+  }
+
   componentDidMount() {
+    this.refresh();
+  }
+
+  componentDidUpdate() {
     this.refresh();
   }
 
