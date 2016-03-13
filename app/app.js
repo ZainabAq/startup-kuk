@@ -60,7 +60,7 @@ class InstaPage extends React.Component {
  */
 class FavoritesPage extends React.Component {
   render() {
-    return <Favorites />
+    return <Favorites user={this.props.params.id}/>
   }
 }
 

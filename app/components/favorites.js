@@ -7,6 +7,7 @@ export default class Favorites extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      _id : this.props.user,
       condition: true,
       favoritesList: [],
       recipeList: []
@@ -20,7 +21,7 @@ export default class Favorites extends React.Component {
   }
 
   refresh() {
-    getProfileData("1", (newFavoritesList) => {
+    getProfileData(this.props.user, (newFavoritesList) => {
       this.setState({favoritesList : newFavoritesList.favorites});
       findRecipesFromId(this.state.favoritesList, (newRecipeList) => {
         this.setState({recipeList : newRecipeList});

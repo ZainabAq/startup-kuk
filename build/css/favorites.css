@@ -23,6 +23,42 @@
   width:auto;
 }
 
+.favorites .heartspace {
+  position: absolute;
+  bottom: 8px;
+  left: 80px;
+}
+
+.favorites .mini-listing.button {
+    font-size: 14px;
+    margin-top: -5px;
+    padding: 5px 7px;
+}
+.favorites a.button {
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "proxima-nova-1","proxima-nova-2",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    padding: 9px 34px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.favorites .gray {
+    background: none repeat scroll 0 0 #AAAAAA;
+}
+
+.favorites .thumbnail .heartspace {
+    display: none;
+}
+.thumbnail:hover .heartspace {
+    display: inline;
+}
+
 #favoriteslisting {
   padding-right:200px;
   padding-top: 10px;

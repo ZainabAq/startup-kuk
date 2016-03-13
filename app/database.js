@@ -13,7 +13,7 @@ var initialData = {
       "lastName": "Doe",
       "restrictions": ["1","4"],
       "email": "jdoe@gmail.com",
-      "favorites": [2,3,5,1,4,2,3,5],
+      "favorites": [2,3,5,1,4],
       "calendar": 1
     }
   },
