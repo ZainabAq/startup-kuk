@@ -344,13 +344,13 @@ export function getRestriction(checkbox, cb) {
 */
 export function addRecipeToCalendar(recipeId, userId, day, cb) {
    var user = readDocument("users", userId);
-   // var recipe = readDocument("recipes", recipeId);
    var calendar = readDocument("calendar", 2);
-   // console.log("calendar before: ", calendar[day]);
-   // calendar[day].push(recipeId);
-   calendar[day][3] = recipeId;
+   if (calendar[day][3]) {
+      calendar[day][3] = recipeId;
+   } else {
+      calendar[day].push(recipeId);
+   }
    writeDocument('users', user);
-   // console.log("calendar after: ", calendar[day]);
    emulateServerReturn(user, cb);
 }
 
