@@ -172,15 +172,21 @@ export function removeUserRestriction(checkbox, userId, cb) {
   var result = {"restrictions":userData.restrictions, "target":checkbox};
   emulateServerReturn(result, cb);
 }
-
+/**
+ * @param amountofRecipes
+ * @param cb, callback function
+ *
+ */
 export function getFeedData(amountofRecipes, cb) {
   // Get the recipe collection
   var feedData = getCollection('recipe');
+  // initialize empty array
   var i=1, recipeList=[];
 
   // get an arbitray number of recipes and their specific properties
   while(amountofRecipes != 0) {
-    recipeList.push([feedData[i]._id, feedData[i].name, feedData[i].img, feedData[i].description, feedData[i].time]);
+    recipeList.push([feedData[i]._id, feedData[i].name,
+      feedData[i].img, feedData[i].description, feedData[i].time]);
     i++;
     amountofRecipes--;
   }
@@ -239,14 +245,14 @@ export function findRecipesFromId(recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   console.log("IN THE ADD FAVORITES FUNCTION IN SERVER");
+  //  console.log("IN THE ADD FAVORITES FUNCTION IN SERVER");
    //getting both the user and the recipe from the database
    // var recipe = readDocument("recipes", recipeId);
    var user = readDocument("users", userId);
-   console.log("favorites before adding:", user.favorites);
+  //  console.log("favorites before adding:", user.favorites);
    user.favorites.push(recipeId);
    writeDocument('users', user);
-   console.log("favorites after adding:", user.favorites);
+  //  console.log("favorites after adding:", user.favorites);
    emulateServerReturn(user, cb);
 }
 
@@ -254,16 +260,16 @@ export function addFavorite(recipeId, userId, cb) {
 * The function that removes recipes from the user's list of favorites
 */
 export function removeFavorite (recipeId, userId, cb) {
-   console.log("IN THE REMOVE FAVORITES IN SERVER")
+  //  console.log("IN THE REMOVE FAVORITES IN SERVER")
 
    var user = readDocument("users", userId);
-   console.log("favorites before:", user.favorites);
+  //  console.log("favorites before:", user.favorites);
    //now need to remove the favorite from the user's list of favorites
    var favoriteIndex = user.favorites.indexOf(recipeId);
    if (favoriteIndex !== -1) {
       user.favorites.splice(favoriteIndex, 1);
       writeDocument("users", user);
-      console.log("favorites after:", user.favorites);
+      // console.log("favorites after:", user.favorites);
    }
    emulateServerReturn(user, cb);
 }
@@ -302,8 +308,59 @@ export function checkUserFavorites(recipeId, userId, cb) {
   if (favorites.includes(recipeId)) {
      isRecipeIn = true;
  }
- console.log("checkUserFavorites:", isRecipeIn);
+ // console.log("checkUserFavorites:", isRecipeIn);
   //assuming that favorites is an array here
   // favorites = getRestrictionStrings(favorites);
   emulateServerReturn(isRecipeIn, cb);
+}
+
+// /**
+//  * @param checkbox The DOM object triggering this call
+//  * @param cb The callback function to be called at the end
+//  * Calls cb on an object holding the user's modified restrictions array (unresolved)
+//  * and the checkbox.
+//  */
+// export function getRestriction(checkbox, cb) {
+//   var restrictionId = checkbox.value;
+//   var dietRecipes = [];
+
+//   // Get the restrictions collection
+//   var feedData = getCollection('restrictions');
+//   for(var i in feedData) {
+//     if (feedData[i].id !== restrictionId) {
+//       recipeIds = feedData[i].recipes;
+//       getRecipe('recipe', feed)
+//     }
+//   }
+//   emulateServerReturn(dietData, cb);
+// }
+//
+
+/**
+ * @param recipeIds, the Ids that we don't want to include
+ * @param cb The callback function to be called at the end
+ * Returns recipes that don't match restrictionId
+ */
+export function getFilteredRecipes(recipeIds, cb) {
+  var feedData = getCollection('recipe');
+  var dietRecipes = [];
+  for(var i in feedData) {
+    if (recipeIds.indexOf(feedData[i]._id) === -1) {
+      dietRecipes.push(feedData[i]);
+    }
+  }
+  emulateServerReturn({"filtered":dietRecipes}, cb);
+}
+
+/**
+ * @param user The id of a specific restriction
+ * @param cb The callback function to be called at the end
+ * Returns recipes that don't match restrictionId
+ */
+export function getRestriction(checkbox, cb) {
+  var restrictionId = checkbox.value;
+   //get the recipe object with the correct id
+   var dietData = readDocument('restrictions', restrictionId);
+   var result = {"recipes":dietData.recipes, "target":checkbox};
+   emulateServerReturn(result, cb);
 }

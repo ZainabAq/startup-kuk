@@ -45,7 +45,7 @@ class ResultsPage extends React.Component {
   render() {
     return (
       <div className="padThai">
-        <div className="col-md-offset-1 col-md-2"><FilterBar /></div>
+        <div className="sidebar-wrapper"><FilterBar /></div>
         <div className="col-md-8"><ResultsFeed query={this.props.location.query} /></div>
       </div>
     )
@@ -66,13 +66,7 @@ class InstaPage extends React.Component {
  */
 class FavoritesPage extends React.Component {
   render() {
-    return (
-      <div>
-        <div className="col-md-2"><FilterBar /></div>
-        <div><Favorites /></div>
-      </div>
-
-      )
+    return <Favorites />
   }
 }
 

@@ -161,6 +161,8 @@
 
 #wrapper .btn {
   margin-bottom: 2%;
+  outline-width: 0;
+  outline: none;
 }
 
 #sidebar-wrapper {

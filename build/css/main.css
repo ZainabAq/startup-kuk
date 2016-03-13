@@ -82,6 +82,7 @@ body {
 
 .panel-heading {
   background-color: #3D5467 !important;
+  border-radius: 0;
 }
 
 .panel-heading h4 {
@@ -163,7 +164,7 @@ h2 {
 
 #db-reset {
   position: fixed;
-  top: 10%;
+  bottom: 5%;
   right: 4%;
 }
 

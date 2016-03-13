@@ -8,13 +8,21 @@ export default class BrowseFeed extends React.Component {
     super(props);
     this.state = {
       // empty Feed initially
+      // filter bar is offscreen by default
+      condition: true,
       recipes: []
     };
   }
 
+  /** handles click of filter button to decide whether or not to show the sidebar */
+  handleClick(e){
+    e.preventDefault();
+    this.setState( { condition : !this.state.condition } );
+  }
+
   /**
    *  refreshes the feed
-   *  populates the feed with first 5 recipes from the database
+   *  populates the feed with a set amount of recipes from the database
    */
   refresh(value) {
     getFeedData(value, (recipeData) => {
@@ -22,16 +30,9 @@ export default class BrowseFeed extends React.Component {
     });
   }
 
-  // onFilter() {
-  //   // Send to server.
-  //   // refresh page with new collection of recipes
-  //   // Database is queried according to user's filters
-  //   filterFeed( => {
-  //     // refresh Feed
-  //     this.refresh();
-  //   })
-  // }
-
+  /**
+   *  call refresh when page is loaded to load 5 recipe
+   */
   componentDidMount() {
     this.refresh("5");
   }
@@ -44,21 +45,21 @@ export default class BrowseFeed extends React.Component {
   render() {
     return (
       <div>
-        <div id="wrapper" className="toggled">
+        <div id="wrapper" className={this.state.condition ? "toggled" :""}>
           <div id="sidebar-wrapper">
-            <FilterBar />
+              <FilterBar/>
           </div>
           <div id="page-content-wrapper">
             <div className="container-fluid">
               <h1 className="center">Browse Our Recipes</h1>
-              <button className="btn btn-default" id="menu-toggle">
+              <button className="btn btn-default" onClick={(e)=>this.handleClick(e)}>
                 <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
                 Filter
               </button>
               <ul id="categories" className="clr">
                 {this.state.recipes.map((recipe, i) => {
                   return (
-                    <li><FeedItem key={i} info={recipe} /></li>
+                    <li key={i}><FeedItem info={recipe} /></li>
                   )
                 })}
               </ul>

@@ -2,14 +2,8 @@ import React from 'react';
 import {Link} from 'react-router';
 
 export default class FeedItem extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   // The FeedItem's initial state is what the Feed passes to us.
-  //
-  // }
 
   render() {
-    // console.log(this.props.info);
     return (
       <div>
         <img src={this.props.info[2]} alt=""/>
