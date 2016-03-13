@@ -9,7 +9,6 @@ import Instamode from './components/instamode';
 import Favorites from './components/favorites';
 import Calendar from './components/calendar';
 import Navbar from './components/navbar';
-import FilterBar from './components/filter';
 
 /**
  * A recipe page
@@ -43,12 +42,7 @@ class ProfilePage extends React.Component {
  */
 class ResultsPage extends React.Component {
   render() {
-    return (
-      <div className="padThai">
-        <div className="sidebar-wrapper"><FilterBar /></div>
-        <div className="col-md-8"><ResultsFeed query={this.props.location.query} /></div>
-      </div>
-    )
+    return <ResultsFeed query={this.props.location.query} />
   }
 }
 

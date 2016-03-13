@@ -25,7 +25,7 @@ var initialData = {
       "cuisine": "American",
       "mealType": "Dessert",
       "averageRating": [4, 5, 2, 5, 4],
-      "instructions": ["Preheat the oven to 350 degrees.", "Melt the butter.", "Bake for 30 minutes.", "Mix the remaining ingredients together.", "Enjoy!"],
+      "instructions": ["Preheat the oven to 350 degrees.", "Melt the butter.",  "Mix all ingredients together.", "Bake for 30 minutes.", "Enjoy!"],
       "userRating": 4,
       "time": "1 hour",
       "restrictions": [1,2,5],
@@ -118,7 +118,7 @@ var initialData = {
     "3": {
         "Monday": [5, 3, 1, 2], "Tuesday":[5, 4, 5, 1], "Wednesday":[1, 2, 4, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
     }
-  },
+},
 
   "restrictions": {
     "1": {
@@ -213,6 +213,14 @@ export function writeDocument(collection, changedDocument) {
   // Store a copy of the object into the database. Models a database's behavior.
   data[collection][id] = JSONClone(changedDocument);
   // Update our 'database'.
+  localStorage.setItem(kuk, JSON.stringify(data));
+}
+
+/***
+* Export function specifically for the calendar.
+**/
+export function writeCalendar(collection, changedDocument, week) {
+  data[collection][week] = JSONClone(changedDocument);
   localStorage.setItem(kuk, JSON.stringify(data));
 }
 

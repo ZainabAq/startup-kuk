@@ -20,7 +20,7 @@ export default class FilterBar extends React.Component {
          getFilteredRecipes(newRecipes, (obj) => {
            var dietRecipes = obj.filtered;
            this.setState({recipes : dietRecipes});
-           console.log(dietRecipes);
+          //  console.log(dietRecipes);
            object.target.checked = true;
          });
        });
@@ -30,7 +30,7 @@ export default class FilterBar extends React.Component {
          getFilteredRecipes(newRecipes, (obj) => {
            var dietRecipes = obj.filtered;
            this.setState({recipes : dietRecipes});
-           console.log(dietRecipes);
+          //  console.log(dietRecipes);
            object.target.checked = false;
          });
        });

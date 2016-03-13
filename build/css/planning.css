@@ -7,6 +7,24 @@
 #c6d2d0 background color (lighter green)
 */
 
+.btn-transparent {
+  background:none;
+  border:none;
+  box-shadow:none;
+  position:relative;
+  text-align: center;
+  }
+.days {
+  font-size: 15px;
+}
+.onImage {
+  position:relative;
+  top:-120px;
+  right:-130px;
+  text-align:left;
+  display:block;
+  font-size: 15px;
+}
 
 table.table td img{
     width: 80%;

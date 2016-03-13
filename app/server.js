@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, getCollection} from './database.js';
+import {readDocument, writeDocument, getCollection, writeCalendar} from './database.js';
 
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
@@ -19,24 +19,17 @@ function getRecipeSync(recipeId) {
   return recipe;
 }
 
-// function getCalendarSync(calendarId) {
-//   var calendar = readDocument('calendar',calendarId);
+// function getCalendarSync(week, day) {
+//   var calendar = readDocument('calendar', week);
 //   // Resolve meals
-//   Object.keys(calendar.contents).map((day) => {
-//     calendar.contents[day].map((meal, i) => {
+//   Object.keys(calendar).map((day) => {
+//     calendar[day].map((meal, i) => {
 //       // i is the meal's index
-//       calendar.contents[day][i] = getRecipeSync(meal);
+//       calendar[day][i] = getRecipeSync(meal);
 //     })
 //   })
 //   return calendar;
 // }
-
-function getProfileSync(userId) {
-  var userItem = readDocument('users', userId);
-  // Resolve calendar
-  //userItem.calendar = getCalendarSync(userItem.calendar);
-  return userItem;
-}
 
 /**
  * Gets next 4 meals for a particular user.
@@ -73,6 +66,14 @@ function getCalendarData(userId, week, day) {
 
 }
 
+export function removeRecipefromCalendar(id, week, day) {
+  var calendar = readDocument('calendar', week);
+  if (id !== -1) {
+    calendar[day].splice(-1, 1);
+    writeCalendar('calendar', calendar, week);
+  }
+}
+
 /**
  * @param id An array of the ids of the restrictions to get
  * @returns An array holding the tag names of the restriction ids passed in
@@ -94,8 +95,6 @@ function getRestrictionStrings(ids) {
 export function getProfileData(user, cb) {
   // Get the User object with the id "user".
   var userData = readDocument('users', user);
-  // Resolve profile data
-  userData = getProfileSync(user);
   // Add upcoming meals
   userData.upcomingMeals = getUpcomingMeals(user);
   // Return UserData with resolved references.
@@ -105,8 +104,6 @@ export function getProfileData(user, cb) {
 export function getProfileCalendarData(user, week, cb) {
   // Get the User object with the id "user".
   var userData = readDocument('users', user);
-  // Resolve profile data
-  userData = getProfileSync(user);
   // Add upcoming calendar
   userData.Monday = getCalendarData(user, week, "Monday");
   userData.Tuesday = getCalendarData(user, week, "Tuesday");
@@ -245,14 +242,14 @@ export function findRecipesFromId(recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-  //  console.log("IN THE ADD FAVORITES FUNCTION IN SERVER");
+   // console.log("IN THE ADD FAVORITES FUNCTION IN SERVER");
    //getting both the user and the recipe from the database
    // var recipe = readDocument("recipes", recipeId);
    var user = readDocument("users", userId);
-  //  console.log("favorites before adding:", user.favorites);
+   // console.log("favorites before adding:", user.favorites);
    user.favorites.push(recipeId);
    writeDocument('users', user);
-  //  console.log("favorites after adding:", user.favorites);
+   // console.log("favorites after adding:", user.favorites);
    emulateServerReturn(user, cb);
 }
 
@@ -260,10 +257,8 @@ export function addFavorite(recipeId, userId, cb) {
 * The function that removes recipes from the user's list of favorites
 */
 export function removeFavorite (recipeId, userId, cb) {
-  //  console.log("IN THE REMOVE FAVORITES IN SERVER")
-
    var user = readDocument("users", userId);
-  //  console.log("favorites before:", user.favorites);
+   // console.log("favorites before:", user.favorites);
    //now need to remove the favorite from the user's list of favorites
    var favoriteIndex = user.favorites.indexOf(recipeId);
    if (favoriteIndex !== -1) {
@@ -314,28 +309,6 @@ export function checkUserFavorites(recipeId, userId, cb) {
   emulateServerReturn(isRecipeIn, cb);
 }
 
-// /**
-//  * @param checkbox The DOM object triggering this call
-//  * @param cb The callback function to be called at the end
-//  * Calls cb on an object holding the user's modified restrictions array (unresolved)
-//  * and the checkbox.
-//  */
-// export function getRestriction(checkbox, cb) {
-//   var restrictionId = checkbox.value;
-//   var dietRecipes = [];
-
-//   // Get the restrictions collection
-//   var feedData = getCollection('restrictions');
-//   for(var i in feedData) {
-//     if (feedData[i].id !== restrictionId) {
-//       recipeIds = feedData[i].recipes;
-//       getRecipe('recipe', feed)
-//     }
-//   }
-//   emulateServerReturn(dietData, cb);
-// }
-//
-
 /**
  * @param recipeIds, the Ids that we don't want to include
  * @param cb The callback function to be called at the end
@@ -363,4 +336,60 @@ export function getRestriction(checkbox, cb) {
    var dietData = readDocument('restrictions', restrictionId);
    var result = {"recipes":dietData.recipes, "target":checkbox};
    emulateServerReturn(result, cb);
+}
+
+/**
+* Adding a recipe to the user's calendar when given the user's id, the recipe's id,
+* and the day you want to add the recipe to
+*/
+export function addRecipeToCalendar(recipeId, userId, day, cb) {
+   var user = readDocument("users", userId);
+   // var recipe = readDocument("recipes", recipeId);
+   var calendar = readDocument("calendar", 2);
+   // console.log("calendar before: ", calendar[day]);
+   // calendar[day].push(recipeId);
+   calendar[day][3] = recipeId;
+   writeDocument('users', user);
+   // console.log("calendar after: ", calendar[day]);
+   emulateServerReturn(user, cb);
+}
+
+/**
+  * Gets the recipes that have the ingredients the user puts in
+  * @param ingredientsList is the list of ingredients entered in instamode
+  */
+export function findRecipeByIngredients(ingredientsList, cb) {
+    var recipes = getCollection('recipe');
+    var i, recipeData = [];
+    for (i in recipes) {
+      if (recipes.hasOwnProperty(i)) {
+        recipeData.push(recipes[i]);
+      }
+    }
+    // will store the list of recipes that match
+    var matchedIngredientRecipe = [];
+
+    for (var z=0; z<recipeData.length; z++) {
+      var ingredients = recipeData[z].ingredients;
+      // ingredients is the list for each recipe's ingredients
+      // deciding which list to loop over, depends on which is longer
+      // var longerList;
+      // console.log(ingredients.length);
+      // if (ingredientsList.length >= ingredients.length) {
+      //   longerList = ingredientsList;
+      // } else {
+      //   longerList = ingredients;
+      // }
+      for (var y=0; y<ingredients.length; y++) {
+        var splitIngredients = ingredients[y].split(' ');
+        for (var x=0; x<ingredientsList.length; x++) {
+          if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+            matchedIngredientRecipe.push(recipeData[z]);
+            break;
+          }
+        }
+      }
+    }
+    // console.log(matchedIngredientRecipe);
+    emulateServerReturn(matchedIngredientRecipe, cb);
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import ResultsItem from './resultsItem';
 import Searchbar from './searchbar';
 import {findRecipe} from '../server';
+import {FilterBar} from './filter';
 
 export default class ResultsFeed extends React.Component {
   constructor(props) {
@@ -15,10 +16,6 @@ export default class ResultsFeed extends React.Component {
   onSearch(searchText) {
     // If searchText is 'Brownies', navigates to #/results?q=Brownies
     this.context.router.push({ pathname: "/results", query: { q: searchText } });
-    // set state of recipeList to the results (newRecipeList) of findRecipe
-    findRecipe(searchText, (newRecipeList) => {
-      this.setState({recipeList : newRecipeList});
-    });
   }
 
   refresh() {
@@ -27,19 +24,37 @@ export default class ResultsFeed extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      query: nextProps.query.q
+    });
+  }
+
   componentDidMount() {
     this.refresh();
   }
 
+  componentDidUpdate() {
+    this.refresh();
+  }
+
+  // <div id="sidebar-wrapper">
+  //     <FilterBar />
+  // </div>
+
   render() {
     return (
-      <div className="results">
-        <Searchbar type="resultsPage" onSearch={(searchText) => this.onSearch(searchText)} />
-        {this.state.recipeList.map((recipe) => {
-          return (
-            <ResultsItem key={recipe._id} data={recipe} />
-          );
-        })}
+      <div>
+        <div id="page-content-wrapper">
+          <div className="col-md-offset-2 col-md-8 container-fluid results">
+            <Searchbar type="resultsPage" onSearch={(searchText) => this.onSearch(searchText)} />
+            {this.state.recipeList.map((recipe) => {
+              return (
+                <ResultsItem key={recipe._id} data={recipe} />
+              );
+            })}
+          </div>
+        </div>
       </div>
     );
   }
