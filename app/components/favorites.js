@@ -8,22 +8,22 @@ export default class Favorites extends React.Component {
     super(props);
     this.state = {
       _id : this.props.user,
-      /* filter bar is offscreen by default so its condition is true */
+      /** filter bar is offscreen by default so its condition is true */
       condition: true,
-      /* empty favorites' list initially */
+      /** empty favorites' list initially */
       favoritesList: [],
-      /* the list of recipes of the favorited items is initially empty */
+      /** the list of recipes of the favorited items is initially empty */
       recipeList: []
     };
   }
 
-  /* handles click of filter button to decide whether or not to show the sidebar */
+  /** handles click of filter button to decide whether or not to show the sidebar */
   handleClick(e){
     e.preventDefault();
     this.setState( { condition : !this.state.condition } );
   }
 
-  /* gets the favorites' list for the current user and the recipes of the
+  /** gets the favorites' list for the current user and the recipes of the
   favorited items */
   refresh() {
     getProfileData(this.props.user, (newFavoritesList) => {
@@ -43,7 +43,6 @@ export default class Favorites extends React.Component {
   render() {
     return (
       <div>
-        /* if the condition is true, the toggled class gets added and shows the filter sidebar */
         <div id="wrapper" className={this.state.condition ? "toggled" :""}>
           <div id="sidebar-wrapper">
               <FilterBar/>
@@ -51,7 +50,6 @@ export default class Favorites extends React.Component {
           <div id="page-content-wrapper">
             <div className="favorites">
               <h1 className="center">Favorites</h1>
-              /* this button calls the handleClick function which decides whether or not to show the sidebar */
               <button className="btn btn-default" onClick={(e)=>this.handleClick(e)}>
                 <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
                 Filter
@@ -70,10 +68,8 @@ export default class Favorites extends React.Component {
                 </div>
               </div>
               <div className="font1">
-                /* for all the favorited items in favoritesList, their recipes are retrieved and populate as a FavoritesItem */
                   {this.state.recipeList.map((recipe, i) => {
                     return (
-                      /* passing in a key index and the recipe object as FavoritesItem's data */
                       <FavoritesItem key={i} data={recipe} />
                     );
                   })
