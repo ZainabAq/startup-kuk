@@ -37,13 +37,13 @@ export default class Favorites extends React.Component {
       <div className="favorites" id="wrapper">
         <div id="page-content-wrapper">
           <h1 className="center">Favorites</h1>
-          <div>
-              <button className="btn btn-default pull-left" id="menu-toggle" onClick={(e)=>this.handleClick(e)}>
+          <div className="buttonspace">
+              <button className="pull-left btn btn-default" id="menu-toggle" onClick={(e)=>this.handleClick(e)}>
                 <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
                 Filter
               </button>
-              <div className="btn-group sortbuttonspace">
-              <button type="button" className="btn btn-default dropdown-toggle sortbutton pull-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div className="btn-group pull-right clearfix">
+              <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Sort <span className="caret"></span>
                 </button>
               <ul className="dropdown-menu pull-right">
@@ -54,18 +54,14 @@ export default class Favorites extends React.Component {
                 <li><a href="#">By Date Added</a></li>
               </ul>
             </div>
-          <div className="container-fluid" id="favoriteslisting">
-          <div className="font1">
-
+          </div>
+          <div className="container-fluid font1" id="favoriteslisting">
               {this.state.recipeList.map((recipe, i) => {
                 return (
                   <FavoritesItem key={i} data={recipe} />
                 );
               })
             }
-
-        </div>
-      </div>
       </div>
       </div>
     </div>
