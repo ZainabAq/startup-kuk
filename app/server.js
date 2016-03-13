@@ -66,10 +66,10 @@ function getCalendarData(userId, week, day) {
 
 }
 
-export function removeRecipefromCalendar(id, week, day) {
+export function removeRecipefromCalendar(id, week, day, i) {
   var calendar = readDocument('calendar', week);
   if (id !== -1) {
-    calendar[day].splice(-1, 1);
+    calendar[day].splice(i, 1);
     writeCalendar('calendar', calendar, week);
   }
 }

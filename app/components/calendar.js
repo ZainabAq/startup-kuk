@@ -64,9 +64,9 @@ export default class Calendar extends React.Component {
       this.refresh();
     }
 
-    onRemoveRecipe(e, id, day) {
+    onRemoveRecipe(e, id, day, i) {
       e.stopPropagation();
-      removeRecipefromCalendar(id, this.state.week, day)
+      removeRecipefromCalendar(id, this.state.week, day, i)
     }
 
     handleCalChangeEdit(e) {
@@ -90,7 +90,7 @@ export default class Calendar extends React.Component {
              {this.state.Monday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Monday")}/>
+                <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Monday", i)}/>
               )
             })}
         </ul>
