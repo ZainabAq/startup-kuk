@@ -124,6 +124,7 @@ export default class Recipe extends React.Component {
    handleCalendarClick(clickEvent, day) {
       // just adds to the calendar so it doesn't return anything
       addRecipeToCalendar(this.state._id, 1, day, (data) => {});
+      alert("Recipe added to calendar!");
    }
 
    render() {

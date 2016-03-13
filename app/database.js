@@ -107,7 +107,7 @@ var initialData = {
       "Monday": [1,2,3,4], "Tuesday":[2, 3, 4, 5], "Wednesday":[1, 2, 3, 4], "Thursday":[4, 3, 1, 2], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
     },
     "2": {
-      "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 1], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
+      "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 4], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
     },
     "3": {
         "Monday": [5, 3, 1, 2], "Tuesday":[5, 4, 5, 1], "Wednesday":[1, 2, 4, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
