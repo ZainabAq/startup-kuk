@@ -26,7 +26,19 @@
 .favorites .heartspace {
   position: absolute;
   bottom: 8px;
-  left: 80px;
+  left: 70px;
+}
+
+.favorites .imagespace:hover img{
+    opacity: 0.3;
+}
+
+.favorites .imagespace:hover .heartspace{
+  display: inline;
+}
+
+.favorites .imagespace .heartspace{
+    display: none;
 }
 
 .favorites .mini-listing.button {
@@ -48,15 +60,9 @@
     text-decoration: none;
     text-transform: uppercase;
 }
-.favorites .gray {
-    background: none repeat scroll 0 0 #AAAAAA;
-}
 
-.favorites .thumbnail .heartspace {
-    display: none;
-}
-.thumbnail:hover .heartspace {
-    display: inline;
+.favorites .red {
+    background: none repeat scroll 0 0 #9C102E;
 }
 
 #favoriteslisting {
@@ -82,6 +88,9 @@
   width: 160px;
   height: 120px;
   overflow: hidden;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
 }
 
 #filter {
