@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 import {getProfileData, findRecipesFromId} from '../server';
 import FavoritesItem from './favoritesItem';
 import FilterBar from './filter';
@@ -21,6 +22,11 @@ export default class Favorites extends React.Component {
   handleClick(e){
     e.preventDefault();
     this.setState( { condition : !this.state.condition } );
+  }
+
+  handleClick2(e) {
+    e.preventDefault();
+    this.forceUpdate()
   }
 
   /** gets the favorites' list for the current user and the recipes of the
@@ -59,11 +65,10 @@ export default class Favorites extends React.Component {
                   <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sort <span className="caret"></span></button>
                   <ul className="dropdown-menu pull-right">
-                    <li><a href="#">By Cuisine</a></li>
-                    <li><a href="#">By Meal</a></li>
-                    <li><a href="#">By Calories: Low to High</a></li>
+                    <li><Link to="/favorites/1">By Cuisine</Link></li>
+                    <li><Link to="/favorites/1">By Meal</Link></li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#">By Date Added</a></li>
+                    <li><Link to="/favorites/1">By Date Added</Link></li>
                   </ul>
                 </div>
               </div>
