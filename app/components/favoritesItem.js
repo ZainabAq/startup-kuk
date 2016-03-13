@@ -25,9 +25,9 @@ export default class FavoritesItem extends React.Component {
   }
 
   render() {
-    var favButtonIcon = "fa fa-heart fa-lg";
+    var favButtonIcon = "fa fa-heart-o fa-lg";
     if (this.state.favoriteStatus) {
-       favButtonIcon = "fa fa-times fa-lg";
+       favButtonIcon = "fa fa-heart fa-lg";
     }
     return (
       <div className="col-md-2 thumbnail">
