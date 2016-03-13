@@ -26,11 +26,11 @@
 .favorites .heartspace {
   position: absolute;
   bottom: 8px;
-  left: 70px;
+  left:43%;
 }
 
 .favorites .imagespace:hover img{
-    opacity: 0.3;
+    opacity: 0.4;
 }
 
 .favorites .imagespace:hover .heartspace{
@@ -90,7 +90,7 @@
   overflow: hidden;
   display: block;
   margin-left: auto;
-  margin-right: auto
+  margin-right: auto;
 }
 
 #filter {

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
+import {addFavorite, removeFavorite} from '../server';
 
 export default class FavoritesItem extends React.Component {
   constructor(props) {
@@ -8,6 +9,19 @@ export default class FavoritesItem extends React.Component {
     this.state = {
        favoriteStatus: true
     };
+  }
+
+  handleFavoriteClick(e) {
+     e.preventDefault();
+     var callbackFunction = () => {};
+     if (!this.state.favoriteStatus) {
+           addFavorite(this.props.data._id, 1, callbackFunction);
+           this.setState({favoriteStatus: true});
+        }
+        else {
+           removeFavorite(this.props.data._id, 1, callbackFunction);
+           this.setState({favoriteStatus: false});
+        }
   }
 
   render() {
@@ -21,7 +35,7 @@ export default class FavoritesItem extends React.Component {
         <div className="imagespace">
         <img src={this.props.data.img} alt={this.props.data._id} className="img-rounded croppedimg" />
           <div className="heartspace">
-                      <a className="mini-listing red button" href="#"><span className={favButtonIcon}></span></a>
+            <a className="mini-listing red button" href="#" onClick={(e)=>this.handleFavoriteClick(e)}><span className={favButtonIcon}></span></a>
           </div>
         </div>
       </div>
