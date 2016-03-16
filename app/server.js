@@ -169,25 +169,48 @@ export function removeUserRestriction(checkbox, userId, cb) {
   var result = {"restrictions":userData.restrictions, "target":checkbox};
   emulateServerReturn(result, cb);
 }
-/**
- * @param amountofRecipes
- * @param cb, callback function
- *
- */
-export function getFeedData(amountofRecipes, cb) {
-  // Get the recipe collection
-  var feedData = getCollection('recipe');
-  // initialize empty array
-  var i=1, recipeList=[];
 
-  // get an arbitray number of recipes and their specific properties
-  while(amountofRecipes != 0) {
-    recipeList.push([feedData[i]._id, feedData[i].name,
-      feedData[i].img, feedData[i].description, feedData[i].time]);
-    i++;
-    amountofRecipes--;
+/**
+ * @param array of restrictions to not be included
+ * @param cb, callback function
+ * gets the proper recipes to popualate the feed
+ */
+
+export function getFeedData(restrictions, cb) {
+  // get the recipe collection & initialize feedData
+  var recipes = getCollection('recipe');
+  var feedData = [];
+  // if no filter has been applied yet, get all the recipes
+  if (restrictions.length == 0) {
+    for (var i in recipes) {
+      if (recipes.hasOwnProperty(i)) {
+        feedData.push(recipes[i]);
+      }
+    }
+  } else {
+    var dietData = readDocument('restrictions', restrictions[0]);
+    var dietRecipes = dietData.recipes;
+    for(var j in recipes) {
+      if (dietRecipes.indexOf(recipes[j]._id) === -1) {
+        feedData.push(recipes[j]);
+      }
+    }
   }
-  emulateServerReturn(recipeList, cb);
+  console.log(feedData);
+  emulateServerReturn(feedData, cb);
+}
+
+/**
+ * @param user The id of a specific restriction
+ * @param cb The callback function to be called at the end
+ * Returns recipes that don't match restrictionId
+ */
+export function getRestriction(checkbox, cb) {
+  var restrictionId = checkbox.value;
+   //get the recipe object with the correct id
+  //  var dietData = readDocument('restrictions', restrictionId);
+   var result = {"restrictions":restrictionId, "target":checkbox};
+   emulateServerReturn(result, cb);
 }
 
 /**
@@ -307,35 +330,6 @@ export function checkUserFavorites(recipeId, userId, cb) {
   //assuming that favorites is an array here
   // favorites = getRestrictionStrings(favorites);
   emulateServerReturn(isRecipeIn, cb);
-}
-
-/**
- * @param recipeIds, the Ids that we don't want to include
- * @param cb The callback function to be called at the end
- * Returns recipes that don't match restrictionId
- */
-export function getFilteredRecipes(recipeIds, cb) {
-  var feedData = getCollection('recipe');
-  var dietRecipes = [];
-  for(var i in feedData) {
-    if (recipeIds.indexOf(feedData[i]._id) === -1) {
-      dietRecipes.push(feedData[i]);
-    }
-  }
-  emulateServerReturn({"filtered":dietRecipes}, cb);
-}
-
-/**
- * @param user The id of a specific restriction
- * @param cb The callback function to be called at the end
- * Returns recipes that don't match restrictionId
- */
-export function getRestriction(checkbox, cb) {
-  var restrictionId = checkbox.value;
-   //get the recipe object with the correct id
-   var dietData = readDocument('restrictions', restrictionId);
-   var result = {"recipes":dietData.recipes, "target":checkbox};
-   emulateServerReturn(result, cb);
 }
 
 /**

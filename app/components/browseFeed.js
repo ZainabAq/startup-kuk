@@ -10,23 +10,32 @@ export default class BrowseFeed extends React.Component {
       // empty Feed initially
       // filter bar is offscreen by default
       condition: true,
-      recipes: []
+      recipes: [],
+      restrictions: []
     };
   }
 
-  /** handles click of filter button to decide whether or not to show the sidebar */
+  /** handles click on filter button to show the filter sidebar */
   handleClick(e){
     e.preventDefault();
     this.setState( { condition : !this.state.condition } );
+  }
+
+  /** handles filtering */
+  onFilter(filteredRestrictions){
+    this.setState({restrictions: filteredRestrictions});
+    setTimeout(() => {
+      this.refresh();
+    }, 4);
   }
 
   /**
    *  refreshes the feed
    *  populates the feed with a set amount of recipes from the database
    */
-  refresh(value) {
-    getFeedData(value, (recipeData) => {
-      this.setState({recipes : recipeData});
+  refresh() {
+    getFeedData(this.state.restrictions, (feedData) => {
+      this.setState({recipes: feedData});
     });
   }
 
@@ -34,7 +43,7 @@ export default class BrowseFeed extends React.Component {
    *  call refresh when page is loaded to load 5 recipe
    */
   componentDidMount() {
-    this.refresh("5");
+    this.refresh();
   }
 
   // NOTE:If we wanted to get fancy, we could modify the Feed’s render() function to
@@ -43,11 +52,12 @@ export default class BrowseFeed extends React.Component {
   // the animation when loaded is false, and set loaded to true once the server
   // response comes back in.
   render() {
+    // console.log(this.state);
     return (
       <div>
         <div id="wrapper" className={this.state.condition ? "toggled" :""}>
           <div id="sidebar-wrapper">
-              <FilterBar/>
+              <FilterBar onFilter={(filteredRestrictions) => this.onFilter(filteredRestrictions)} />
           </div>
           <div id="page-content-wrapper">
             <div className="container-fluid">
@@ -59,7 +69,7 @@ export default class BrowseFeed extends React.Component {
               <ul id="categories" className="clr">
                 {this.state.recipes.map((recipe, i) => {
                   return (
-                    <li key={i}><FeedItem info={recipe} /></li>
+                    <li key={i}><FeedItem key={recipe._id} data={recipe} /></li>
                   )
                 })}
               </ul>

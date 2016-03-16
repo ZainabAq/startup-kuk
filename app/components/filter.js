@@ -1,38 +1,31 @@
 //react component for the filter bar
 import React from 'react';
 import {getRestriction} from '../server';
-import {getFilteredRecipes} from '../server';
 
 export default class FilterBar extends React.Component {
-   constructor(props) {
+  constructor(props) {
       super(props);
-      // The recipe's initial state
       this.state = {
-        recipes : this.props.recipes
-      }
-   }
+        restrictions: []
+      };
+    }
 
-   handleChange(checkEvent) {
+  handleFilter(e) {
+    e.preventDefault();
+    this.props.onFilter(this.state.restrictions);
+  }
+
+  handleChange(checkEvent) {
      checkEvent.preventDefault();
-     if (checkEvent.target.checked) {
-       getRestriction(checkEvent.target, (object) => {
-         var newRecipes = object.recipes;
-         getFilteredRecipes(newRecipes, (obj) => {
-           var dietRecipes = obj.filtered;
-           this.setState({recipes : dietRecipes});
-          //  console.log(dietRecipes);
-           object.target.checked = true;
-         });
-       });
+    if (checkEvent.target.checked) {
+      getRestriction(checkEvent.target, (object) => {
+        var newRestrictions = this.state.restrictions.concat(object.restrictions);
+        this.setState({restrictions : newRestrictions});
+        object.target.checked = true;
+      });
      } else {
        getRestriction(checkEvent.target, (object) => {
-         var newRecipes = object.recipes;
-         getFilteredRecipes(newRecipes, (obj) => {
-           var dietRecipes = obj.filtered;
-           this.setState({recipes : dietRecipes});
-          //  console.log(dietRecipes);
-           object.target.checked = false;
-         });
+         object.target.checked = true;
        });
      }
    }
@@ -119,7 +112,9 @@ export default class FilterBar extends React.Component {
              </div>
             </div>
             <hr />
-            <button type="submit" className="btn btn-default pull-right">Apply Filter</button>
+            <button className="btn btn-default pull-right" onClick={(e) => this.handleFilter(e)}>
+              Apply Filter
+            </button>
           </form>
       </div>
   </div>
