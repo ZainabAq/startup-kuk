@@ -1,4 +1,3 @@
-//react component for the filter bar
 import React from 'react';
 import {getRestriction} from '../server';
 
@@ -25,7 +24,11 @@ export default class FilterBar extends React.Component {
       });
      } else {
        getRestriction(checkEvent.target, (object) => {
-         object.target.checked = true;
+         var oldRestrictions = this.state.restrictions;
+         var i = oldRestrictions.indexOf(object.restrictions);
+         delete oldRestrictions[i];
+         this.setState({restrictions : oldRestrictions});
+         object.target.checked = false;
        });
      }
    }

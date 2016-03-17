@@ -175,7 +175,6 @@ export function removeUserRestriction(checkbox, userId, cb) {
  * @param cb, callback function
  * gets the proper recipes to popualate the feed
  */
-
 export function getFeedData(restrictions, cb) {
   // get the recipe collection & initialize feedData
   var recipes = getCollection('recipe');
@@ -188,29 +187,22 @@ export function getFeedData(restrictions, cb) {
       }
     }
   } else {
-    var dietData = readDocument('restrictions', restrictions[0]);
-    var dietRecipes = dietData.recipes;
+    // get the set of recipes that have restrictions
+    var recipeSet = new Set();
+    for (var id in restrictions) {
+      var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
+      for (var recipeId in badRecipes) {
+        recipeSet.add(badRecipes[recipeId]);
+      }
+    }
+    // get recipes that don't match the set of restricted recipes
     for(var j in recipes) {
-      if (dietRecipes.indexOf(recipes[j]._id) === -1) {
+      if (!recipeSet.has(recipes[j]._id)) {
         feedData.push(recipes[j]);
       }
     }
   }
-  console.log(feedData);
   emulateServerReturn(feedData, cb);
-}
-
-/**
- * @param user The id of a specific restriction
- * @param cb The callback function to be called at the end
- * Returns recipes that don't match restrictionId
- */
-export function getRestriction(checkbox, cb) {
-  var restrictionId = checkbox.value;
-   //get the recipe object with the correct id
-  //  var dietData = readDocument('restrictions', restrictionId);
-   var result = {"restrictions":restrictionId, "target":checkbox};
-   emulateServerReturn(result, cb);
 }
 
 /**
@@ -330,6 +322,19 @@ export function checkUserFavorites(recipeId, userId, cb) {
   //assuming that favorites is an array here
   // favorites = getRestrictionStrings(favorites);
   emulateServerReturn(isRecipeIn, cb);
+}
+
+/**
+ * @param checkbox The DOM object triggering this call
+ * @param cb The callback function to be called at the end
+ * Returns recipes that don't match restrictionId
+ */
+export function getRestriction(checkbox, cb) {
+  var restrictionId = checkbox.value;
+   //get the recipe object with the correct id
+  //  var dietData = readDocument('restrictions', restrictionId);
+   var result = {"restrictions":restrictionId, "target":checkbox};
+   emulateServerReturn(result, cb);
 }
 
 /**
