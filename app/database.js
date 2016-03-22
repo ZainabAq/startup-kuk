@@ -54,7 +54,7 @@ var initialData = {
       "averageRating": [4, 5, 5],
       "instructions": ["Wash and dry napa cabbage leaves. Green leafy parts may be left in larger pieces (2″ or so), but white parts must be diced small (cut white parts vertically into 1/4″ wide sticks, then cut sticks into 1/4″ dice).", "Cut zucchini in 1/4″ dice also (slice lengthwise into 1/4″ strips, then strips into 1/4″ sticks, then sticks into 1/4″ dice).", "Heat 2 tablespoons of cooking oil in a skillet over medium heat. Add onion and cook until softened; remove to a bowl. Add a bit more oil and cook cabbage until edges look translucent; remove and add to bowl. Add zucchini and cook briefly, just to coat with a bit of oil; remove and add to other vegetables.", "Heat a bit more oil and cook ground meat, breaking it up well with a spatula. When all traces of pink are gone, remove meat to a separate bowl.", "Heat 3 tablespoons of oil in the skillet with the ginger slices. Add ground bean sauce and hoisin sauce (also chunjang and miso, if using) and cook, stirring, until the sauces are bubbling hot and mostly mixed into the oil.", "Add meat back in (try and leave out any juice that may have accumulated), and mix well with sauce. Cook for another minute, then remove ginger slices. Add back vegetables and stir.", "Add soy sauce, water and chicken broth (you may substitute 3 tablespoons water plus 1 tablespoon soy sauce if you don’t have chicken broth) and stir. Cook to heat.", "Mix cornstarch with water, then stir into the skillet. Cook until sauce thickens. Add sesame oil to finish.", "Slice cucumber thinly on the diagonal. Then take one little stack of cucumber slices at a time and cut thin matchsticks. Set aside for garnish.", "Cook fresh noodles in boiling water (if you can’t read the directions, just know that fresh noodles cook quickly, so taste it after 3 minutes and check). Serve immediately, as the noodles get gummy and stick together as they cool. Top with meat sauce and garnish with slivered cucumber."],
       "time": "1 hour",
-      "restrictions": [4,5,9],
+      "restrictions": [4,10],
       "img": "http://www.sbs.com.au/food/sites/sbs.com.au.food/files/styles/full/public/bejing-zha-pork-noodles_2.jpg?itok=ov2ONR2x&mtime=1382441740",
       "description":"The bestest best dish on the website"
     },
@@ -68,7 +68,7 @@ var initialData = {
       "averageRating": [4, 5, 5],
       "instructions": ["Whisk onion, soy sauce, brown sugar, garlic, sesame oil, sesame seeds, cayenne pepper, salt, and black pepper together in a bowl until marinade is smooth.", "Cook and stir chicken and marinade together in a large skillet over medium-high heat until chicken is cooked through, about 15 minutes."],
       "time": "30 mins",
-      "restrictions": [1,5,9],
+      "restrictions": [4,8],
       "img": "http://www.chowstatic.com/assets/recipe_photos/25679_korean_grilled_chicken.jpg",
       "description":"A Korean dish renowened for its simplicity and flavor"
     },
@@ -82,7 +82,7 @@ var initialData = {
       "averageRating": [4, 2, 5],
       "instructions": ["Bring a large pot of lightly salted water to a boil. Add pasta and cook for 8 to 10 minutes or until al dente; drain.", "Melt butter in a large skillet over medium heat. Saute onion in butter until tender.", "Stir flour and garlic powder into the butter and onions. Gradually stir in milk. Heat to just below boiling point, and then gradually stir in cheese until the sauce is smooth. Stir in peas and mushrooms., and cook over low heat for 4 minutes.", "Toss in smoked salmon, and cook for 2 more minutes. Serve over pasta."],
       "time": "30 mins",
-      "restrictions": [5,9],
+      "restrictions": [1,5,6],
       "img": "http://images.media-allrecipes.com/userphotos/600x600/131597.jpg",
       "description":"Using only fresh salmon, this recipe is the best in Alaskan cooking"
    },
@@ -95,7 +95,7 @@ var initialData = {
       "averageRating": [4, 4, 3],
       "instructions": ["Blend avocado, orange juice, vanilla yogurt, ice cubes, strawberries, honey, and flax seed meal together in a blender until smooth, at least 45 seconds."],
       "time": "10 mins",
-      "restrictions": [],
+      "restrictions": [1],
       "img": "http://www.eat-yourself-skinny.com/wp-content/uploads/2013/09/113.jpg",
       "description": "This healthy, tasty smoothie is the perfect way to start your work week"
    }
@@ -118,7 +118,7 @@ var initialData = {
     "1": {
       "_id": 1,
       "tag": "Dairy",
-      "recipes": [1,2,4]
+      "recipes": [1,2,5,6]
     },
     "2": {
       "_id": 2,
@@ -133,17 +133,17 @@ var initialData = {
     "4": {
       "_id": 4,
       "tag": "Soy",
-      "recipes":[3]
+      "recipes":[3,4]
     },
     "5": {
       "_id": 5,
       "tag": "Gluten",
-      "recipes":[1,2,3,4,5]
+      "recipes":[1,2,5]
     },
     "6": {
       "_id": 6,
       "tag": "Fish",
-      "recipes":[]
+      "recipes":[5]
     },
     "7": {
       "_id": 7,
@@ -153,7 +153,7 @@ var initialData = {
     "8": {
       "_id": 8,
       "tag": "Poultry",
-      "recipes":[2]
+      "recipes":[2,4]
     },
     "9": {
       "_id": 9,
@@ -163,7 +163,7 @@ var initialData = {
     "10": {
       "_id": 10,
       "tag": "Pork",
-      "recipes":[3,4,5]
+      "recipes":[3]
     }
   }
 };
