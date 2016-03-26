@@ -2,7 +2,6 @@ import React from 'react';
 import ResultsItem from './resultsItem';
 import Searchbar from './searchbar';
 import {findRecipe} from '../server';
-import {FilterBar} from './filter';
 
 export default class ResultsFeed extends React.Component {
   constructor(props) {
@@ -38,16 +37,12 @@ export default class ResultsFeed extends React.Component {
     this.refresh();
   }
 
-  // <div id="sidebar-wrapper">
-  //     <FilterBar />
-  // </div>
-
   render() {
     return (
       <div>
         <div id="page-content-wrapper">
           <div className="col-md-offset-2 col-md-8 container-fluid results">
-            <Searchbar type="resultsPage" onSearch={(searchText) => this.onSearch(searchText)} />
+            <Searchbar type="resultsPage" value={this.state.query} onSearch={(searchText) => this.onSearch(searchText)} />
             {this.state.recipeList.map((recipe) => {
               return (
                 <ResultsItem key={recipe._id} data={recipe} />
