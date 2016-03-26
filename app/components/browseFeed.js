@@ -52,7 +52,6 @@ export default class BrowseFeed extends React.Component {
   // the animation when loaded is false, and set loaded to true once the server
   // response comes back in.
   render() {
-    // console.log(this.state);
     return (
       <div>
         <div id="wrapper" className={this.state.condition ? "toggled" :""}>
@@ -62,7 +61,7 @@ export default class BrowseFeed extends React.Component {
           <div id="page-content-wrapper">
             <div className="container-fluid">
               <h1 className="center">Browse Our Recipes</h1>
-              <button className="btn btn-default" onClick={(e)=>this.handleClick(e)}>
+              <button className="btn btn-default" onClick={(e) => this.handleClick(e)}>
                 <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
                 Filter
               </button>
