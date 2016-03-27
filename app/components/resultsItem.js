@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router';
-//import {getRecipe} from '../server';
 
 export default class ResultsItem extends React.Component {
   constructor(props) {
@@ -17,17 +16,6 @@ export default class ResultsItem extends React.Component {
      var average = sum/ratings.length;
      return average;
   }
-
-  // refresh() {
-  //    getRecipe(this.state, (recipeData) => {
-  //       this.setState(recipeData);
-  //       this.findAverageRating()
-  //    });
-  // }
-  //
-  // componentDidMount() {
-  //    this.refresh();
-  // }
 
   render() {
     return (
