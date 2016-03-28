@@ -25,8 +25,10 @@ export default class Calendar extends React.Component {
     }
 
   }
-    refresh() {
-       getProfileCalendarData(this.props.user, this.state.week, (profileData) => {
+    refresh(week) {
+       getProfileCalendarData(this.props.user, week, (profileData) => {
+         this.setState({week : week});
+         console.log(week);
          this.setState(profileData);
               });
     }
@@ -44,7 +46,7 @@ export default class Calendar extends React.Component {
     }
 
     componentDidMount() {
-      this.refresh();
+      this.refresh(2);
       setTimeout(() => {
         this.setState({loading : false});
       }, 4);
@@ -52,22 +54,19 @@ export default class Calendar extends React.Component {
 
     handleCalChangePrevious(e) {
       e.stopPropagation();
-      this.setState({week: 1});
-      this.setState({loading: false});
-      this.refresh();
+      this.refresh(1);
       }
 
     handleCalChangeNext(e) {
       e.stopPropagation();
-      this.setState({week: 3});
-      this.setState({loading: false});
-      this.refresh();
+      this.refresh(3);
     }
 
     onRemoveRecipe(e, id, day, i) {
       e.stopPropagation();
-      removeRecipefromCalendar(id, this.state.week, day, i)
-    }
+      var callbackFunction = () => {};
+      removeRecipefromCalendar(id, this.state.week, day, i, callbackFunction);
+      }
 
     handleCalChangeEdit(e) {
       e.stopPropagation();
