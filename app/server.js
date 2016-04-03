@@ -299,11 +299,12 @@ export function removeFavorite (recipeId, userId, cb) {
 export function checkUserFavorites(recipeId, userId, cb) {
   var user = readDocument("users", userId);
   var favorites = user.favorites;
+  console.log("favorites is:", favorites)
   var isRecipeIn = false;
   if (favorites.includes(recipeId)) {
      isRecipeIn = true;
  }
- // console.log("checkUserFavorites:", isRecipeIn);
+ console.log("checkUserFavorites:", isRecipeIn);
   //assuming that favorites is an array here
   // favorites = getRestrictionStrings(favorites);
   emulateServerReturn(isRecipeIn, cb);
@@ -343,13 +344,16 @@ export function getRestriction(checkbox, cb) {
 * and the day you want to add the recipe to
 */
 export function addRecipeToCalendar(recipeId, userId, day, cb) {
+   console.log("in the addRecipeToCalendar server method");
    var user = readDocument("users", userId);
    var calendar = readDocument("calendar", 2);
+   console.log("calender before is: ", calendar[day]);
    if (calendar[day][3]) {
       calendar[day][3] = recipeId;
    } else {
       calendar[day].push(recipeId);
    }
+   console.log("calendar after is: ", calendar[day]);
    writeDocument('users', user);
    emulateServerReturn(user, cb);
 }

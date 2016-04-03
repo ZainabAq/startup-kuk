@@ -19,6 +19,10 @@ export default class Recipe extends React.Component {
 
    refresh() {
       getRecipe(this.props.param, (recipeData) => {
+         this.didUserFavorite((result) => {
+            recipeData.currentFavorite = result;
+            this.setState(recipeData);
+         })
          this.setState(recipeData);
          this.findAverageRating()
       });
@@ -52,17 +56,27 @@ export default class Recipe extends React.Component {
          var callbackFunction = () => {};
          // this.didUserFavoriteTwo();
          // console.log("this.state.currentFavorite=", this.state.currentFavorite);
-         if (!this.state.currentFavorite) {
-            addFavorite(this.state._id, 1, callbackFunction);
-            this.setState({currentFavorite: true});
-         }
-         else {
-            removeFavorite(this.state._id, 1, callbackFunction);
-            this.setState({currentFavorite: false});
-         }
+         // if (!this.state.currentFavorite) {
+         //    addFavorite(this.state._id, 1, callbackFunction);
+         //    this.setState({currentFavorite: true});
+         // }
+         // else {
+         //    removeFavorite(this.state._id, 1, callbackFunction);
+         //    this.setState({currentFavorite: false});
+         // }
          // addFavorite(this.state._id, 1, callbackFunction);
          // console.log("Value of didUserFavoriteTwo is",this.didUserFavorite())
-         // if (this.didUserFavoriteTwo()) {
+         this.didUserFavorite((result) => {
+            if (result) {
+               removeFavorite(this.state._id, 1, callbackFunction);
+               this.setState({currentFavorite: result})
+            }
+            else {
+               addFavorite(this.state._id, 1, callbackFunction);
+               this.setState({currentFavorite: result})
+            }
+         });
+         // if (this.didUserFavorite()) {
          //    // User clicked 'unfavorite' button.
          //    removeFavorite(this.state._id, 1, callbackFunction);
          // } else {
@@ -99,22 +113,21 @@ export default class Recipe extends React.Component {
    * have to go to the server to get the information about the user, and the async
    * is therefore fucking things up.
    */
-   didUserFavorite() {
+   didUserFavorite(cb) {
       // console.log("in the didUserFavorites");
       //server function that will call the user's information when given the id
       //and check to see if the recipe is already in the favorites
       //server function to getUserFavorites
-      var result = false;
-      checkUserFavorites(this.state._id, 1, (isFavorite) => {
-         result = (isFavorite.isRecipeIn);
-      });
-      setTimeout(() => {
-         this.setState({loading : false});
-      }, 4);
-      if (this.state.loading) {
-         this.setState({loading : true});
-         return result
-      }
+      // var result = false;
+      checkUserFavorites(this.state._id, 1, cb);
+      console.log("In the didUserFavorites");
+      // setTimeout(() => {
+      //    this.setState({loading : false});
+      // }, 4);
+      // if (this.state.loading) {
+      //    this.setState({loading : true});
+      //    return result
+      // }
    }
 
 
