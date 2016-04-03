@@ -6,7 +6,7 @@ export default class Searchbar extends React.Component {
     super(props);
     this.state = {
       type: this.props.type,
-      value: ""
+      value: this.props.value
     };
   }
 
@@ -22,8 +22,7 @@ export default class Searchbar extends React.Component {
       if (search !== "") {
         // Search keyword
         this.props.onSearch(this.state.value);
-        // this.onSearch(this.state.value);
-        this.setState({value: ""});
+        this.setState({value: this.state.value});
       }
     }
   }
@@ -34,9 +33,15 @@ export default class Searchbar extends React.Component {
     if (search !== "") {
       // Search keyword
       this.props.onSearch(this.state.value);
-      // this.onSearch(this.state.value);
-      this.setState({value: ""});
+      this.setState({value: this.state.value});
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    //console.log("ugh")
+    this.setState({
+      value : nextProps.value
+    });
   }
 
   render() {

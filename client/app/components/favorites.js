@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 import {getProfileData, findRecipesFromId} from '../server';
 import FavoritesItem from './favoritesItem';
 import FilterBar from './filter';
@@ -8,8 +9,11 @@ export default class Favorites extends React.Component {
     super(props);
     this.state = {
       _id : this.props.user,
+      /** filter bar is offscreen by default so its condition is true */
       condition: true,
+      /** empty favorites' list initially */
       favoritesList: [],
+      /** the list of recipes of the favorited items is initially empty */
       recipeList: []
     };
   }
@@ -20,6 +24,13 @@ export default class Favorites extends React.Component {
     this.setState( { condition : !this.state.condition } );
   }
 
+  handleClick2(e) {
+    e.preventDefault();
+    this.forceUpdate()
+  }
+
+  /** gets the favorites' list for the current user and the recipes of the
+  favorited items */
   refresh() {
     getProfileData(this.props.user, (newFavoritesList) => {
       this.setState({favoritesList : newFavoritesList.favorites});
@@ -54,16 +65,14 @@ export default class Favorites extends React.Component {
                   <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sort <span className="caret"></span></button>
                   <ul className="dropdown-menu pull-right">
-                    <li><a href="#">By Cuisine</a></li>
-                    <li><a href="#">By Meal</a></li>
-                    <li><a href="#">By Calories: Low to High</a></li>
+                    <li><Link to="/favorites/1">By Cuisine</Link></li>
+                    <li><Link to="/favorites/1">By Meal</Link></li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#">By Date Added</a></li>
+                    <li><Link to="/favorites/1">By Date Added</Link></li>
                   </ul>
                 </div>
               </div>
               <div className="font1">
-
                   {this.state.recipeList.map((recipe, i) => {
                     return (
                       <FavoritesItem key={i} data={recipe} />
