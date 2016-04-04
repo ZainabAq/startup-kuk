@@ -124,10 +124,21 @@ export function getProfileCalendarData(user, week, cb) {
 
 //need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
 //modifyRestrictions (for the profile)
+
+//trying things out here to see if sending server requests is going to work
+//doesn't work because it doesn't like the database
+//which is confusing b/c it was perfectly fine to return a JSON of the right information
+//when /recipe/:id was there (but not /#/recipe/:recipeid)
 export function getRecipe(recipeId, cb) {
    //get the recipe object with the correct id
    var recipeData = readDocument('recipe', recipeId);
    emulateServerReturn(recipeData, cb);
+   // var xhr = new XMLHttpRequest();
+   // xhr.open("GET", "/recipe/:recipeid");
+   // xhr.addEventListener("load", function(){
+   //    cb(JSON.parse(xhr.responseText));
+   // });
+   // xhr.send();
 }
 
 /**
@@ -402,3 +413,5 @@ export function findRecipeByIngredients(ingredientsList, cb) {
     // console.log(matchedIngredientRecipe);
     emulateServerReturn(matchedIngredientRecipe, cb);
 }
+
+//   XHR REQUEST MAIN CODE (from Workshop 6)
