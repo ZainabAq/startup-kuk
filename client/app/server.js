@@ -131,14 +131,14 @@ export function getProfileCalendarData(user, week, cb) {
 //when /recipe/:id was there (but not /#/recipe/:recipeid)
 export function getRecipe(recipeId, cb) {
    //get the recipe object with the correct id
-   var recipeData = readDocument('recipe', recipeId);
-   emulateServerReturn(recipeData, cb);
-   // var xhr = new XMLHttpRequest();
-   // xhr.open("GET", "/recipe/:recipeid");
-   // xhr.addEventListener("load", function(){
-   //    cb(JSON.parse(xhr.responseText));
-   // });
-   // xhr.send();
+   // var recipeData = readDocument('recipe', recipeId);
+   // emulateServerReturn(recipeData, cb);
+   var xhr = new XMLHttpRequest();
+   xhr.open("GET", "/recipe/" + recipeId);
+   xhr.addEventListener("load", function(){
+      cb(JSON.parse(xhr.responseText));
+   });
+   xhr.send();
 }
 
 /**
@@ -274,14 +274,11 @@ export function findRecipesFromId(recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   // console.log("IN THE ADD FAVORITES FUNCTION IN SERVER");
    //getting both the user and the recipe from the database
    // var recipe = readDocument("recipes", recipeId);
    var user = readDocument("users", userId);
-   // console.log("favorites before adding:", user.favorites);
    user.favorites.push(recipeId);
    writeDocument('users', user);
-   // console.log("favorites after adding:", user.favorites);
    emulateServerReturn(user, cb);
 }
 
@@ -290,13 +287,11 @@ export function addFavorite(recipeId, userId, cb) {
 */
 export function removeFavorite (recipeId, userId, cb) {
    var user = readDocument("users", userId);
-   // console.log("favorites before:", user.favorites);
    //now need to remove the favorite from the user's list of favorites
    var favoriteIndex = user.favorites.indexOf(recipeId);
    if (favoriteIndex !== -1) {
       user.favorites.splice(favoriteIndex, 1);
       writeDocument("users", user);
-      // console.log("favorites after:", user.favorites);
    }
    emulateServerReturn(user, cb);
 }
@@ -331,12 +326,10 @@ export function removeFavorite (recipeId, userId, cb) {
 export function checkUserFavorites(recipeId, userId, cb) {
   var user = readDocument("users", userId);
   var favorites = user.favorites;
-  console.log("favorites is:", favorites)
   var isRecipeIn = false;
   if (favorites.includes(recipeId)) {
      isRecipeIn = true;
  }
- console.log("checkUserFavorites:", isRecipeIn);
   //assuming that favorites is an array here
   // favorites = getRestrictionStrings(favorites);
   emulateServerReturn(isRecipeIn, cb);
@@ -360,16 +353,13 @@ export function getRestriction(checkbox, cb) {
 * and the day you want to add the recipe to
 */
 export function addRecipeToCalendar(recipeId, userId, day, cb) {
-   console.log("in the addRecipeToCalendar server method");
    var user = readDocument("users", userId);
    var calendar = readDocument("calendar", 2);
-   console.log("calender before is: ", calendar[day]);
    if (calendar[day][3]) {
       calendar[day][3] = recipeId;
    } else {
       calendar[day].push(recipeId);
    }
-   console.log("calendar after is: ", calendar[day]);
    writeDocument('users', user);
    emulateServerReturn(user, cb);
 }

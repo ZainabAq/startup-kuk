@@ -120,7 +120,6 @@ export default class Recipe extends React.Component {
       //server function to getUserFavorites
       // var result = false;
       checkUserFavorites(this.state._id, 1, cb);
-      console.log("In the didUserFavorites");
       // setTimeout(() => {
       //    this.setState({loading : false});
       // }, 4);

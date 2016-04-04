@@ -31,6 +31,10 @@ app.get('/recipe/:recipeid/', function(req, res) {
    res.send(getRecipeSync(recipeid));
 });
 
+app.put('/recipe/:recipeid/favorite/', function(req, res) {
+
+});
+
 
 
 // Starts the server on port 3000
