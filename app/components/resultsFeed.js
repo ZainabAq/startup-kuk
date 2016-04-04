@@ -1,6 +1,5 @@
 import React from 'react';
 import ResultsItem from './resultsItem';
-import Searchbar from './searchbar';
 import {findRecipe} from '../server';
 
 export default class ResultsFeed extends React.Component {
@@ -10,11 +9,6 @@ export default class ResultsFeed extends React.Component {
       recipeList: [],
       query: this.props.query.q
     };
-  }
-
-  onSearch(searchText) {
-    // If searchText is 'Brownies', navigates to #/results?q=Brownies
-    this.context.router.push({ pathname: "/results", query: { q: searchText } });
   }
 
   refresh() {
@@ -27,6 +21,7 @@ export default class ResultsFeed extends React.Component {
     this.setState({
       query: nextProps.query.q
     });
+    this.refresh();
   }
 
   componentDidMount() {
@@ -40,9 +35,9 @@ export default class ResultsFeed extends React.Component {
   render() {
     return (
       <div>
+        <h2><center>Search Results for "{this.state.query}"</center></h2>
         <div id="page-content-wrapper">
           <div className="col-md-offset-2 col-md-8 container-fluid results">
-            <Searchbar type="resultsPage" value={this.state.query} onSearch={(searchText) => this.onSearch(searchText)} />
             {this.state.recipeList.map((recipe) => {
               return (
                 <ResultsItem key={recipe._id} data={recipe} />
@@ -54,7 +49,3 @@ export default class ResultsFeed extends React.Component {
     );
   }
 }
-
-ResultsFeed.contextTypes = {
-  router: React.PropTypes.object.isRequired
-};

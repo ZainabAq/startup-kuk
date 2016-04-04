@@ -3,12 +3,6 @@ import {Link} from 'react-router';
 import Searchbar from './searchbar';
 
 export default class Navbar extends React.Component {
-
-  onSearch(searchText) {
-    // If searchText is 'Brownies', navigates to #/results/q?=Brownies
-    this.context.router.push({ pathname: "/results", query: { q: searchText } });
-  }
-
   render() {
     return (
       <div>
@@ -37,9 +31,7 @@ export default class Navbar extends React.Component {
               </ul>
               <ul className="nav navbar-nav navbar-right" role="search">
                 <li className="presentation" >
-                  <Searchbar type="nav-search" onSearch={(searchText) => {
-                    this.onSearch(searchText);
-                  }} />
+                  <Searchbar />
                 </li>
                 <li className="presentation"><div className="btn-group"><button type="button"
                   className="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown"
@@ -61,7 +53,3 @@ export default class Navbar extends React.Component {
     )
   }
 }
-
-Navbar.contextTypes = {
-  router: React.PropTypes.object.isRequired
-};
