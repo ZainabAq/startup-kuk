@@ -66,12 +66,18 @@ function getCalendarData(userId, week, day) {
 
 }
 
-export function removeRecipefromCalendar(id, week, day, i) {
+function removeRecipefromCalendarhere(id, week, day, i) {
   var calendar = readDocument('calendar', week);
   if (id !== -1) {
     calendar[day].splice(i, 1);
     writeCalendar('calendar', calendar, week);
+    return calendar;
   }
+}
+
+export function removeRecipefromCalendar(id, week, day, i, cb) {
+  var calendar = removeRecipefromCalendarhere(id, week, day, i, cb);
+  emulateServerReturn(calendar, cb);
 }
 
 /**
@@ -118,10 +124,21 @@ export function getProfileCalendarData(user, week, cb) {
 
 //need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
 //modifyRestrictions (for the profile)
+
+//trying things out here to see if sending server requests is going to work
+//doesn't work because it doesn't like the database
+//which is confusing b/c it was perfectly fine to return a JSON of the right information
+//when /recipe/:id was there (but not /#/recipe/:recipeid)
 export function getRecipe(recipeId, cb) {
    //get the recipe object with the correct id
    var recipeData = readDocument('recipe', recipeId);
    emulateServerReturn(recipeData, cb);
+   // var xhr = new XMLHttpRequest();
+   // xhr.open("GET", "/recipe/:recipeid");
+   // xhr.addEventListener("load", function(){
+   //    cb(JSON.parse(xhr.responseText));
+   // });
+   // xhr.send();
 }
 
 /**
@@ -314,11 +331,12 @@ export function removeFavorite (recipeId, userId, cb) {
 export function checkUserFavorites(recipeId, userId, cb) {
   var user = readDocument("users", userId);
   var favorites = user.favorites;
+  console.log("favorites is:", favorites)
   var isRecipeIn = false;
   if (favorites.includes(recipeId)) {
      isRecipeIn = true;
  }
- // console.log("checkUserFavorites:", isRecipeIn);
+ console.log("checkUserFavorites:", isRecipeIn);
   //assuming that favorites is an array here
   // favorites = getRestrictionStrings(favorites);
   emulateServerReturn(isRecipeIn, cb);
@@ -342,13 +360,16 @@ export function getRestriction(checkbox, cb) {
 * and the day you want to add the recipe to
 */
 export function addRecipeToCalendar(recipeId, userId, day, cb) {
+   console.log("in the addRecipeToCalendar server method");
    var user = readDocument("users", userId);
    var calendar = readDocument("calendar", 2);
+   console.log("calender before is: ", calendar[day]);
    if (calendar[day][3]) {
       calendar[day][3] = recipeId;
    } else {
       calendar[day].push(recipeId);
    }
+   console.log("calendar after is: ", calendar[day]);
    writeDocument('users', user);
    emulateServerReturn(user, cb);
 }
@@ -392,3 +413,5 @@ export function findRecipeByIngredients(ingredientsList, cb) {
     // console.log(matchedIngredientRecipe);
     emulateServerReturn(matchedIngredientRecipe, cb);
 }
+
+//   XHR REQUEST MAIN CODE (from Workshop 6)
