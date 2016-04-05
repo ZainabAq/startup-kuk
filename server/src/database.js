@@ -225,6 +225,17 @@ function writeDocument(collection, changedDocument) {
 }
 module.exports.writeDocument = writeDocument;
 
+/***
+* Export function specifically for the calendar.
+**/
+function writeCalendar(collection, changedDocument, week) {
+  data[collection][week] = JSONClone(changedDocument);
+  //localStorage.setItem(kuk, JSON.stringify(data));
+  updated = true;
+}
+module.exports.writeCalendar = writeCalendar;
+
+
 /**
  * Adds a new document to the NoSQL database.
  */

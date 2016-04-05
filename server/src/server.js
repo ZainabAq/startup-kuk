@@ -9,7 +9,9 @@ var app = express();
 //importing methods from the database
 var database = require('./database');
 var readDocument = database.readDocument;
-var writeDocument = database.writeDocument;
+var writeDocument = require('./database').writeDocument;
+var addDocument = require('./database').addDocument;
+var writeCalendar = require('./database').writeCalendar;
 app.use(express.static('../client/build'));
 
 // HTTP REQUEST FUNCTIONS GO HERE
@@ -24,6 +26,51 @@ function getRecipeSync(recipeId) {
    return recipe;
 }
 
+/**Zainab Calendar methods*/
+
+function getCalendarSync(week, day) {
+  var calendar = readDocument('calendar', week);
+  var meals = [];
+  calendar[day].forEach((recipeId) => {
+    meals.push(getRecipeSync(recipeId));
+  })
+  return meals;
+}
+
+// Get ProfileCalendarData
+app.get('/user/:userid/calendar/:week/', function(req, res) {
+  var week = req.params.week;
+  var user = req.params.userid;
+  var userData = readDocument('users', user);
+  //var calendar = readDocument('calendar', week);
+  userData.Monday = getCalendarSync(week, "Monday");
+  userData.Tuesday = getCalendarSync(week, "Tuesday");
+  userData.Wednesday = getCalendarSync(week, "Wednesday");
+  userData.Thursday = getCalendarSync(week, "Thursday");
+  userData.Friday = getCalendarSync(week, "Friday");
+  userData.Saturday = getCalendarSync(week, "Saturday");
+  userData.Sunday = getCalendarSync(week, "Sunday");
+  //writeDocument('users', userData);
+  res.send(userData);
+});
+
+// //Delete recipe from Calendar
+// app.delete('/user/:userid/calendar/:week/', function(req, res) {
+//   var week = req.params.week;
+//   var userid = req.params.userid;
+//   var day = req.params.day;
+//   var meal = req.params.meal;
+//   var userData = readDocument('users', userid);
+//   var calendar = readDocument('calendar', week);
+//   if (calendar.length > 1) {
+//   if (userid !== -1) {
+//     calendar[day].splice(meal, 1);
+//     //writeCalendar('calendar', calendar, week);
+//     writeDocument('users', userData);
+//     res.send(userData);
+//
+//   }}
+// });
 
 /*
 * This method replaces "getRecipe" from the old server.
