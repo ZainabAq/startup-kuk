@@ -20,6 +20,35 @@ function getRecipeSync(recipeId) {
 }
 
 /**
+* Gets the day's calendar for a particular user.
+* @param calendarId and the day
+* @returns A 4-element array of that day's meals
+*/
+
+// function removeRecipefromCalendarhere(userid, id, week, day, i) {
+//   var user = readDocument('users', userid);
+//   var calendar = readDocument('calendar', week);
+//   if (id !== -1) {
+//     calendar[day].splice(i, 1);
+//     writeDocument('users', user);
+//     writeCalendar('calendar', calendar, week);
+//     return user;
+//   }
+// }
+//
+// export function removeRecipefromCalendar(userid, id, week, day, i, cb) {
+//   var user = removeRecipefromCalendarhere(userid, id, week, day, i, cb);
+//   emulateServerReturn(user, cb);
+// }
+
+export function removeRecipefromCalendar(userid, week, day, meal, cb) {
+  sendXHR('DELETE', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
+        // Call the callback with the data.
+        cb(JSON.parse(xhr.responseText));
+      });
+  }
+
+/**
  * Gets next 4 meals for a particular user.
  * @param userId The ID of the user whose calendar we are requesting.
  * @returns A 4-element array of the next 4 meals.
@@ -37,62 +66,15 @@ function getUpcomingMeals(userId) {
   return meals;
 }
 
-/**
-* Gets the day's calendar for a particular user.
-* @param calendarId and the day
-* @returns A 4-element array of that day's meals
-*/
-
-function removeRecipefromCalendarhere(id, week, day, i) {
-  var calendar = readDocument('calendar', week);
-  if (id !== -1) {
-    calendar[day].splice(i, 1);
-    writeCalendar('calendar', calendar, week);
-    return calendar;
-  }
-}
-
-export function removeRecipefromCalendar(id, week, day, i, cb) {
-  var calendar = removeRecipefromCalendarhere(id, week, day, i, cb);
-  emulateServerReturn(calendar, cb);
-}
-
 function getCalendarData(userId, week, day) {
-  //var userData = readDocument('users', userId);
   var calendar = readDocument('calendar', week);
   var meals = [];
   calendar[day].forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
-
 }
-
-// export function removeRecipefromCalendar(userid, week, day, meal, cb) {
-//   var calendar = removeRecipefromCalendarhere(userid, week, day, meal, cb);
-//   emulateServerReturn(calendar, cb);
-// }
-
-// export function removeRecipefromCalendar(userid, week, day, meal, cb) {
-//   sendXHR('DELETE', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
-//         // Call the callback with the data.
-//         cb(JSON.parse(xhr.responseText));
-//       });
-//   }
-
-/**
- * @param id An array of the ids of the restrictions to get
- * @returns An array holding the tag names of the restriction ids passed in
- */
-function getRestrictionStrings(ids) {
-  var strings = [];
-  ids.forEach((id => {
-    var restrictionData = readDocument("restrictions",id);
-    strings.push(restrictionData.tag);
-  }));
-  return strings;
-}
-
+//
 // export function getProfileCalendarData(user, week, cb) {
 //   // Get the User object with the id "user".
 //   var userData = readDocument('users', user);
