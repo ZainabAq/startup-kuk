@@ -17,7 +17,6 @@ app.use(express.static('../client/build'));
 
 // Import body parser
 var bodyParser = require('body-parser');
-app.use(bodyParser.text());
 
 // Support receiving text in HTTP request bodies
 app.use(bodyParser.text());
