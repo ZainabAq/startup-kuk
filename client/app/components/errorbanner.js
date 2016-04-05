@@ -13,7 +13,7 @@ export default class ErrorBanner extends React.Component {
     // By assigning to 'window', this is a global function. Global functions
     // are not typically a good idea, but they can be useful for adding basic
     // error handling to an application
-    window.FacebookError = (errorText) => {
+    window.KukError = (errorText) => {
       this.setState({
         active: true,
         error: errorText
