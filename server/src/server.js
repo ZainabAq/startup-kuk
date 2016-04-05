@@ -15,6 +15,15 @@ var writeCalendar = require('./database').writeCalendar;
 
 app.use(express.static('../client/build'));
 
+// Import body parser
+var bodyParser = require('body-parser');
+app.use(bodyParser.text());
+
+// Support receiving text in HTTP request bodies
+app.use(bodyParser.text());
+// Support receiving JSON in HTTP request bodies
+app.use(bodyParser.json());
+
 // HTTP REQUEST FUNCTIONS GO HERE
 
 /*
@@ -49,27 +58,27 @@ app.get('/user/:userid/calendar/:week/', function(req, res) {
   userData.Friday = getCalendarSync(week, "Friday");
   userData.Saturday = getCalendarSync(week, "Saturday");
   userData.Sunday = getCalendarSync(week, "Sunday");
-  //writeDocument('users', userData);
+  // writeDocument('users', userData);
   res.send(userData);
 });
 
-// //Delete recipe from Calendar
-// app.delete('/user/:userid/calendar/:week/', function(req, res) {
-//   var week = req.params.week;
-//   var userid = req.params.userid;
-//   var day = req.params.day;
-//   var meal = req.params.meal;
-//   var userData = readDocument('users', userid);
-//   var calendar = readDocument('calendar', week);
-//   if (calendar.length > 1) {
-//   if (userid !== -1) {
-//     calendar[day].splice(meal, 1);
-//     //writeCalendar('calendar', calendar, week);
-//     writeDocument('users', userData);
-//     res.send(userData);
-//
-//   }}
-// });
+//Delete recipe from Calendar
+app.delete('/user/:userid/calendar/:week/', function(req, res) {
+  var week = req.params.week;
+  var userid = req.params.userid;
+  var day = req.params.day;
+  var meal = req.params.meal;
+  var userData = readDocument('users', userid);
+  var user = parseInt(userid, 10);
+  var calendar = readDocument('calendar', week);
+  if (calendar.length > 1) {
+  if (user !== -1) {
+    calendar[day].splice(meal, 1);
+    //writeCalendar('calendar', calendar, week);
+    writeDocument('users', userData);
+    res.send(userData);
+  }}
+});
 
 app.get('/recipe/:recipeid/', function(req, res) {
    //get the recipe id out of the url
