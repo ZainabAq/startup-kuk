@@ -9,6 +9,9 @@ var app = express();
 //importing methods from the database
 var database = require('./database');
 var readDocument = database.readDocument;
+var writeDocument = require('./database').writeDocument;
+var addDocument = require('./database').addDocument;
+var writeCalendar = require('./database').writeCalendar;
 
 app.use(express.static('../client/build'));
 
@@ -47,6 +50,19 @@ app.get('/user/:userid/calendar/:week', function(req, res) {
   userData.Saturday = getCalendarSync(user, week, "Saturday");
   userData.Sunday = getCalendarSync(user, week, "Sunday");
   res.send();
+});
+
+//Delete recipe from Calendar
+app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
+  var week = req.params.week;
+  var user = req.params.userid;
+  var meal = req.params.meal;
+  var calendar = readDocument('calendar', week);
+  if (user !== -1) {
+    calendar[day].splice(meal, 1);
+    writeCalendar('calendar', calendar, week);
+    res.send(calendar);
+  }
 });
 
 app.get('/recipe/:recipeid/', function(req, res) {

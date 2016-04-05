@@ -53,19 +53,26 @@ function getUpcomingMeals(userId) {
 //   return meals;
 // }
 
-function removeRecipefromCalendarhere(id, week, day, i) {
-  var calendar = readDocument('calendar', week);
-  if (id !== -1) {
-    calendar[day].splice(i, 1);
-    writeCalendar('calendar', calendar, week);
-    return calendar;
-  }
-}
+// function removeRecipefromCalendarhere(id, week, day, i) {
+//   var calendar = readDocument('calendar', week);
+//   if (id !== -1) {
+//     calendar[day].splice(i, 1);
+//     writeCalendar('calendar', calendar, week);
+//     return calendar;
+//   }
+// }
+//
+// export function removeRecipefromCalendar(id, week, day, i, cb) {
+//   var calendar = removeRecipefromCalendarhere(id, week, day, i, cb);
+//   emulateServerReturn(calendar, cb);
+// }
 
-export function removeRecipefromCalendar(id, week, day, i, cb) {
-  var calendar = removeRecipefromCalendarhere(id, week, day, i, cb);
-  emulateServerReturn(calendar, cb);
-}
+export function removeRecipefromCalendar(userid, week, day, meal, cb) {
+  sendXHR('DELETE', '/user/' + userid + '/calendar/' + week + day + meal, undefined, (xhr) => {
+        // Call the callback with the data.
+        cb(JSON.parse(xhr.responseText));
+      });
+  }
 
 /**
  * @param id An array of the ids of the restrictions to get
@@ -80,25 +87,25 @@ function getRestrictionStrings(ids) {
   return strings;
 }
 
-/**
- * @param user The id of the user
- * @param cb The callback function to be called at the end
- * Calls cb on a UserData object that is resolved except for the restriction references.
- */
-export function getProfileData(user, cb) {
-  // Get the User object with the id "user".
-  var userData = readDocument('users', user);
-  // Add upcoming meals
-  userData.upcomingMeals = getUpcomingMeals(user);
-  // Return UserData with resolved references.
-  emulateServerReturn(userData, cb);
-}
-
 export function getProfileCalendarData(userid, week, cb) {
   sendXHR('GET', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
         // Call the callback with the data.
         cb(JSON.parse(xhr.responseText));
       });
+  }
+
+  /**
+   * @param user The id of the user
+   * @param cb The callback function to be called at the end
+   * Calls cb on a UserData object that is resolved except for the restriction references.
+   */
+  export function getProfileData(user, cb) {
+    // Get the User object with the id "user".
+    var userData = readDocument('users', user);
+    // Add upcoming meals
+    userData.upcomingMeals = getUpcomingMeals(user);
+    // Return UserData with resolved references.
+    emulateServerReturn(userData, cb);
   }
 
 
