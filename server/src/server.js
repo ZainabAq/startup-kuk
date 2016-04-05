@@ -27,14 +27,13 @@ function getRecipeSync(recipeId) {
    return recipe;
 }
 
-function getCalendarSync(userId, week, day) {
+function getCalendarSync(week, day) {
   var calendar = readDocument('calendar', week);
   var meals = [];
   calendar[day].forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
-
 }
 
 // Get ProfileCalendarData
@@ -42,14 +41,16 @@ app.get('/user/:userid/calendar/:week', function(req, res) {
   var week = req.params.week;
   var user = req.params.userid;
   var userData = readDocument('users', user);
-  userData.Monday = getCalendarSync(user, week, "Monday");
-  userData.Tuesday = getCalendarSync(user, week, "Tuesday");
-  userData.Wednesday = getCalendarSync(user, week, "Wednesday");
-  userData.Thursday = getCalendarSync(user, week, "Thursday");
-  userData.Friday = getCalendarSync(user, week, "Friday");
-  userData.Saturday = getCalendarSync(user, week, "Saturday");
-  userData.Sunday = getCalendarSync(user, week, "Sunday");
-  res.send();
+  var calendar = readDocument('calendar', week);
+  userData.Monday = getCalendarSync(week, "Monday");
+  userData.Tuesday = getCalendarSync(week, "Tuesday");
+  userData.Wednesday = getCalendarSync(week, "Wednesday");
+  userData.Thursday = getCalendarSync(week, "Thursday");
+  userData.Friday = getCalendarSync(week, "Friday");
+  userData.Saturday = getCalendarSync(week, "Saturday");
+  userData.Sunday = getCalendarSync(week, "Sunday");
+  writeCalendar('calendar', calendar, week);
+  res.send(calendar);
 });
 
 //Delete recipe from Calendar
