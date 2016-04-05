@@ -53,16 +53,21 @@ app.get('/user/:userid/calendar/:week', function(req, res) {
 });
 
 //Delete recipe from Calendar
-app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
+app.delete('/user/:userid/calendar/:week', function(req, res) {
   var week = req.params.week;
-  var user = req.params.userid;
+  var userid = req.params.userid;
+  var day = req.params.day;
   var meal = req.params.meal;
+  var userData = readDocument('users', userid);
   var calendar = readDocument('calendar', week);
+  if (calendar.length > 1) {
   if (user !== -1) {
     calendar[day].splice(meal, 1);
-    writeCalendar('calendar', calendar, week);
-    res.send(calendar);
-  }
+    //writeCalendar('calendar', calendar, week);
+    writeDocument('users', userData);
+    res.send(userData);
+
+  }}
 });
 
 app.get('/recipe/:recipeid/', function(req, res) {

@@ -64,7 +64,7 @@ export default class Calendar extends React.Component {
     onRemoveRecipe(e, id, day, i) {
       e.stopPropagation();
       var callbackFunction = () => {};
-      removeRecipefromCalendar(id, this.state.week, day, i, callbackFunction);
+      removeRecipefromCalendar(this.props.user, this.state.week, day, i, callbackFunction);
       }
 
     handleCalChangeEdit(e) {

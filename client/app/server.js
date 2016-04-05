@@ -68,7 +68,7 @@ function getUpcomingMeals(userId) {
 // }
 
 export function removeRecipefromCalendar(userid, week, day, meal, cb) {
-  sendXHR('DELETE', '/user/' + userid + '/calendar/' + week + day + meal, undefined, (xhr) => {
+  sendXHR('DELETE', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
         // Call the callback with the data.
         cb(JSON.parse(xhr.responseText));
       });
