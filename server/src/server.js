@@ -49,8 +49,7 @@ app.get('/user/:userid/calendar/:week', function(req, res) {
   userData.Friday = getCalendarSync(week, "Friday");
   userData.Saturday = getCalendarSync(week, "Saturday");
   userData.Sunday = getCalendarSync(week, "Sunday");
-  writeCalendar('calendar', calendar, week);
-  res.send(calendar);
+  res.send(userData);
 });
 
 //Delete recipe from Calendar

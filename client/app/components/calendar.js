@@ -28,7 +28,6 @@ export default class Calendar extends React.Component {
     refresh(week) {
        getProfileCalendarData(this.props.user, week, (profileData) => {
          this.setState({week : week});
-         console.log(week);
          this.setState(profileData);
               });
     }
