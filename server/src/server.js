@@ -35,9 +35,9 @@ function getCalendarSync(userId, week, day) {
 }
 
 // Get ProfileCalendarData
-app.get('calendar/:week', function(req, res) {
+app.get('/user/:userid/calendar/:week', function(req, res) {
   var week = req.params.week;
-  var user = req.params.user;
+  var user = req.params.userid;
   var userData = readDocument('users', user);
   userData.Monday = getCalendarSync(user, week, "Monday");
   userData.Tuesday = getCalendarSync(user, week, "Tuesday");

@@ -19,18 +19,6 @@ function getRecipeSync(recipeId) {
   return recipe;
 }
 
-// function getCalendarSync(week, day) {
-//   var calendar = readDocument('calendar', week);
-//   // Resolve meals
-//   Object.keys(calendar).map((day) => {
-//     calendar[day].map((meal, i) => {
-//       // i is the meal's index
-//       calendar[day][i] = getRecipeSync(meal);
-//     })
-//   })
-//   return calendar;
-// }
-
 /**
  * Gets next 4 meals for a particular user.
  * @param userId The ID of the user whose calendar we are requesting.
@@ -106,29 +94,13 @@ export function getProfileData(user, cb) {
   emulateServerReturn(userData, cb);
 }
 
-export function getProfileCalendarData(user, week, cb) {
-  sendXHR('GET', '/calendar/' + week, undefined, (xhr) => {
+export function getProfileCalendarData(userid, week, cb) {
+  sendXHR('GET', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
         // Call the callback with the data.
         cb(JSON.parse(xhr.responseText));
       });
   }
 
-
-
-// export function getProfileCalendarData(user, week, cb) {
-//   // Get the User object with the id "user".
-//   var userData = readDocument('users', user);
-//   // Add upcoming calendar
-//   userData.Monday = getCalendarData(user, week, "Monday");
-//   userData.Tuesday = getCalendarData(user, week, "Tuesday");
-//   userData.Wednesday = getCalendarData(user, week, "Wednesday");
-//   userData.Thursday = getCalendarData(user, week, "Thursday");
-//   userData.Friday = getCalendarData(user, week, "Friday");
-//   userData.Saturday = getCalendarData(user, week, "Saturday");
-//   userData.Sunday = getCalendarData(user, week, "Sunday");
-//   // Return UserData with resolved references.
-//   emulateServerReturn(userData, cb);
-// }
 
 //need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
 //modifyRestrictions (for the profile)
