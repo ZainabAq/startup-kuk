@@ -26,7 +26,7 @@ export default class Calendar extends React.Component {
 
   }
     refresh(week) {
-       getProfileCalendarData(this.props.user, week, (profileData) => {
+       getProfileCalendarData(this.props.user, this.state.week, (profileData) => {
          this.setState({week : week});
          this.setState(profileData);
               });
@@ -64,8 +64,8 @@ export default class Calendar extends React.Component {
     onRemoveRecipe(e, id, day, i) {
       e.stopPropagation();
       var callbackFunction = () => {};
-      removeRecipefromCalendar(this.props.user, this.state.week, day, i, callbackFunction);
-      }
+      removeRecipefromCalendar(id, this.state.week, day, i, callbackFunction);
+    }
 
     handleCalChangeEdit(e) {
       e.stopPropagation();

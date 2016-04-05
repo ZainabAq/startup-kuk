@@ -43,36 +43,42 @@ function getUpcomingMeals(userId) {
 * @returns A 4-element array of that day's meals
 */
 
-// function getCalendarData(userId, week, day) {
-//   //var userData = readDocument('users', userId);
-//   var calendar = readDocument('calendar', week);
-//   var meals = [];
-//   calendar[day].forEach((recipeId) => {
-//     meals.push(getRecipeSync(recipeId));
-//   })
-//   return meals;
-// }
+function removeRecipefromCalendarhere(id, week, day, i) {
+  var calendar = readDocument('calendar', week);
+  if (id !== -1) {
+    calendar[day].splice(i, 1);
+    writeCalendar('calendar', calendar, week);
+    return calendar;
+  }
+}
 
-// function removeRecipefromCalendarhere(id, week, day, i) {
-//   var calendar = readDocument('calendar', week);
-//   if (id !== -1) {
-//     calendar[day].splice(i, 1);
-//     writeCalendar('calendar', calendar, week);
-//     return calendar;
-//   }
-// }
-//
-// export function removeRecipefromCalendar(id, week, day, i, cb) {
-//   var calendar = removeRecipefromCalendarhere(id, week, day, i, cb);
+export function removeRecipefromCalendar(id, week, day, i, cb) {
+  var calendar = removeRecipefromCalendarhere(id, week, day, i, cb);
+  emulateServerReturn(calendar, cb);
+}
+
+function getCalendarData(userId, week, day) {
+  //var userData = readDocument('users', userId);
+  var calendar = readDocument('calendar', week);
+  var meals = [];
+  calendar[day].forEach((recipeId) => {
+    meals.push(getRecipeSync(recipeId));
+  })
+  return meals;
+
+}
+
+// export function removeRecipefromCalendar(userid, week, day, meal, cb) {
+//   var calendar = removeRecipefromCalendarhere(userid, week, day, meal, cb);
 //   emulateServerReturn(calendar, cb);
 // }
 
-export function removeRecipefromCalendar(userid, week, day, meal, cb) {
-  sendXHR('DELETE', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
-        // Call the callback with the data.
-        cb(JSON.parse(xhr.responseText));
-      });
-  }
+// export function removeRecipefromCalendar(userid, week, day, meal, cb) {
+//   sendXHR('DELETE', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
+//         // Call the callback with the data.
+//         cb(JSON.parse(xhr.responseText));
+//       });
+//   }
 
 /**
  * @param id An array of the ids of the restrictions to get
@@ -86,6 +92,21 @@ function getRestrictionStrings(ids) {
   }));
   return strings;
 }
+
+// export function getProfileCalendarData(user, week, cb) {
+//   // Get the User object with the id "user".
+//   var userData = readDocument('users', user);
+//   // Add upcoming calendar
+//   userData.Monday = getCalendarData(user, week, "Monday");
+//   userData.Tuesday = getCalendarData(user, week, "Tuesday");
+//   userData.Wednesday = getCalendarData(user, week, "Wednesday");
+//   userData.Thursday = getCalendarData(user, week, "Thursday");
+//   userData.Friday = getCalendarData(user, week, "Friday");
+//   userData.Saturday = getCalendarData(user, week, "Saturday");
+//   userData.Sunday = getCalendarData(user, week, "Sunday");
+//   // Return UserData with resolved references.
+//   emulateServerReturn(userData, cb);
+// }
 
 export function getProfileCalendarData(userid, week, cb) {
   sendXHR('GET', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {

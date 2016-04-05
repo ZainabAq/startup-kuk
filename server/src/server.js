@@ -37,11 +37,11 @@ function getCalendarSync(week, day) {
 }
 
 // Get ProfileCalendarData
-app.get('/user/:userid/calendar/:week', function(req, res) {
+app.get('/user/:userid/calendar/:week/', function(req, res) {
   var week = req.params.week;
   var user = req.params.userid;
   var userData = readDocument('users', user);
-  var calendar = readDocument('calendar', week);
+  //var calendar = readDocument('calendar', week);
   userData.Monday = getCalendarSync(week, "Monday");
   userData.Tuesday = getCalendarSync(week, "Tuesday");
   userData.Wednesday = getCalendarSync(week, "Wednesday");
@@ -49,26 +49,27 @@ app.get('/user/:userid/calendar/:week', function(req, res) {
   userData.Friday = getCalendarSync(week, "Friday");
   userData.Saturday = getCalendarSync(week, "Saturday");
   userData.Sunday = getCalendarSync(week, "Sunday");
+  //writeDocument('users', userData);
   res.send(userData);
 });
 
-//Delete recipe from Calendar
-app.delete('/user/:userid/calendar/:week', function(req, res) {
-  var week = req.params.week;
-  var userid = req.params.userid;
-  var day = req.params.day;
-  var meal = req.params.meal;
-  var userData = readDocument('users', userid);
-  var calendar = readDocument('calendar', week);
-  if (calendar.length > 1) {
-  if (user !== -1) {
-    calendar[day].splice(meal, 1);
-    //writeCalendar('calendar', calendar, week);
-    writeDocument('users', userData);
-    res.send(userData);
-
-  }}
-});
+// //Delete recipe from Calendar
+// app.delete('/user/:userid/calendar/:week/', function(req, res) {
+//   var week = req.params.week;
+//   var userid = req.params.userid;
+//   var day = req.params.day;
+//   var meal = req.params.meal;
+//   var userData = readDocument('users', userid);
+//   var calendar = readDocument('calendar', week);
+//   if (calendar.length > 1) {
+//   if (userid !== -1) {
+//     calendar[day].splice(meal, 1);
+//     //writeCalendar('calendar', calendar, week);
+//     writeDocument('users', userData);
+//     res.send(userData);
+//
+//   }}
+// });
 
 app.get('/recipe/:recipeid/', function(req, res) {
    //get the recipe id out of the url
