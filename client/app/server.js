@@ -276,24 +276,38 @@ export function findRecipesFromId(recipeIDs, cb) {
 export function addFavorite(recipeId, userId, cb) {
    //getting both the user and the recipe from the database
    // var recipe = readDocument("recipes", recipeId);
-   var user = readDocument("users", userId);
-   user.favorites.push(recipeId);
-   writeDocument('users', user);
-   emulateServerReturn(user, cb);
+   // var user = readDocument("users", userId);
+   // user.favorites.push(recipeId);
+   // writeDocument('users', user);
+   // emulateServerReturn(user, cb);
+
+   var xhr = new XMLHttpRequest();
+   xhr.open("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId);
+   xhr.addEventListener("load", function(){
+      cb(JSON.parse(xhr.responseText));
+   });
+   xhr.send();
+
 }
 
 /**
 * The function that removes recipes from the user's list of favorites
 */
 export function removeFavorite (recipeId, userId, cb) {
-   var user = readDocument("users", userId);
-   //now need to remove the favorite from the user's list of favorites
-   var favoriteIndex = user.favorites.indexOf(recipeId);
-   if (favoriteIndex !== -1) {
-      user.favorites.splice(favoriteIndex, 1);
-      writeDocument("users", user);
-   }
-   emulateServerReturn(user, cb);
+   // var user = readDocument("users", userId);
+   // //now need to remove the favorite from the user's list of favorites
+   // var favoriteIndex = user.favorites.indexOf(recipeId);
+   // if (favoriteIndex !== -1) {
+   //    user.favorites.splice(favoriteIndex, 1);
+   //    writeDocument("users", user);
+   // }
+   // emulateServerReturn(user, cb);
+   var xhr = new XMLHttpRequest();
+   xhr.open("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId);
+   xhr.addEventListener("load", function(){
+      cb(JSON.parse(xhr.responseText));
+   });
+   xhr.send();
 }
 
 // var userIndex = feedItem.comments[index].likeCounter.indexOf(userId);
@@ -324,15 +338,22 @@ export function removeFavorite (recipeId, userId, cb) {
  * @param cb The callback function to be called at the end
  */
 export function checkUserFavorites(recipeId, userId, cb) {
-  var user = readDocument("users", userId);
-  var favorites = user.favorites;
-  var isRecipeIn = false;
-  if (favorites.includes(recipeId)) {
-     isRecipeIn = true;
- }
-  //assuming that favorites is an array here
-  // favorites = getRestrictionStrings(favorites);
-  emulateServerReturn(isRecipeIn, cb);
+ //  var user = readDocument("users", userId);
+ //  var favorites = user.favorites;
+ //  var isRecipeIn = false;
+ //  if (favorites.includes(recipeId)) {
+ //     isRecipeIn = true;
+ // }
+ // console.log("result of checkUserFavorites is: ", isRecipeIn);
+ //  //assuming that favorites is an array here
+ //  // favorites = getRestrictionStrings(favorites);
+ //  emulateServerReturn(isRecipeIn, cb);
+ var xhr = new XMLHttpRequest();
+xhr.open("PUT", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
+xhr.addEventListener("load", function(){
+    cb(JSON.parse(xhr.responseText));
+});
+xhr.send();
 }
 
 /**
