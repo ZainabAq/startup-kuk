@@ -65,14 +65,23 @@ app.get('/user/:userid/calendar/:week', function(req, res) {
 //Delete recipe from Calendar
 app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
   var week = req.params.week;
-  var user = req.params.userid;
+  var userid = req.params.userid;
+  var day = req.params.day;
   var meal = req.params.meal;
+  var user = parseInt(userid, 10);
+  var userData = readDocument('users', userid);
   var calendar = readDocument('calendar', week);
+  if (calendar.length > 1) {
   if (user !== -1) {
     calendar[day].splice(meal, 1);
+    //writeCalendar('calendar', calendar, week);
+    //writeDocument('users', userData);
+    console.log(calendar);
     writeCalendar('calendar', calendar, week);
+    writeDocument('calendar', calendar);
     res.send(calendar);
-  }
+
+  }}
 });
 
 /*
@@ -118,7 +127,6 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
    res.send(user);
 });
 
-<<<<<<< HEAD
 app.post('/results', function(req, res) {
   var searchText = req.body;
   console.log("searchText")
@@ -151,12 +159,12 @@ app.post('/results', function(req, res) {
   console.log(match)
   res.send(match);
 })
-=======
 /*
 * This function checks the user's favorites to see if
 * a given recipe already exists in their list of
 * favorites.
 */
+
 app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
    console.log("in the server side checkUserFavorites");
    var userid = req.params.userid;
@@ -169,8 +177,6 @@ app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
    }
    res.send(isRecipeIn);
 });
-
->>>>>>> 9abdfb674f284f0f7ab39b151f6469097c54e00c
 
 // Starts the server on port 3000
 app.listen(3000, function () {

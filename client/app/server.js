@@ -24,15 +24,16 @@ function getRecipeSync(recipeId) {
 * @param calendarId and the day
 * @returns A 4-element array of that day's meals
 */
-
+//
 // function removeRecipefromCalendarhere(userid, id, week, day, i) {
 //   var user = readDocument('users', userid);
 //   var calendar = readDocument('calendar', week);
 //   if (id !== -1) {
 //     calendar[day].splice(i, 1);
-//     writeDocument('users', user);
+//     //writeDocument('users', user);
+//     //writeDocument('calendar', calendar);
 //     writeCalendar('calendar', calendar, week);
-//     return user;
+//     return calendar;
 //   }
 // }
 //
@@ -42,7 +43,7 @@ function getRecipeSync(recipeId) {
 // }
 
 export function removeRecipefromCalendar(userid, week, day, meal, cb) {
-  sendXHR('DELETE', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
+sendXHR('DELETE', '/user/' + userid + '/calendar/' + week + "/" + day + "/" + meal, undefined, (xhr) => {
         // Call the callback with the data.
         cb(JSON.parse(xhr.responseText));
       });
@@ -74,7 +75,7 @@ function getCalendarData(userId, week, day) {
   })
   return meals;
 }
-//
+
 // export function getProfileCalendarData(user, week, cb) {
 //   // Get the User object with the id "user".
 //   var userData = readDocument('users', user);
