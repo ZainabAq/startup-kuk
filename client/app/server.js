@@ -1,5 +1,72 @@
 import {readDocument, writeDocument, getCollection, writeCalendar} from './database.js';
 
+//   XHR REQUEST MAIN CODE (from Workshop 6)
+var token = 'eyJpZCI6MX0='; // <-- Put your base64'd JSON token here
+/**
+ * Properly configure+send an XMLHttpRequest with error handling, authorization token,
+ * and other needed properties.
+ */
+function sendXHR(verb, resource, body, cb) {
+  var xhr = new XMLHttpRequest();
+  xhr.open(verb, resource);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+
+  // The below comment tells ESLint that FacebookError is a global.
+  // Otherwise, ESLint would complain about it! (See what happens in Atom if
+  // you remove the comment...)
+  /*global KukError*/
+
+  // Response received from server. It could be a failure, though!
+  xhr.addEventListener('load', function() {
+    var statusCode = xhr.status;
+    var statusText = xhr.statusText;
+    if (statusCode >= 200 && statusCode < 300) {
+      // Success: Status code is in the [200, 300) range.
+      // Call the callback with the final XHR object.
+      cb(xhr);
+    } else {
+      // Client or server error.
+      // The server may have included some response text with details concerning
+      // the error.
+      var responseText = xhr.responseText;
+      KukError('Could not ' + verb + " " + resource + ": Received " + statusCode + " " + statusText + ": " + responseText);
+    }
+  });
+
+  // Time out the request if it takes longer than 10,000 milliseconds (10 seconds)
+  xhr.timeout = 10000;
+
+  // Network failure: Could not connect to server.
+  xhr.addEventListener('error', function() {
+    KukError('Could not ' + verb + " " + resource + ": Could not connect to the server.");
+  });
+
+  // Network failure: request took too long to complete.
+  xhr.addEventListener('timeout', function() {
+    KukError('Could not ' + verb + " " + resource + ": Request timed out.");
+  });
+
+  switch (typeof(body)) {
+    case 'undefined':
+      // No body to send.
+      xhr.send();
+      break;
+    case 'string':
+      // Tell the server we are sending text.
+      xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+      xhr.send(body);
+      break;
+    case 'object':
+      // Tell the server we are sending JSON.
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      // Convert body into a JSON string.
+      xhr.send(JSON.stringify(body));
+      break;
+    default:
+      throw new Error('Unknown body type: ' + typeof(body));
+  }
+}
+
 /**
  * Emulates how a REST call is *asynchronous* -- it calls your function back
  * some time in the future with data.
@@ -17,24 +84,6 @@ function emulateServerReturn(data, cb) {
 function getRecipeSync(recipeId) {
   var recipe = readDocument('recipe', recipeId);
   return recipe;
-}
-
-/**
- * Gets next 4 meals for a particular user.
- * @param userId The ID of the user whose calendar we are requesting.
- * @returns A 4-element array of the next 4 meals.
- */
-function getUpcomingMeals(userId) {
-  // Get the User object with the id "userId".
-  var userData = readDocument('users', userId);
-  // Get the calendar for the user.
-  var calendar = readDocument('calendar',userData.calendar);
-  // For now, static date is Monday.
-  var meals = [];
-  calendar.Monday.forEach((recipeId) => {
-    meals.push(get(recipeId));
-  })
-  return meals;
 }
 
 /**
@@ -110,24 +159,22 @@ function getRestrictionStrings(ids) {
 
 export function getProfileCalendarData(userid, week, cb) {
   sendXHR('GET', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
-        // Call the callback with the data.
-        cb(JSON.parse(xhr.responseText));
-      });
-  }
+    // Call the callback with the data.
+    cb(JSON.parse(xhr.responseText));
+  });
+}
 
-  /**
-   * @param user The id of the user
-   * @param cb The callback function to be called at the end
-   * Calls cb on a UserData object that is resolved except for the restriction references.
-   */
-  export function getProfileData(user, cb) {
-    // Get the User object with the id "user".
-    var userData = readDocument('users', user);
-    // Add upcoming meals
-    userData.upcomingMeals = getUpcomingMeals(user);
-    // Return UserData with resolved references.
-    emulateServerReturn(userData, cb);
-  }
+/**
+ * @param user The id of the user
+ * @param cb The callback function to be called at the end
+ * Calls cb on a UserData object that is resolved except for the restriction references.
+ */
+export function getProfileData(user, cb) {
+  sendXHR('GET', '/user/' + user, undefined, (xhr) => {
+    // Call the callback with the data.
+    cb(JSON.parse(xhr.responseText));
+  });
+}
 
 
 //need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
@@ -167,13 +214,10 @@ export function getUserRestrictions(user, cb) {
  * Calls cb on an object holding the user's modified restrictions array (unresolved)
  * and the checkbox.
  */
-export function addUserRestriction(checkbox, userId, cb) {
-  var restrictionId = checkbox.value;
-  var userData = readDocument("users", userId);
-  userData.restrictions.push(restrictionId);
-  writeDocument('users', userData);
-  var result = {"restrictions":userData.restrictions, "target":checkbox};
-  emulateServerReturn(result, cb);
+export function addUserRestriction(restrictionId, userId, cb) {
+  sendXHR('PUT', '/user/' + userId + '/restriction/' + restrictionId, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**
@@ -183,16 +227,10 @@ export function addUserRestriction(checkbox, userId, cb) {
  * Calls cb on an object holding the user's modified restrictions array (unresolved)
  * and the checkbox.
  */
-export function removeUserRestriction(checkbox, userId, cb) {
-  var restrictionId = checkbox.value;
-  var userData = readDocument('users', userId);
-  var restrictionIndex = userData.restrictions.indexOf(restrictionId);
-  if (restrictionIndex != -1) {
-    userData.restrictions.splice(restrictionIndex, 1);
-    writeDocument('users', userData);
-  }
-  var result = {"restrictions":userData.restrictions, "target":checkbox};
-  emulateServerReturn(result, cb);
+export function removeUserRestriction(restrictionId, userId, cb) {
+  sendXHR('DELETE', '/user/' + userId + '/restriction/' + restrictionId, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
 }
 
 /**
@@ -410,71 +448,4 @@ export function findRecipeByIngredients(ingredientsList, cb) {
     }
     // console.log(matchedIngredientRecipe);
     emulateServerReturn(matchedIngredientRecipe, cb);
-}
-
-//   XHR REQUEST MAIN CODE (from Workshop 6)
-var token = 'eyJpZCI6NH0='; // <-- Put your base64'd JSON token here
-/**
- * Properly configure+send an XMLHttpRequest with error handling, authorization token,
- * and other needed properties.
- */
-function sendXHR(verb, resource, body, cb) {
-  var xhr = new XMLHttpRequest();
-  xhr.open(verb, resource);
-  xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-
-  // The below comment tells ESLint that FacebookError is a global.
-  // Otherwise, ESLint would complain about it! (See what happens in Atom if
-  // you remove the comment...)
-  /*global KukError*/
-
-  // Response received from server. It could be a failure, though!
-  xhr.addEventListener('load', function() {
-    var statusCode = xhr.status;
-    var statusText = xhr.statusText;
-    if (statusCode >= 200 && statusCode < 300) {
-      // Success: Status code is in the [200, 300) range.
-      // Call the callback with the final XHR object.
-      cb(xhr);
-    } else {
-      // Client or server error.
-      // The server may have included some response text with details concerning
-      // the error.
-      var responseText = xhr.responseText;
-      KukError('Could not ' + verb + " " + resource + ": Received " + statusCode + " " + statusText + ": " + responseText);
-    }
-  });
-
-  // Time out the request if it takes longer than 10,000 milliseconds (10 seconds)
-  xhr.timeout = 10000;
-
-  // Network failure: Could not connect to server.
-  xhr.addEventListener('error', function() {
-    KukError('Could not ' + verb + " " + resource + ": Could not connect to the server.");
-  });
-
-  // Network failure: request took too long to complete.
-  xhr.addEventListener('timeout', function() {
-    KukError('Could not ' + verb + " " + resource + ": Request timed out.");
-  });
-
-  switch (typeof(body)) {
-    case 'undefined':
-      // No body to send.
-      xhr.send();
-      break;
-    case 'string':
-      // Tell the server we are sending text.
-      xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-      xhr.send(body);
-      break;
-    case 'object':
-      // Tell the server we are sending JSON.
-      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      // Convert body into a JSON string.
-      xhr.send(JSON.stringify(body));
-      break;
-    default:
-      throw new Error('Unknown body type: ' + typeof(body));
-  }
 }

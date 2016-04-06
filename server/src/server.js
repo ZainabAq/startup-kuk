@@ -17,6 +17,31 @@ app.use(express.static('../client/build'));
 
 // HTTP REQUEST FUNCTIONS GO HERE
 
+/**
+ * Get the user ID from a token. Returns -1 (an invalid ID) if it fails.
+ */
+function getUserIdFromToken(authorizationLine) {
+  try {
+    // Cut off "Bearer " from the header value.
+    var token = authorizationLine.slice(7);
+    // Convert the base64 string to a UTF-8 string.
+    var regularString = new Buffer(token, 'base64').toString('utf8');
+    // Convert the UTF-8 string into a JavaScript object.
+    var tokenObj = JSON.parse(regularString);
+    var id = tokenObj['id'];
+    // Check that id is a number.
+    if (typeof id === 'number') {
+      return id;
+    } else {
+      // Not a number. Return -1, an invalid ID.
+      return -1;
+    }
+  } catch (e) {
+    // Return an invalid ID.
+    return -1;
+  }
+}
+
 /*
 * Given a recipe ID, returns a recipe object with references resolved.
 * Internal to the server, since it's synchronous.
@@ -35,6 +60,101 @@ function getCalendarSync(week, day) {
   })
   return meals;
 }
+
+/**
+ * Gets next 4 meals for a particular user.
+ * @param userId The ID of the user whose calendar we are requesting.
+ * @returns A 4-element array of the next 4 meals.
+ */
+function getUpcomingMeals(userId) {
+  // Get the User object with the id "userId".
+  var userData = readDocument('users', userId);
+  // Get the calendar for the user.
+  var calendar = readDocument('calendar',userData.calendar);
+  // For now, static date is Monday.
+  var meals = [];
+  calendar.Monday.forEach((recipeId) => {
+    meals.push(getRecipeSync(recipeId));
+  })
+  return meals;
+}
+
+// Get Profile data
+app.get('/user/:userid', function(req, res) {
+  var userId = req.params.userid;
+  // Get the User object with the id "user."
+  var userData = readDocument('users', userId);
+  // Add upcoming meals
+  userData.upcomingMeals = getUpcomingMeals(userId);
+  // Return UserData with resolved references.
+  res.send(userData);
+});
+
+/**
+ * @param id An array of the ids of the restrictions to get
+ * @returns An array holding the tag names of the restriction ids passed in
+ */
+function getRestrictionStrings(ids) {
+  var strings = [];
+  ids.forEach((id => {
+    var restrictionData = readDocument("restrictions",id);
+    strings.push(restrictionData.tag);
+  }));
+  return strings;
+}
+
+// GET User Restriction Tags
+app.get('/user/:userid/restrictions', function(req, res) {
+  var userId = req.params.userid;
+  var userData = readDocument("users", userId);
+  var restrictions = userData.restrictions;
+  restrictions = getRestrictionStrings(restrictions);
+  res.send(restrictions);
+});
+
+// PUT A restriction id in a user's data.
+app.put('/user/:userid/restriction/:restrictionid', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // Convert params from string to number.
+  var restrictionId = parseInt(req.params.restrictionid, 10);
+  var userId = parseInt(req.params.userid, 10);
+  if (fromUser === userId) {
+    var userData = readDocument("users", userId);
+    // Add to user restrictions if not already present.
+    if (userData.restrictions.indexOf(restrictionId) === -1) {
+      userData.restrictions.push(restrictionId);
+      writeDocument('users', userData);
+    }
+    // Return an updated version of the restrictions list
+    res.send(userData.restrictions);
+  } else {
+    // 401: Unauthorized.
+    res.status(401).end();
+  }
+});
+
+// DELETE a restriction id from a user's data. 
+app.delete('/user/:userid/restriction/:restrictionid', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // Convert params from string to number.
+  var restrictionId = parseInt(req.params.restrictionid, 10);
+  var userId = parseInt(req.params.userid, 10);
+  if (fromUser === userId) {
+    var userData = readDocument('users', userId);
+    var restrictionIndex = userData.restrictions.indexOf(restrictionId);
+    // Remove from restriction array if present
+    if (restrictionIndex !== -1) {
+      userData.restrictions.splice(restrictionIndex, 1);
+      writeDocument('users', userData);
+    }
+    // Return an updated version of the restrictions array
+    // Note that this request succeeds even if the user already unliked the request!
+    res.send(userData.restrictions);
+  } else {
+    // 401: Unauthorized
+    res.status(401).end();
+  }
+})
 
 // Get ProfileCalendarData
 app.get('/user/:userid/calendar/:week/', function(req, res) {
