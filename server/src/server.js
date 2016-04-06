@@ -10,8 +10,7 @@ var app = express();
 var database = require('./database');
 var readDocument = database.readDocument;
 var writeDocument = require('./database').writeDocument;
-var addDocument = require('./database').addDocument;
-var writeCalendar = require('./database').writeCalendar;
+//var addDocument = require('./database').addDocument;
 var getCollection = require('./database').getCollection;
 
 app.use(express.static('../client/build'));
@@ -62,10 +61,13 @@ function getRecipeSync(recipeId) {
 
 /**Zainab Calendar methods*/
 
-function getCalendarSync(week, day) {
-  var calendar = readDocument('calendar', week);
+function getCalendarSync(userData, week, day) {
+  var calId = userData.calendarId;
+  var calendar = readDocument('calendars', calId);
+  var weekno = parseInt(week, 10);
+  var week = calendar[weekno];
   var meals = [];
-  calendar[day].forEach((recipeId) => {
+  week[day].forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
@@ -171,37 +173,35 @@ app.get('/user/:userid/calendar/:week', function(req, res) {
   var week = req.params.week;
   var user = req.params.userid;
   var userData = readDocument('users', user);
-  var calendar = readDocument('calendar', week);
-  userData.Monday = getCalendarSync(week, "Monday");
-  userData.Tuesday = getCalendarSync(week, "Tuesday");
-  userData.Wednesday = getCalendarSync(week, "Wednesday");
-  userData.Thursday = getCalendarSync(week, "Thursday");
-  userData.Friday = getCalendarSync(week, "Friday");
-  userData.Saturday = getCalendarSync(week, "Saturday");
-  userData.Sunday = getCalendarSync(week, "Sunday");
+  // var calId = userData.calendarId;
+  // var calendar = readDocument('calendars', calId);
+  //var calendar = readDocument('calendar', userData.calendar);
+  userData.Monday = getCalendarSync(userData, week, "Monday");
+  userData.Tuesday = getCalendarSync(userData, week, "Tuesday");
+  userData.Wednesday = getCalendarSync(userData, week, "Wednesday");
+  userData.Thursday = getCalendarSync(userData, week, "Thursday");
+  userData.Friday = getCalendarSync(userData, week, "Friday");
+  userData.Saturday = getCalendarSync(userData, week, "Saturday");
+  userData.Sunday = getCalendarSync(userData, week, "Sunday");
   res.send(userData);
 });
 
 //Delete recipe from Calendar
 app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
   var week = req.params.week;
-  var userid = req.params.userid;
+  var userid = parseInt(req.params.userid, 10);
   var day = req.params.day;
-  var meal = req.params.meal;
-  var user = parseInt(userid, 10);
+  var meal = parseInt(req.params.meal, 10);
   var userData = readDocument('users', userid);
-  var calendar = readDocument('calendar', week);
-  if (calendar.length > 1) {
-  if (user !== -1) {
-    calendar[day].splice(meal, 1);
-    //writeCalendar('calendar', calendar, week);
-    //writeDocument('users', userData);
-    console.log(calendar);
-    writeCalendar('calendar', calendar, week);
-    writeDocument('calendar', calendar);
+  var calId = userData.calendarId;
+  var calendar = readDocument('calendars', calId);
+  var weekno = parseInt(week, 10);
+  var weekCal = calendar[weekno];
+  if (meal !== -1) {
+    weekCal[day].splice(meal, 1);
+    writeDocument('calendars', calendar);
     res.send(calendar);
-
-  }}
+  }
 });
 
 /*
@@ -249,13 +249,10 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
    res.send(user);
 });
 
-<<<<<<< HEAD
-=======
 
 /**
  * Returns an array of the recipes whose names match the searched keyword.
  */
->>>>>>> 99d3a4a223a612a2bf84cac0f447a822e20003b0
 app.post('/results', function(req, res) {
   var searchText = req.body;
   var recipes = getCollection('recipe');
@@ -285,12 +282,8 @@ app.post('/results', function(req, res) {
     match[m] = getRecipeSync(recipe);
   });
   res.send(match);
-<<<<<<< HEAD
 });
 
-=======
-})
->>>>>>> 99d3a4a223a612a2bf84cac0f447a822e20003b0
 /*
 * This function checks the user's favorites to see if
 * a given recipe already exists in their list of
@@ -309,8 +302,6 @@ app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
    res.send(isRecipeIn);
 });
 
-<<<<<<< HEAD
-=======
  /**
  * Gets the favorites data for a particular user.
  */
@@ -338,7 +329,6 @@ app.post('/resetdb', function(req, res) {
   // res.send() sends an empty response with status code 200
   res.send();
 });
->>>>>>> 99d3a4a223a612a2bf84cac0f447a822e20003b0
 
 // Starts the server on port 3000
 app.listen(3000, function () {
