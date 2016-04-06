@@ -184,10 +184,9 @@ export function getRecipe(recipeId, cb) {
  * @param cb The callback function to be called at the end
  */
 export function getUserRestrictions(user, cb) {
-  var userData = readDocument("users", user);
-  var restrictions = userData.restrictions;
-  restrictions = getRestrictionStrings(restrictions);
-  emulateServerReturn(restrictions, cb);
+  sendXHR('GET', '/user/' + user, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  })
 }
 
 /**
