@@ -221,6 +221,7 @@ app.get('/recipe/:recipeid/', function(req, res) {
 * favorites. Replacement of addFavorite.
 */
 app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
+   // var fromUser = getUserIdFromToken(req.get('Authorization'));
    var userid = req.params.userid;
    var user = readDocument("users", userid);
    var recipeid = parseInt(req.params.recipeid, 10);
@@ -336,7 +337,8 @@ app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
    } else {
       calendar[day].push(recipeid);
    }
-   writeDocument("users", user);
+   // writeDocument("users", user)
+   writeCalendar("calendar", calendar, 3);
    console.log("calendar after:", calendar[day]);
    res.send(user);
 });
