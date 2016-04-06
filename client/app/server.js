@@ -91,55 +91,38 @@ function getRecipeSync(recipeId) {
 * @param calendarId and the day
 * @returns A 4-element array of that day's meals
 */
+//
+// function removeRecipefromCalendarhere(userid, id, week, day, i) {
+//   var user = readDocument('users', userid);
+//   var calendar = readDocument('calendar', week);
+//   if (id !== -1) {
+//     calendar[day].splice(i, 1);
+//     //writeDocument('users', user);
+//     //writeDocument('calendar', calendar);
+//     writeCalendar('calendar', calendar, week);
+//     return calendar;
+//   }
+// }
+//
+// export function removeRecipefromCalendar(userid, id, week, day, i, cb) {
+//   var user = removeRecipefromCalendarhere(userid, id, week, day, i, cb);
+//   emulateServerReturn(user, cb);
+// }
 
-function removeRecipefromCalendarhere(id, week, day, i) {
-  var calendar = readDocument('calendar', week);
-  if (id !== -1) {
-    calendar[day].splice(i, 1);
-    writeCalendar('calendar', calendar, week);
-    return calendar;
-  }
-}
-
-export function removeRecipefromCalendar(id, week, day, i, cb) {
-  var calendar = removeRecipefromCalendarhere(id, week, day, i, cb);
-  emulateServerReturn(calendar, cb);
+export function removeRecipefromCalendar(userid, week, day, meal, cb) {
+  sendXHR('DELETE', '/user/' + userid + '/calendar/' + week + "/" + day + "/" + meal, undefined, (xhr) => {
+        // Call the callback with the data.
+        cb(JSON.parse(xhr.responseText));
+      });
 }
 
 function getCalendarData(userId, week, day) {
-  //var userData = readDocument('users', userId);
   var calendar = readDocument('calendar', week);
   var meals = [];
   calendar[day].forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
-
-}
-
-// export function removeRecipefromCalendar(userid, week, day, meal, cb) {
-//   var calendar = removeRecipefromCalendarhere(userid, week, day, meal, cb);
-//   emulateServerReturn(calendar, cb);
-// }
-
-// export function removeRecipefromCalendar(userid, week, day, meal, cb) {
-//   sendXHR('DELETE', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
-//         // Call the callback with the data.
-//         cb(JSON.parse(xhr.responseText));
-//       });
-//   }
-
-/**
- * @param id An array of the ids of the restrictions to get
- * @returns An array holding the tag names of the restriction ids passed in
- */
-function getRestrictionStrings(ids) {
-  var strings = [];
-  ids.forEach((id => {
-    var restrictionData = readDocument("restrictions",id);
-    strings.push(restrictionData.tag);
-  }));
-  return strings;
 }
 
 // export function getProfileCalendarData(user, week, cb) {
@@ -272,34 +255,14 @@ export function getFeedData(restrictions, cb) {
  * Returns an array of the recipes whose names match the searched keyword.
  */
 export function findRecipe(searchText, cb) {
-  var recipes = getCollection('recipe');
-  // append all recipes in an array
-  var i, recipeData = [];
-  for (i in recipes) {
-    if (recipes.hasOwnProperty(i)) {
-      recipeData.push(recipes[i]);
-    }
-  }
-  // if recipe name contains search word, append its id
-  var text = searchText.toLowerCase().split(" ");
-  var j, k, h, match = [];
-  for (j=0; j<recipeData.length; j++) {
-    var name = recipeData[j].name.toLowerCase().split(" ");
-    for (k=0; k<text.length; k++) {
-      for (h=0; h<name.length; h++) {
-        if (text[k] == name[h]) {
-          match.push(recipeData[j]._id);
-        }
-      }
-    }
-  }
-  // map each recipe id
-  match.map((recipe, m) => {
-    // k is the index
-    match[m] = getRecipeSync(recipe);
+  var xhr = new XMLHttpRequest();
+  //console.log(searchText)
+  xhr.open('POST', '/results');
+  xhr.addEventListener('load', function() {
+    cb(JSON.parse(xhr.responseText));
   });
-  // match = wanted recipe
-  emulateServerReturn(match, cb);
+  xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+  xhr.send(searchText);
 }
 
 /**
@@ -322,24 +285,38 @@ export function findRecipesFromId(recipeIDs, cb) {
 export function addFavorite(recipeId, userId, cb) {
    //getting both the user and the recipe from the database
    // var recipe = readDocument("recipes", recipeId);
-   var user = readDocument("users", userId);
-   user.favorites.push(recipeId);
-   writeDocument('users', user);
-   emulateServerReturn(user, cb);
+   // var user = readDocument("users", userId);
+   // user.favorites.push(recipeId);
+   // writeDocument('users', user);
+   // emulateServerReturn(user, cb);
+
+   var xhr = new XMLHttpRequest();
+   xhr.open("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId);
+   xhr.addEventListener("load", function(){
+      cb(JSON.parse(xhr.responseText));
+   });
+   xhr.send();
+
 }
 
 /**
 * The function that removes recipes from the user's list of favorites
 */
 export function removeFavorite (recipeId, userId, cb) {
-   var user = readDocument("users", userId);
-   //now need to remove the favorite from the user's list of favorites
-   var favoriteIndex = user.favorites.indexOf(recipeId);
-   if (favoriteIndex !== -1) {
-      user.favorites.splice(favoriteIndex, 1);
-      writeDocument("users", user);
-   }
-   emulateServerReturn(user, cb);
+   // var user = readDocument("users", userId);
+   // //now need to remove the favorite from the user's list of favorites
+   // var favoriteIndex = user.favorites.indexOf(recipeId);
+   // if (favoriteIndex !== -1) {
+   //    user.favorites.splice(favoriteIndex, 1);
+   //    writeDocument("users", user);
+   // }
+   // emulateServerReturn(user, cb);
+   var xhr = new XMLHttpRequest();
+   xhr.open("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId);
+   xhr.addEventListener("load", function(){
+      cb(JSON.parse(xhr.responseText));
+   });
+   xhr.send();
 }
 
 // var userIndex = feedItem.comments[index].likeCounter.indexOf(userId);
@@ -370,15 +347,22 @@ export function removeFavorite (recipeId, userId, cb) {
  * @param cb The callback function to be called at the end
  */
 export function checkUserFavorites(recipeId, userId, cb) {
-  var user = readDocument("users", userId);
-  var favorites = user.favorites;
-  var isRecipeIn = false;
-  if (favorites.includes(recipeId)) {
-     isRecipeIn = true;
- }
-  //assuming that favorites is an array here
-  // favorites = getRestrictionStrings(favorites);
-  emulateServerReturn(isRecipeIn, cb);
+ //  var user = readDocument("users", userId);
+ //  var favorites = user.favorites;
+ //  var isRecipeIn = false;
+ //  if (favorites.includes(recipeId)) {
+ //     isRecipeIn = true;
+ // }
+ // console.log("result of checkUserFavorites is: ", isRecipeIn);
+ //  //assuming that favorites is an array here
+ //  // favorites = getRestrictionStrings(favorites);
+ //  emulateServerReturn(isRecipeIn, cb);
+ var xhr = new XMLHttpRequest();
+xhr.open("PUT", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
+xhr.addEventListener("load", function(){
+    cb(JSON.parse(xhr.responseText));
+});
+xhr.send();
 }
 
 /**

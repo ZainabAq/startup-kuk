@@ -26,7 +26,7 @@ export default class Calendar extends React.Component {
 
   }
     refresh(week) {
-       getProfileCalendarData(this.props.user, this.state.week, (profileData) => {
+       getProfileCalendarData(this.state._id, week, (profileData) => {
          this.setState({week : week});
          this.setState(profileData);
               });
@@ -61,10 +61,11 @@ export default class Calendar extends React.Component {
       this.refresh(3);
     }
 
-    onRemoveRecipe(e, id, day, i) {
+    onRemoveRecipe(e, day, meal) {
       e.stopPropagation();
       var callbackFunction = () => {};
-      removeRecipefromCalendar(id, this.state.week, day, i, callbackFunction);
+      removeRecipefromCalendar(this.props.user, this.state.week, day, meal, callbackFunction);
+      //this.refresh(2);
     }
 
     handleCalChangeEdit(e) {
@@ -88,7 +89,7 @@ export default class Calendar extends React.Component {
              {this.state.Monday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Monday", i)}/>
+                <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Monday", i)}/>
               )
             })}
         </ul>
@@ -97,7 +98,7 @@ export default class Calendar extends React.Component {
             {this.state.Tuesday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Tuesday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Tuesday")} />
+                <CalendarEntry key={i} data={meal} day="Tuesday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Tuesday", i)} />
               )
             })}
         </ul>
@@ -106,7 +107,7 @@ export default class Calendar extends React.Component {
             {this.state.Wednesday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Wednesday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Wednesday")} />
+                <CalendarEntry key={i} data={meal} day="Wednesday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Wednesday", i)} />
               )
             })}
         </ul>
@@ -115,7 +116,7 @@ export default class Calendar extends React.Component {
             {this.state.Thursday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Thursday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Thursday")}/>
+                <CalendarEntry key={i} data={meal} day="Thursday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Thursday", i)}/>
               )
             })}
         </ul>
@@ -124,7 +125,7 @@ export default class Calendar extends React.Component {
             {this.state.Friday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Friday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Friday")}/>
+                <CalendarEntry key={i} data={meal} day="Friday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Friday", i)}/>
               )
             })}
         </ul>
@@ -133,7 +134,7 @@ export default class Calendar extends React.Component {
             {this.state.Saturday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Saturday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Saturday")}/>
+                <CalendarEntry key={i} data={meal} day="Saturday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Saturday", i)}/>
               )
             })}
         </ul>
@@ -142,7 +143,7 @@ export default class Calendar extends React.Component {
             {this.state.Sunday.map((meal, i) => {
                             // i is the index
               return (
-                <CalendarEntry key={i} data={meal} day="Sunday" type={this.checkMealType(i)} onRemove={(e, id) => this.onRemoveRecipe(e, id, "Sunday")}/>
+                <CalendarEntry key={i} data={meal} day="Sunday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Sunday", i)}/>
               )
             })}
         </ul>
