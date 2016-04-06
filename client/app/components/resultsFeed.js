@@ -28,10 +28,6 @@ export default class ResultsFeed extends React.Component {
     this.refresh();
   }
 
-  componentDidUpdate() {
-    this.refresh();
-  }
-
   render() {
     return (
       <div>

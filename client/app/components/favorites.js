@@ -34,7 +34,7 @@ export default class Favorites extends React.Component {
   refresh() {
     getProfileData(this.props.user, (newFavoritesList) => {
       this.setState({favoritesList : newFavoritesList.favorites});
-      findRecipesFromId(this.state.favoritesList, (newRecipeList) => {
+      findRecipesFromId(this.props.user,this.state.favoritesList, (newRecipeList) => {
         this.setState({recipeList : newRecipeList});
       });
 

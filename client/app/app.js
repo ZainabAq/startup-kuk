@@ -10,7 +10,8 @@ import Instamode from './components/instamode';
 import Favorites from './components/favorites';
 import Calendar from './components/calendar';
 import Navbar from './components/navbar';
-import ErrorBanner from './components/errorbanner'
+import ErrorBanner from './components/errorbanner';
+import {ResetDatabase} from './database';
 
 
 /**
@@ -91,15 +92,18 @@ class App extends React.Component {
 }
 
 ReactDOM.render((
-  <Router history={hashHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={BrowsePage} />
-      <Route path="recipe/:id" component={RecipePage} />
-      <Route path="profile/:id" component={ProfilePage} />
-      <Route path="results" component={ResultsPage} />
-      <Route path="instamode" component={InstaPage} />
-      <Route path="favorites/:id" component={FavoritesPage} />
-      <Route path="calendar/:id" component={CalendarPage} />
-    </Route>
-  </Router>
+  <div>
+    <Router history={hashHistory}>
+      <Route path="/" component={App}>
+        <IndexRoute component={BrowsePage} />
+        <Route path="recipe/:id" component={RecipePage} />
+        <Route path="profile/:id" component={ProfilePage} />
+        <Route path="results" component={ResultsPage} />
+        <Route path="instamode" component={InstaPage} />
+        <Route path="favorites/:id" component={FavoritesPage} />
+        <Route path="calendar/:id" component={CalendarPage} />
+      </Route>
+    </Router>
+    <ResetDatabase />
+  </div>
 ),document.getElementById('main-page'));
