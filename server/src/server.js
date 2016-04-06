@@ -281,19 +281,15 @@ app.post('/results', function(req, res) {
     match[m] = getRecipeSync(recipe);
   });
   res.send(match);
-
 });
-
-
-// })
 
 /*
 * This function checks the user's favorites to see if
 * a given recipe already exists in their list of
-* favorites.
+* favorites. Replacement of checkUserFavorites.
 */
 
-app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
+app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
    var userid = req.params.userid;
    var recipeid = parseInt(req.params.recipeid, 10);
    var user = readDocument("users", userid);
@@ -322,6 +318,27 @@ app.get('/user/:userid/favorites/', function(req, res) {
   });
   // Send response.
   res.send(recipes);
+});
+
+/**
+* Add's a recipe to the user's calendar. Used on the recipe page (when a user
+* clicks on the calendar button, this gets called)
+*/
+app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
+   var userid = parseInt(req.params.userid, 10);
+   var recipeid = parseInt(req.params.recipeid, 10);
+   var day = req.params.dayid;
+   var user = readDocument("users", userid);
+   var calendar = readDocument("calendar", 3);
+   console.log("calendar before:", calendar[day]);
+   if (calendar[day][3]) {
+      calendar[day][3] = recipeid;
+   } else {
+      calendar[day].push(recipeid);
+   }
+   writeDocument("users", user);
+   console.log("calendar after:", calendar[day]);
+   res.send(user);
 });
 
 
