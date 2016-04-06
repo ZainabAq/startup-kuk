@@ -39,6 +39,20 @@ export default class ProfileFeed extends React.Component {
     }
   }
 
+  getRestrictionChecks() {
+    var restrictions = this.state.restrictions;
+    var iterable = [1,2,3,4,5,6,7,8,9,10];
+    var booleans = [];
+    for (let num of iterable) {
+      if (restrictions.includes(num)) {
+        booleans.push(true);
+      } else {
+        booleans.push(false);
+      }
+    }
+    return booleans;
+  }
+
   render() {
     if (this.state.loading) {
       return (
@@ -89,7 +103,7 @@ export default class ProfileFeed extends React.Component {
                   </div>
                 </div>
 
-                <ProfileRestrictions user={this.state._id} restrictions={this.state.restrictions} />
+                <ProfileRestrictions user={this.state._id} restrictions={this.state.restrictions} checks={this.getRestrictionChecks()} getChecks={this.getRestrictionChecks} />
             </div>
           </div>
         </div>
