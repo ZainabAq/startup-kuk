@@ -316,6 +316,7 @@ app.get('/user/:userid/favorites/', function(req, res) {
   });
   // Send response.
   res.send(recipes);
+});
 
 
 // Reset database.
