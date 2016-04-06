@@ -221,15 +221,21 @@ app.get('/recipe/:recipeid/', function(req, res) {
 * favorites. Replacement of addFavorite.
 */
 app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
-   // var fromUser = getUserIdFromToken(req.get('Authorization'));
-   var userid = req.params.userid;
-   var user = readDocument("users", userid);
-   var recipeid = parseInt(req.params.recipeid, 10);
-   console.log("favorites before favoriting: ", user.favorites);
-   user.favorites.push(recipeid);
-   writeDocument("users", user);
-   console.log("favorites after favoriting: ", user.favorites);
-   res.send(user);
+   var fromUser = getUserIdFromToken(req.get('Authorization'));
+   var userid = parseInt(req.params.userid, 10);
+   if (fromUser === userid) {
+      var user = readDocument("users", userid);
+      var recipeid = parseInt(req.params.recipeid, 10);
+      console.log("favorites before favoriting: ", user.favorites);
+      user.favorites.push(recipeid);
+      writeDocument("users", user);
+      console.log("favorites after favoriting: ", user.favorites);
+      res.send(user);
+   }
+   else {
+      console.log("Authentication failed!");
+      res.status(401).end();
+   }
 });
 
 /*
@@ -237,17 +243,24 @@ app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
 * of favorites. Replacement of removeFavorite.
 */
 app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
-   var userid = req.params.userid;
-   var user = readDocument("users", userid);
-   var recipeid = parseInt(req.params.recipeid, 10);
-   console.log("favorites before unfavoriting: ", user.favorites)
-   var favoriteIndex = user.favorites.indexOf(recipeid);
-   if (favoriteIndex !== -1) {
-      user.favorites.splice(favoriteIndex, 1);
+   var fromUser = getUserIdFromToken(req.get('Authorization'));
+   var userid = parseInt(req.params.userid, 10);
+   if (fromUser === userid) {
+      var user = readDocument("users", userid);
+      var recipeid = parseInt(req.params.recipeid, 10);
+      console.log("favorites before unfavoriting: ", user.favorites)
+      var favoriteIndex = user.favorites.indexOf(recipeid);
+      if (favoriteIndex !== -1) {
+         user.favorites.splice(favoriteIndex, 1);
+      }
+      writeDocument("users", user);
+      console.log("favorites after unfavoriting: ", user.favorites)
+      res.send(user);
    }
-   writeDocument("users", user);
-   console.log("favorites after unfavoriting: ", user.favorites)
-   res.send(user);
+   else {
+      console.log("Authentication failed!");
+      res.status(401).end();
+   }
 });
 
 /**
@@ -358,3 +371,10 @@ app.post('/resetdb', function(req, res) {
 app.listen(3000, function () {
   console.log('Kuk server listening on port 3000!');
 });
+
+
+/*
+var user = readDocument(users, userid);
+var calId= user.calender
+var cal  = readDocument(cal, calid);
+*/
