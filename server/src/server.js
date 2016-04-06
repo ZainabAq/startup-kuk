@@ -17,6 +17,7 @@ var getCollection = require('./database').getCollection;
 app.use(express.static('../client/build'));
 
 var bodyParser = require('body-parser');
+
 // Support receiving text in HTTP request bodies
 app.use(bodyParser.text());
 // Support receiving JSON in HTTP request bodies
