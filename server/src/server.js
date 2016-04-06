@@ -127,9 +127,12 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
    res.send(user);
 });
 
+
+/**
+ * Returns an array of the recipes whose names match the searched keyword.
+ */
 app.post('/results', function(req, res) {
   var searchText = req.body;
-  console.log("searchText")
   var recipes = getCollection('recipe');
   // append all recipes in an array
   var i, recipeData = [];
@@ -156,7 +159,6 @@ app.post('/results', function(req, res) {
     // k is the index
     match[m] = getRecipeSync(recipe);
   });
-  console.log(match)
   res.send(match);
 })
 /*

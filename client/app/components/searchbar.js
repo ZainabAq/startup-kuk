@@ -34,13 +34,6 @@ export default class Searchbar extends React.Component {
     this.onSearch();
   }
 
-  componentWillReceiveProps(nextProps) {
-    //console.log("ugh")
-    this.setState({
-      value : nextProps.value
-    });
-  }
-
   render() {
     return (
       <form onSubmit={(evt) => evt.preventDefault()} className="navbar-form" role="search">
