@@ -117,10 +117,11 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
    res.send(user);
 });
 
-<<<<<<< HEAD
+/**
+ * Returns an array of the recipes whose names match the searched keyword.
+ */
 app.post('/results', function(req, res) {
   var searchText = req.body;
-  console.log("searchText")
   var recipes = getCollection('recipe');
   // append all recipes in an array
   var i, recipeData = [];
@@ -147,10 +148,9 @@ app.post('/results', function(req, res) {
     // k is the index
     match[m] = getRecipeSync(recipe);
   });
-  console.log(match)
   res.send(match);
 })
-=======
+
 /*
 * This function checks the user's favorites to see if
 * a given recipe already exists in their list of
@@ -168,8 +168,6 @@ app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
    }
    res.send(isRecipeIn);
 });
-
->>>>>>> 9abdfb674f284f0f7ab39b151f6469097c54e00c
 
 // Starts the server on port 3000
 app.listen(3000, function () {

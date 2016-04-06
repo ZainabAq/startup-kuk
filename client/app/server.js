@@ -216,34 +216,14 @@ export function getFeedData(restrictions, cb) {
  * Returns an array of the recipes whose names match the searched keyword.
  */
 export function findRecipe(searchText, cb) {
-  var recipes = getCollection('recipe');
-  // append all recipes in an array
-  var i, recipeData = [];
-  for (i in recipes) {
-    if (recipes.hasOwnProperty(i)) {
-      recipeData.push(recipes[i]);
-    }
-  }
-  // if recipe name contains search word, append its id
-  var text = searchText.toLowerCase().split(" ");
-  var j, k, h, match = [];
-  for (j=0; j<recipeData.length; j++) {
-    var name = recipeData[j].name.toLowerCase().split(" ");
-    for (k=0; k<text.length; k++) {
-      for (h=0; h<name.length; h++) {
-        if (text[k] == name[h]) {
-          match.push(recipeData[j]._id);
-        }
-      }
-    }
-  }
-  // map each recipe id
-  match.map((recipe, m) => {
-    // k is the index
-    match[m] = getRecipeSync(recipe);
+  var xhr = new XMLHttpRequest();
+  //console.log(searchText)
+  xhr.open('POST', '/results');
+  xhr.addEventListener('load', function() {
+    cb(JSON.parse(xhr.responseText));
   });
-  // match = wanted recipe
-  emulateServerReturn(match, cb);
+  xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+  xhr.send(searchText);
 }
 
 /**
