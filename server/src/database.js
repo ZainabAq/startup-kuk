@@ -8,9 +8,9 @@ var initialData = {
        "restrictions": [1,4],
        "email": "jdoe@gmail.com",
        "favorites": [2,3,5,1,4],
-       "calendar": 1
-     }
-   },
+       "calendarId": 1
+   }
+ },
    "recipe": {
      "1": {
        "_id": 1,
@@ -95,18 +95,26 @@ var initialData = {
     }
 
    },
-
-   "calendar": {
+   "calendars": {
      "1": {
+     "_id": 1,
+     1: {
        "Monday": [1,2,3,4], "Tuesday":[2, 3, 4, 5], "Wednesday":[1, 2, 3, 4], "Thursday":[4, 3, 1, 2], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
      },
-     "2": {
+
+     2: {
        "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 4], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
      },
-     "3": {
+
+       3: {
          "Monday": [5, 3, 1, 2], "Tuesday":[5, 4, 5, 1], "Wednesday":[1, 2, 4, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
+     },
+
+     4: {
+       "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 4], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
      }
-   },
+ }
+ },
 
    "restrictions": {
      "1": {
@@ -224,16 +232,6 @@ function writeDocument(collection, changedDocument) {
   updated = true;
 }
 module.exports.writeDocument = writeDocument;
-
-/***
-* Export function specifically for the calendar.
-**/
-function writeCalendar(collection, changedDocument, week) {
-  data[collection][week] = JSONClone(changedDocument);
-  //localStorage.setItem(kuk, JSON.stringify(data));
-  updated = true;
-}
-module.exports.writeCalendar = writeCalendar;
 
 
 /**

@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, getCollection, writeCalendar} from './database.js';
+import {readDocument, writeDocument, getCollection} from './database.js';
 
 //   XHR REQUEST MAIN CODE (from Workshop 6)
 var token = 'eyJpZCI6MX0='; // <-- Put your base64'd JSON token here
@@ -77,37 +77,6 @@ function emulateServerReturn(data, cb) {
   }, 4);
 }
 
-/**
- * Given a recipe ID, returns a recipe object with references resolved.
- * Internal to the server, since it's synchronous.
- */
-function getRecipeSync(recipeId) {
-  var recipe = readDocument('recipe', recipeId);
-  return recipe;
-}
-
-/**
-* Gets the day's calendar for a particular user.
-* @param calendarId and the day
-* @returns A 4-element array of that day's meals
-*/
-//
-// function removeRecipefromCalendarhere(userid, id, week, day, i) {
-//   var user = readDocument('users', userid);
-//   var calendar = readDocument('calendar', week);
-//   if (id !== -1) {
-//     calendar[day].splice(i, 1);
-//     //writeDocument('users', user);
-//     //writeDocument('calendar', calendar);
-//     writeCalendar('calendar', calendar, week);
-//     return calendar;
-//   }
-// }
-//
-// export function removeRecipefromCalendar(userid, id, week, day, i, cb) {
-//   var user = removeRecipefromCalendarhere(userid, id, week, day, i, cb);
-//   emulateServerReturn(user, cb);
-// }
 
 export function removeRecipefromCalendar(userid, week, day, meal, cb) {
   sendXHR('DELETE', '/user/' + userid + '/calendar/' + week + "/" + day + "/" + meal, undefined, (xhr) => {
@@ -116,29 +85,6 @@ export function removeRecipefromCalendar(userid, week, day, meal, cb) {
       });
 }
 
-function getCalendarData(userId, week, day) {
-  var calendar = readDocument('calendar', week);
-  var meals = [];
-  calendar[day].forEach((recipeId) => {
-    meals.push(getRecipeSync(recipeId));
-  })
-  return meals;
-}
-
-// export function getProfileCalendarData(user, week, cb) {
-//   // Get the User object with the id "user".
-//   var userData = readDocument('users', user);
-//   // Add upcoming calendar
-//   userData.Monday = getCalendarData(user, week, "Monday");
-//   userData.Tuesday = getCalendarData(user, week, "Tuesday");
-//   userData.Wednesday = getCalendarData(user, week, "Wednesday");
-//   userData.Thursday = getCalendarData(user, week, "Thursday");
-//   userData.Friday = getCalendarData(user, week, "Friday");
-//   userData.Saturday = getCalendarData(user, week, "Saturday");
-//   userData.Sunday = getCalendarData(user, week, "Sunday");
-//   // Return UserData with resolved references.
-//   emulateServerReturn(userData, cb);
-// }
 
 export function getProfileCalendarData(userid, week, cb) {
   sendXHR('GET', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
