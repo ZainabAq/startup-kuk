@@ -339,6 +339,7 @@ export function checkUserFavorites(recipeId, userId, cb) {
  //  // favorites = getRestrictionStrings(favorites);
  //  emulateServerReturn(isRecipeIn, cb);
  var xhr = new XMLHttpRequest();
+ console.log("CLIENT SIDE", recipeId);
 xhr.open("PUT", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
 xhr.addEventListener("load", function(){
     cb(JSON.parse(xhr.responseText));

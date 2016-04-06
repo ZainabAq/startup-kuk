@@ -19,12 +19,12 @@ export default class Recipe extends React.Component {
 
    refresh() {
       getRecipe(this.props.param, (recipeData) => {
+         this.setState(recipeData);
+         this.findAverageRating()
          this.didUserFavorite((result) => {
             recipeData.currentFavorite = result;
             this.setState(recipeData);
          })
-         this.setState(recipeData);
-         this.findAverageRating()
       });
    }
 
@@ -54,57 +54,18 @@ export default class Recipe extends React.Component {
       clickEvent.preventDefault();
       if (clickEvent.button === 0) {
          var callbackFunction = () => {};
-         // this.didUserFavoriteTwo();
-         // console.log("this.state.currentFavorite=", this.state.currentFavorite);
-         // if (!this.state.currentFavorite) {
-         //    addFavorite(this.state._id, 1, callbackFunction);
-         //    this.setState({currentFavorite: true});
-         // }
-         // else {
-         //    removeFavorite(this.state._id, 1, callbackFunction);
-         //    this.setState({currentFavorite: false});
-         // }
-         // addFavorite(this.state._id, 1, callbackFunction);
-         // console.log("Value of didUserFavoriteTwo is",this.didUserFavorite())
          this.didUserFavorite((result) => {
             if (result) {
                removeFavorite(this.state._id, 1, callbackFunction);
                this.setState({currentFavorite: result})
+               console.log(currentFavorite);
             }
             else {
                addFavorite(this.state._id, 1, callbackFunction);
                this.setState({currentFavorite: result})
             }
          });
-         // if (this.didUserFavorite()) {
-         //    // User clicked 'unfavorite' button.
-         //    removeFavorite(this.state._id, 1, callbackFunction);
-         // } else {
-         //    // User clicked 'favorite' button.
-         //    addFavorite(this.state._id, 1, callbackFunction);
-         // }
       }
-   }
-
-   /*
-   * The button that handles the user clicking the unfavorite button (this was a test)
-   */
-   // handleUnfavoriteClick(clickEvent) {
-   //    console.log("in the handleUnfavoriteClick event");
-   //    clickEvent.preventDefault();
-   //    if (clickEvent.button === 0) {
-   //       var callbackFunction =() => {};
-   //       removeFavorite(this.state._id, 1, callbackFunction);
-   //    }
-   // }
-
-
-   //second stab at seeing if the user has favorited - just passing in the results
-   //to setState in recipe. not really working either - had to click twice.
-   didUserFavoriteTwo() {
-      checkUserFavorites(this.state._id, 1, (data) => {
-         this.setState({currentFavorite: data})
-      });
    }
 
    /*
@@ -114,19 +75,7 @@ export default class Recipe extends React.Component {
    * is therefore fucking things up.
    */
    didUserFavorite(cb) {
-      // console.log("in the didUserFavorites");
-      //server function that will call the user's information when given the id
-      //and check to see if the recipe is already in the favorites
-      //server function to getUserFavorites
-      // var result = false;
       checkUserFavorites(this.state._id, 1, cb);
-      // setTimeout(() => {
-      //    this.setState({loading : false});
-      // }, 4);
-      // if (this.state.loading) {
-      //    this.setState({loading : true});
-      //    return result
-      // }
    }
 
 

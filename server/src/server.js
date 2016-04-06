@@ -91,12 +91,13 @@ app.get('/recipe/:recipeid/', function(req, res) {
 * favorites. Replacement of addFavorite.
 */
 app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
-   console.log("in the favoriting method");
    var userid = req.params.userid;
    var user = readDocument("users", userid);
-   var recipeid = req.params.recipeid;
+   var recipeid = parseInt(req.params.recipeid, 10);
+   console.log("favorites before favoriting: ", user.favorites);
    user.favorites.push(recipeid);
    writeDocument("users", user);
+   console.log("favorites after favoriting: ", user.favorites);
    res.send(user);
 });
 
@@ -105,19 +106,19 @@ app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
 * of favorites. Replacement of removeFavorite.
 */
 app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
-   console.log("in the unfavoriting method");
    var userid = req.params.userid;
    var user = readDocument("users", userid);
-   var recipeid = req.params.recipeid;
+   var recipeid = parseInt(req.params.recipeid, 10);
+   console.log("favorites before unfavoriting: ", user.favorites)
    var favoriteIndex = user.favorites.indexOf(recipeid);
    if (favoriteIndex !== -1) {
       user.favorites.splice(favoriteIndex, 1);
    }
    writeDocument("users", user);
+   console.log("favorites after unfavoriting: ", user.favorites)
    res.send(user);
 });
 
-<<<<<<< HEAD
 app.post('/results', function(req, res) {
   var searchText = req.body;
   console.log("searchText")
@@ -149,27 +150,25 @@ app.post('/results', function(req, res) {
   });
   console.log(match)
   res.send(match);
-})
-=======
+});
+
 /*
 * This function checks the user's favorites to see if
 * a given recipe already exists in their list of
 * favorites.
 */
 app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
-   console.log("in the server side checkUserFavorites");
    var userid = req.params.userid;
-   var recipeid = req.params.recipeid;
+   var recipeid = parseInt(req.params.recipeid, 10);
    var user = readDocument("users", userid);
    var favorites = user.favorites;
    var isRecipeIn = false;
-   if (favorites.includes(recipeid)) {
+   if (favorites.indexOf(recipeid) !== -1) {
       isRecipeIn = true;
    }
    res.send(isRecipeIn);
 });
 
->>>>>>> 9abdfb674f284f0f7ab39b151f6469097c54e00c
 
 // Starts the server on port 3000
 app.listen(3000, function () {
