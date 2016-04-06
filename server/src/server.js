@@ -249,13 +249,9 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
    res.send(user);
 });
 
-<<<<<<< HEAD
-=======
-
 /**
  * Returns an array of the recipes whose names match the searched keyword.
  */
->>>>>>> 99d3a4a223a612a2bf84cac0f447a822e20003b0
 app.post('/results', function(req, res) {
   var searchText = req.body;
   var recipes = getCollection('recipe');
@@ -285,12 +281,12 @@ app.post('/results', function(req, res) {
     match[m] = getRecipeSync(recipe);
   });
   res.send(match);
-<<<<<<< HEAD
+
 });
 
-=======
-})
->>>>>>> 99d3a4a223a612a2bf84cac0f447a822e20003b0
+
+// })
+
 /*
 * This function checks the user's favorites to see if
 * a given recipe already exists in their list of
@@ -309,8 +305,7 @@ app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
    res.send(isRecipeIn);
 });
 
-<<<<<<< HEAD
-=======
+
  /**
  * Gets the favorites data for a particular user.
  */
@@ -338,7 +333,7 @@ app.post('/resetdb', function(req, res) {
   // res.send() sends an empty response with status code 200
   res.send();
 });
->>>>>>> 99d3a4a223a612a2bf84cac0f447a822e20003b0
+
 
 // Starts the server on port 3000
 app.listen(3000, function () {
