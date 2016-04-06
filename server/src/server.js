@@ -169,6 +169,24 @@ app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
    res.send(isRecipeIn);
 });
 
+ /**
+ * Gets the favorites data for a particular user.
+ */
+app.get('/user/:userid/favorites/', function(req, res) {
+  // will contain the list of recipes
+  var recipes = [];
+  var userid = req.params.userid;
+  var userData = readDocument('users', userid);
+  var recipeIDs = userData.favorites;
+  // map each recipe id
+  recipeIDs.map((recipeID, i) => {
+    // i is the index
+    recipes[i] = getRecipeSync(recipeID);
+  });
+  // Send response.
+  res.send(recipes);
+});
+
 // Starts the server on port 3000
 app.listen(3000, function () {
   console.log('Kuk server listening on port 3000!');
