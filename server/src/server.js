@@ -221,6 +221,7 @@ app.get('/recipe/:recipeid/', function(req, res) {
 * favorites. Replacement of addFavorite.
 */
 app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
+   // var fromUser = getUserIdFromToken(req.get('Authorization'));
    var userid = req.params.userid;
    var user = readDocument("users", userid);
    var recipeid = parseInt(req.params.recipeid, 10);
@@ -248,7 +249,6 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
    console.log("favorites after unfavoriting: ", user.favorites)
    res.send(user);
 });
-
 
 /**
  * Returns an array of the recipes whose names match the searched keyword.
@@ -287,10 +287,10 @@ app.post('/results', function(req, res) {
 /*
 * This function checks the user's favorites to see if
 * a given recipe already exists in their list of
-* favorites.
+* favorites. Replacement of checkUserFavorites.
 */
 
-app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
+app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
    var userid = req.params.userid;
    var recipeid = parseInt(req.params.recipeid, 10);
    var user = readDocument("users", userid);
@@ -318,6 +318,28 @@ app.get('/user/:userid/favorites/', function(req, res) {
   });
   // Send response.
   res.send(recipes);
+});
+
+/**
+* Add's a recipe to the user's calendar. Used on the recipe page (when a user
+* clicks on the calendar button, this gets called)
+*/
+app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
+   var userid = parseInt(req.params.userid, 10);
+   var recipeid = parseInt(req.params.recipeid, 10);
+   var day = req.params.dayid;
+   var user = readDocument("users", userid);
+   var calendar = readDocument("calendar", 3);
+   console.log("calendar before:", calendar[day]);
+   if (calendar[day][3]) {
+      calendar[day][3] = recipeid;
+   } else {
+      calendar[day].push(recipeid);
+   }
+   // writeDocument("users", user)
+   writeCalendar("calendar", calendar, 3);
+   console.log("calendar after:", calendar[day]);
+   res.send(user);
 });
 
 

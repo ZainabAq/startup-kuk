@@ -58,14 +58,14 @@ export default class Recipe extends React.Component {
             if (result) {
                removeFavorite(this.state._id, 1, callbackFunction);
                this.setState({currentFavorite: result})
-               console.log(currentFavorite);
             }
             else {
                addFavorite(this.state._id, 1, callbackFunction);
-               this.setState({currentFavorite: result})
+               this.setState({currentFavorite: result});
             }
          });
       }
+      this.refresh();
    }
 
    /*

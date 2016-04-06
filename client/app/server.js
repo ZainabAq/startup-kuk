@@ -109,14 +109,7 @@ export function getProfileData(user, cb) {
 //need functions to addFavorites, addRating, addMealstoCalendar, getRecipeInformation
 //modifyRestrictions (for the profile)
 
-//trying things out here to see if sending server requests is going to work
-//doesn't work because it doesn't like the database
-//which is confusing b/c it was perfectly fine to return a JSON of the right information
-//when /recipe/:id was there (but not /#/recipe/:recipeid)
 export function getRecipe(recipeId, cb) {
-   //get the recipe object with the correct id
-   // var recipeData = readDocument('recipe', recipeId);
-   // emulateServerReturn(recipeData, cb);
    var xhr = new XMLHttpRequest();
    xhr.open("GET", "/recipe/" + recipeId);
    xhr.addEventListener("load", function(){
@@ -224,13 +217,6 @@ export function findRecipesFromId(userId,recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   //getting both the user and the recipe from the database
-   // var recipe = readDocument("recipes", recipeId);
-   // var user = readDocument("users", userId);
-   // user.favorites.push(recipeId);
-   // writeDocument('users', user);
-   // emulateServerReturn(user, cb);
-
    var xhr = new XMLHttpRequest();
    xhr.open("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId);
    xhr.addEventListener("load", function(){
@@ -244,14 +230,6 @@ export function addFavorite(recipeId, userId, cb) {
 * The function that removes recipes from the user's list of favorites
 */
 export function removeFavorite (recipeId, userId, cb) {
-   // var user = readDocument("users", userId);
-   // //now need to remove the favorite from the user's list of favorites
-   // var favoriteIndex = user.favorites.indexOf(recipeId);
-   // if (favoriteIndex !== -1) {
-   //    user.favorites.splice(favoriteIndex, 1);
-   //    writeDocument("users", user);
-   // }
-   // emulateServerReturn(user, cb);
    var xhr = new XMLHttpRequest();
    xhr.open("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId);
    xhr.addEventListener("load", function(){
@@ -260,46 +238,13 @@ export function removeFavorite (recipeId, userId, cb) {
    xhr.send();
 }
 
-// var userIndex = feedItem.comments[index].likeCounter.indexOf(userId);
-// // -1 means the user is *not* in the likeCounter, so we can simply avoid updating
-// // anything if that is the case: the user already doesn't like the item.
-// if (userIndex !== -1) {
-//   // 'splice' removes items from an array. This removes 1 element starting from userIndex.
-//   feedItem.comments[index].likeCounter.splice(userIndex, 1);
-//   writeDocument('feedItems', feedItem);
-// }
-// // Return a resolved version of the commentLikeCounter
-// emulateServerReturn(getFeedItemSync(feedItemId), cb);
-
-// /**
-//  * @param user The id of the user
-//  * @param cb The callback function to be called at the end
-//  */
-// export function getUserFavorites(user, cb) {
-//   var userData = readDocument("users", user);
-//   var favorites = userData.favorites;
-//   // favorites = getRestrictionStrings(favorites);
-//   emulateServerReturn(favorites, cb);
-// }
-
-
 /**
  * @param user The id of the user
  * @param cb The callback function to be called at the end
  */
 export function checkUserFavorites(recipeId, userId, cb) {
- //  var user = readDocument("users", userId);
- //  var favorites = user.favorites;
- //  var isRecipeIn = false;
- //  if (favorites.includes(recipeId)) {
- //     isRecipeIn = true;
- // }
- // console.log("result of checkUserFavorites is: ", isRecipeIn);
- //  //assuming that favorites is an array here
- //  // favorites = getRestrictionStrings(favorites);
- //  emulateServerReturn(isRecipeIn, cb);
  var xhr = new XMLHttpRequest();
-xhr.open("PUT", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
+xhr.open("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
 xhr.addEventListener("load", function(){
     cb(JSON.parse(xhr.responseText));
 });
@@ -324,15 +269,21 @@ export function getRestriction(checkbox, cb) {
 * and the day you want to add the recipe to
 */
 export function addRecipeToCalendar(recipeId, userId, day, cb) {
-   var user = readDocument("users", userId);
-   var calendar = readDocument("calendar", 2);
-   if (calendar[day][3]) {
-      calendar[day][3] = recipeId;
-   } else {
-      calendar[day].push(recipeId);
-   }
-   writeDocument('users', user);
-   emulateServerReturn(user, cb);
+   var xhr = new XMLHttpRequest();
+   xhr.open("PUT", "/recipe/" +recipeId+ "/user/" +userId+ "/calendar/" + day)
+   xhr.addEventListener("load", function() {
+      cb(JSON.parse(xhr.responseText));
+   })
+   xhr.send();
+   // var user = readDocument("users", userId);
+   // var calendar = readDocument("calendar", 2);
+   // if (calendar[day][3]) {
+   //    calendar[day][3] = recipeId;
+   // } else {
+   //    calendar[day].push(recipeId);
+   // }
+   // writeDocument('users', user);
+   // emulateServerReturn(user, cb);
 }
 
 /**
