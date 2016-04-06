@@ -143,7 +143,7 @@ app.put('/user/:userid/restriction/:restrictionid', function(req, res) {
   }
 });
 
-// DELETE a restriction id from a user's data. 
+// DELETE a restriction id from a user's data.
 app.delete('/user/:userid/restriction/:restrictionid', function(req, res) {
   var fromUser = getUserIdFromToken(req.get('Authorization'));
   // Convert params from string to number.
@@ -298,6 +298,15 @@ app.put("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
       isRecipeIn = true;
    }
    res.send(isRecipeIn);
+});
+
+// Reset database.
+app.post('/resetdb', function(req, res) {
+  console.log("Resetting database...");
+  // This is a debug route, so don't do any validation.
+  database.resetDatabase();
+  // res.send() sends an empty response with status code 200
+  res.send();
 });
 
 // Starts the server on port 3000
