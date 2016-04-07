@@ -17,14 +17,12 @@ export default class ProfileFeed extends React.Component {
   refresh() {
     getProfileData(this.props.user, (profileData) => {
       this.setState(profileData);
+      this.setState({loading : false});
     });
   }
 
   componentDidMount() {
     this.refresh();
-    setTimeout(() => {
-      this.setState({loading : false});
-    }, 4);
   }
 
   checkMealType(i) {

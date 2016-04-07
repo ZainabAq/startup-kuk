@@ -141,13 +141,19 @@ function getUpcomingMeals(userId) {
 
 // Get Profile data
 app.get('/user/:userid', function(req, res) {
-  var userId = req.params.userid;
-  // Get the User object with the id "user."
-  var userData = readDocument('users', userId);
-  // Add upcoming meals
-  userData.upcomingMeals = getUpcomingMeals(userId);
-  // Return UserData with resolved references.
-  res.send(userData);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // Convert params from string to number.
+  var userId = parseInt(req.params.userid, 10);
+  if (fromUser === userId) {
+    // Get the User object with the id "user."
+    var userData = readDocument('users', userId);
+    // Add upcoming meals
+    userData.upcomingMeals = getUpcomingMeals(userId);
+    // Return UserData with resolved references.
+    res.send(userData);
+  } else {
+    res.status(401).end();
+  }
 });
 
 /**
@@ -165,11 +171,17 @@ function getRestrictionStrings(ids) {
 
 // GET User Restriction Tags
 app.get('/user/:userid/restrictions', function(req, res) {
-  var userId = req.params.userid;
-  var userData = readDocument("users", userId);
-  var restrictions = userData.restrictions;
-  restrictions = getRestrictionStrings(restrictions);
-  res.send(restrictions);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  // Convert params from string to number.
+  var userId = parseInt(req.params.userid, 10);
+  if (fromUser === userId) {
+    var userData = readDocument("users", userId);
+    var restrictions = userData.restrictions;
+    restrictions = getRestrictionStrings(restrictions);
+    res.send(restrictions);
+  } else {
+    res.status(401).end();
+  }
 });
 
 // PUT A restriction id in a user's data.
