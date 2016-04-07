@@ -9,8 +9,6 @@ export default class Favorites extends React.Component {
     super(props);
     this.state = {
       _id: this.props.user,
-      /** filter bar is offscreen by default so its condition is true */
-      condition: true,
       /** empty favorites' list initially */
       favoritesList: [],
       /** the list of recipes of the favorited items is initially empty */
@@ -19,17 +17,6 @@ export default class Favorites extends React.Component {
       sortId: 0,
       loading : true
     };
-  }
-
-  /** handles click of filter button to decide whether or not to show the sidebar */
-  handleClick(e){
-    e.preventDefault();
-    this.setState( { condition : !this.state.condition } );
-  }
-
-  handleClick2(e) {
-    e.preventDefault();
-    this.forceUpdate()
   }
 
   /** handles click of sort options to determine sorting */
@@ -75,17 +62,9 @@ export default class Favorites extends React.Component {
   } else{
     return (
       <div>
-        <div id="wrapper" className={this.state.condition ? "toggled" :""}>
-          <div id="sidebar-wrapper">
-              <FilterBar/>
-          </div>
           <div id="page-content-wrapper">
             <div className="favorites">
               <h1 className="center">Favorites</h1>
-              <button className="btn btn-default" onClick={(e)=>this.handleClick(e)}>
-                <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
-                Filter
-              </button>
               <div className="pull-right">
                 <div className="btn-group">
                   <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -109,7 +88,6 @@ export default class Favorites extends React.Component {
             </div>
           </div>
         </div>
-      </div>
     )
   }
   }
