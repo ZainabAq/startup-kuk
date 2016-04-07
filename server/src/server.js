@@ -387,6 +387,48 @@ app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
    res.send(user);
 });
 
+/**
+* Posts the results from searching with instamode (when a user
+* clicks on the Find a recipe button, it is called)
+*/
+app.post('/instaresults', function(req, res) {
+  var ingredientsList = req.body.split(',');
+  // console.log(ingredientsList);
+  var recipes = getCollection('recipe');
+  var i, recipeData = [];
+  for (i in recipes) {
+    if (recipes.hasOwnProperty(i)) {
+      recipeData.push(recipes[i]);
+    }
+  }
+  // will store the list of recipes that match
+  var matchedIngredientRecipe = [];
+
+  for (var z=0; z<recipeData.length; z++) {
+    var ingredients = recipeData[z].ingredients;
+    // ingredients is the list for each recipe's ingredients
+    // deciding which list to loop over, depends on which is longer
+    // var longerList;
+    // console.log(ingredients.length);
+    // if (ingredientsList.length >= ingredients.length) {
+    //   longerList = ingredientsList;
+    // } else {
+    //   longerList = ingredients;
+    // }
+    for (var y=0; y<ingredients.length; y++) {
+      var splitIngredients = ingredients[y].split(' ');
+      // console.log(splitIngredients);
+      for (var x=0; x<ingredientsList.length; x++) {
+        // console.log(ingredientsList[x]);
+        if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+          matchedIngredientRecipe.push(recipeData[z]);
+          break;
+        }
+      }
+    }
+  }
+  res.send(matchedIngredientRecipe);
+});
 
 // Reset database.
 app.post('/resetdb', function(req, res) {
