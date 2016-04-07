@@ -217,18 +217,9 @@ export function findRecipesFromId(userId,recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   console.log("in add favorite");
    sendXHR("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   console.log("request sent")
-   // var xhr = new XMLHttpRequest();
-   // xhr.open("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId);
-   // xhr.addEventListener("load", function(){
-   //    cb(JSON.parse(xhr.responseText));
-   // });
-   // xhr.send();
-
 }
 
 /**
@@ -238,12 +229,6 @@ export function removeFavorite (recipeId, userId, cb) {
    sendXHR("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   // var xhr = new XMLHttpRequest();
-   // xhr.open("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId);
-   // xhr.addEventListener("load", function(){
-   //    cb(JSON.parse(xhr.responseText));
-   // });
-   // xhr.send();
 }
 
 /**
@@ -254,12 +239,6 @@ export function checkUserFavorites(recipeId, userId, cb) {
    sendXHR("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-//  var xhr = new XMLHttpRequest();
-// xhr.open("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
-// xhr.addEventListener("load", function(){
-//     cb(JSON.parse(xhr.responseText));
-// });
-// xhr.send();
 }
 
 /**
@@ -286,15 +265,6 @@ export function addRecipeToCalendar(recipeId, userId, day, cb) {
       cb(JSON.parse(xhr.responseText));
    })
    xhr.send();
-   // var user = readDocument("users", userId);
-   // var calendar = readDocument("calendar", 2);
-   // if (calendar[day][3]) {
-   //    calendar[day][3] = recipeId;
-   // } else {
-   //    calendar[day].push(recipeId);
-   // }
-   // writeDocument('users', user);
-   // emulateServerReturn(user, cb);
 }
 
 /**
