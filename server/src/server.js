@@ -81,11 +81,13 @@ function getCalendarSync(userData, week, day) {
 function getUpcomingMeals(userId) {
   // Get the User object with the id "userId".
   var userData = readDocument('users', userId);
+  var calId = userData.calendarId;
+  var calendar = readDocument('calendars', calId);
   // Get the calendar for the user.
-  var calendar = readDocument('calendar',userData.calendar);
+  var week = calendar[1];
   // For now, static date is Monday.
   var meals = [];
-  calendar.Monday.forEach((recipeId) => {
+  week.Monday.forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
