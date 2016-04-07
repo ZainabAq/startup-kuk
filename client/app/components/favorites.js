@@ -55,7 +55,6 @@ export default class Favorites extends React.Component {
         this.setState({recipeList : newRecipeList});
         if (this.state.sortId === 1) {
           this.setState({recipeList : this.state.recipeList.reverse()});
-          console.log(this.state.recipeList)
         }
       });
     });
@@ -66,7 +65,6 @@ export default class Favorites extends React.Component {
     setTimeout(() => {
       this.setState({loading : false});
     }, 4);
-    console.log("hmm");
   }
 
   render() {
