@@ -211,36 +211,43 @@ export function removeUserRestriction(restrictionId, userId, cb) {
 /**
  * @param array of restrictions to not be included
  * @param cb, callback function
- * gets the proper recipes to popualate the feed
+ * Emulates a REST call to get the feed data for a particular user.
  */
 export function getFeedData(restrictions, cb) {
-  // get the recipe collection & initialize feedData
-  var recipes = getCollection('recipe');
-  var feedData = [];
-  // if no filter has been applied yet, get all the recipes
-  if (restrictions.length == 0) {
-    for (var i in recipes) {
-      if (recipes.hasOwnProperty(i)) {
-        feedData.push(recipes[i]);
-      }
-    }
-  } else {
-    // get the set of recipes that have restrictions
-    var recipeSet = new Set();
-    for (var id in restrictions) {
-      var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
-      for (var recipeId in badRecipes) {
-        recipeSet.add(badRecipes[recipeId]);
-      }
-    }
-    // get recipes that don't match the set of restricted recipes
-    for(var j in recipes) {
-      if (!recipeSet.has(recipes[j]._id)) {
-        feedData.push(recipes[j]);
-      }
-    }
-  }
-  emulateServerReturn(feedData, cb);
+  console.log("client side restrictions",restrictions);
+  sendXHR('PUT','/feed/', restrictions, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+
+  // send reponse
+  // xhr.send();
+  // // get the recipe collection & initialize feedData
+  // var recipes = getCollection('recipe');
+  // var feedData = [];
+  // // if no filter has been applied yet, get all the recipes
+  // if (restrictions.length == 0) {
+  //   for (var i in recipes) {
+  //     if (recipes.hasOwnProperty(i)) {
+  //       feedData.push(recipes[i]);
+  //     }
+  //   }
+  // } else {
+  //   // get the set of recipes that have restrictions
+  //   var recipeSet = new Set();
+  //   for (var id in restrictions) {
+  //     var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
+  //     for (var recipeId in badRecipes) {
+  //       recipeSet.add(badRecipes[recipeId]);
+  //     }
+  //   }
+  //   // get recipes that don't match the set of restricted recipes
+  //   for(var j in recipes) {
+  //     if (!recipeSet.has(recipes[j]._id)) {
+  //       feedData.push(recipes[j]);
+  //     }
+  //   }
+  // }
+  // emulateServerReturn(feedData, cb);
 }
 
 /**
@@ -305,18 +312,18 @@ xhr.addEventListener("load", function(){
 xhr.send();
 }
 
-/**
- * @param checkbox The DOM object triggering this call
- * @param cb The callback function to be called at the end
- * Returns recipes that don't match restrictionId
- */
-export function getRestriction(checkbox, cb) {
-  var restrictionId = checkbox.value;
-   //get the recipe object with the correct id
-  //  var dietData = readDocument('restrictions', restrictionId);
-   var result = {"restrictions":restrictionId, "target":checkbox};
-   emulateServerReturn(result, cb);
-}
+// /**
+//  * @param checkbox The DOM object triggering this call
+//  * @param cb The callback function to be called at the end
+//  * Returns recipes that don't match restrictionId
+//  */
+// export function getRestriction(checkbox, cb) {
+//   var restrictionId = checkbox.value;
+//    //get the recipe object with the correct id
+//   //  var dietData = readDocument('restrictions', restrictionId);
+//    var result = {"restrictions":restrictionId, "target":checkbox};
+//    emulateServerReturn(result, cb);
+// }
 
 /**
 * Adding a recipe to the user's calendar when given the user's id, the recipe's id,

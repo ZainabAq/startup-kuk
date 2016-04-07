@@ -9,10 +9,10 @@ var app = express();
 //importing methods from the database
 var database = require('./database');
 var readDocument = database.readDocument;
-var writeDocument = require('./database').writeDocument;
-var addDocument = require('./database').addDocument;
-var writeCalendar = require('./database').writeCalendar;
-var getCollection = require('./database').getCollection;
+var writeDocument = database.writeDocument;
+var addDocument = database.addDocument;
+var writeCalendar = database.writeCalendar;
+var getCollection = database.getCollection;
 
 app.use(express.static('../client/build'));
 
@@ -49,6 +49,54 @@ function getUserIdFromToken(authorizationLine) {
     return -1;
   }
 }
+
+/**
+ * Get the feed data for a particular user.
+ */
+function getFeedData(restrictions) {
+  // console.log(restrictions)
+  console.log("in getFeed");
+  // get the recipe collection & initialize feedData
+  var recipes = getCollection('recipe');
+  var feedData = [];
+  // if no filter has been applied yet, get all the recipes
+  if (restrictions.length == 0) {
+    for (var i in recipes) {
+      if (recipes.hasOwnProperty(i)) {
+        feedData.push(recipes[i]);
+      }
+    }
+  } else {
+    // get the unique set of recipes that have restrictions
+    var recipeSet = [];
+    for (var id in restrictions) {
+      var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
+      for (var recipeId in badRecipes) {
+        if (recipeSet.indexOf(badRecipes[recipeId]) === -1) {
+          recipeSet.push(badRecipes[recipeId]);
+        }
+      }
+    }
+    // get recipes that don't match the set of restricted recipes
+    for(var j in recipes) {
+      if (recipeSet.indexOf(recipes[j]._id) === -1) {
+        feedData.push(recipes[j]);
+      }
+    }
+  }
+  return feedData;
+}
+
+/**
+ * Get appropriate feed data to populate the browse page
+ */
+app.put('/feed/', function(req, res) {
+  console.log("in this method");
+  console.log(req.body);
+  var restrictions = req.body;
+  // // Send response.
+  res.send(getFeedData(restrictions));
+});
 
 /*
 * Given a recipe ID, returns a recipe object with references resolved.
@@ -206,7 +254,7 @@ app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
 
 /*
 * This method replaces "getRecipe" from the old server.
-* It gives recipe data from the database given a recipe * id.
+* It gives recipe data from the database given a recipe id.
 */
 app.get('/recipe/:recipeid/', function(req, res) {
    //get the recipe id out of the url
