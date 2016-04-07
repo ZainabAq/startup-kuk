@@ -8,13 +8,15 @@ export default class Favorites extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      _id : this.props.user,
+      _id: this.props.user,
       /** filter bar is offscreen by default so its condition is true */
       condition: true,
       /** empty favorites' list initially */
       favoritesList: [],
       /** the list of recipes of the favorited items is initially empty */
-      recipeList: []
+      recipeList: [],
+      /** the default sort id */
+      sortId: 0
     };
   }
 
@@ -29,13 +31,31 @@ export default class Favorites extends React.Component {
     this.forceUpdate()
   }
 
+  /** handles click of sort options to determine sorting */
+  handleSortNewFirst(e) {
+    e.preventDefault();
+    this.setState( { sortId : 1 } );
+    console.log("inhandle")
+    this.refresh(3);
+  }
+
   /** gets the favorites' list for the current user and the recipes of the
   favorited items */
   refresh() {
     getProfileData(this.props.user, (userData) => {
       this.setState({favoritesList : userData.favorites});
+      console.log("hereee");
+      if (this.state.sortId === 1) {
+        console.log(this.state.favoritesList);
+        this.setState({favoritesList : this.state.favoritesList.reverse()});
+        console.log(this.state.favoritesList);
+      }
+      console.log("outsideif");
+      console.log(this.state.favoritesList);
       findRecipesFromId(this.props.user,this.state.favoritesList, (newRecipeList) => {
         this.setState({recipeList : newRecipeList});
+        console.log("outsideif2");
+        console.log(this.state.favoritesList);
       });
 
     });
@@ -65,7 +85,7 @@ export default class Favorites extends React.Component {
                   <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sort <span className="caret"></span></button>
                   <ul className="dropdown-menu pull-right">
-                    <li><Link to="/favorites/2">By Date Added - Newest First</Link></li>
+                    <li><button onClick={(e)=>this.handleSortNewFirst(e)}>By Date Added - Newest First</button></li>
                     <li role="separator" className="divider"></li>
                     <li><Link to={"/favorites/" + this.props.user}>By Date Added - Oldest First (Default)</Link></li>
                   </ul>
