@@ -235,12 +235,15 @@ export function addFavorite(recipeId, userId, cb) {
 * The function that removes recipes from the user's list of favorites
 */
 export function removeFavorite (recipeId, userId, cb) {
-   var xhr = new XMLHttpRequest();
-   xhr.open("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId);
-   xhr.addEventListener("load", function(){
+   sendXHR("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   xhr.send();
+   // var xhr = new XMLHttpRequest();
+   // xhr.open("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId);
+   // xhr.addEventListener("load", function(){
+   //    cb(JSON.parse(xhr.responseText));
+   // });
+   // xhr.send();
 }
 
 /**
@@ -248,12 +251,15 @@ export function removeFavorite (recipeId, userId, cb) {
  * @param cb The callback function to be called at the end
  */
 export function checkUserFavorites(recipeId, userId, cb) {
- var xhr = new XMLHttpRequest();
-xhr.open("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
-xhr.addEventListener("load", function(){
-    cb(JSON.parse(xhr.responseText));
-});
-xhr.send();
+   sendXHR("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId, undefined, (xhr) => {
+      cb(JSON.parse(xhr.responseText));
+   });
+//  var xhr = new XMLHttpRequest();
+// xhr.open("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
+// xhr.addEventListener("load", function(){
+//     cb(JSON.parse(xhr.responseText));
+// });
+// xhr.send();
 }
 
 /**

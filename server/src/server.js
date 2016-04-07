@@ -315,15 +315,21 @@ app.post('/results', function(req, res) {
 */
 
 app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
-   var userid = req.params.userid;
-   var recipeid = parseInt(req.params.recipeid, 10);
-   var user = readDocument("users", userid);
-   var favorites = user.favorites;
-   var isRecipeIn = false;
-   if (favorites.indexOf(recipeid) !== -1) {
-      isRecipeIn = true;
+   var fromUser = getUserIdFromToken(req.get('Authorization'));
+   var userid = parseInt(req.params.userid, 10);
+   if (userid === fromUser) {
+      var recipeid = parseInt(req.params.recipeid, 10);
+      var user = readDocument("users", userid);
+      var favorites = user.favorites;
+      var isRecipeIn = false;
+      if (favorites.indexOf(recipeid) !== -1) {
+         isRecipeIn = true;
+      }
+      res.send(isRecipeIn);
+   } else {
+      console.log("Authentication failed!");
+      res.status(401).end();
    }
-   res.send(isRecipeIn);
 });
 
  /**
