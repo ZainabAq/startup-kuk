@@ -28,6 +28,7 @@ export default class Instamode extends React.Component {
       }
     }
     this.setState({ingredients: this.state.ingredients});
+    // console.log(this.state.ingredients);
   }
 
   handleIngredientDelete(ingredient){
@@ -37,9 +38,7 @@ export default class Instamode extends React.Component {
   }
 
   handleClear(){
-    this.setState({
-      ingredients: []
-    });
+    location.reload();
   }
 
   render() {

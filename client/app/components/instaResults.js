@@ -1,6 +1,7 @@
 import React from 'react';
 import ResultsItem from './resultsItem';
 import {findRecipeByIngredients} from '../server'
+import {findRecipeByOnlyIngredients} from '../server'
 
 export default class InstaResults extends React.Component {
   constructor(props) {
@@ -8,26 +9,58 @@ export default class InstaResults extends React.Component {
     this.state = {
       ingredients: this.props.ingredients,
       recipes: [],
-      searchClicked: false
+      searchClicked: false,
+      ingredientsOnly: true
+    }
+  }
+
+  handleChecked(checkEvent) {
+    if (checkEvent.target.checked) {
+      // console.log("Should be true!")
+      this.setState({ingredientsOnly : false});
+      // console.log(this.state.ingredientsOnly);
+    } else {
+      // console.log("Should be false!")
+      this.setState({ingredientsOnly : true});
+      // console.log(this.state.ingredientsOnly);
     }
   }
 
   onSearch() {
-    findRecipeByIngredients(this.state.ingredients, (matchedRecipes) => {
-      this.setState({recipes: matchedRecipes});
-    });
-    this.setState({searchClicked: true});
+    if (this.state.ingredientsOnly) {
+      findRecipeByIngredients(this.state.ingredients, (matchedRecipes) => {
+        this.setState({recipes: matchedRecipes});
+      });
+      this.setState({searchClicked: true});
+    } else {
+      findRecipeByOnlyIngredients(this.state.ingredients, (matchedRecipes) => {
+        this.setState({recipes: matchedRecipes});
+      });
+      this.setState({searchClicked: true});
+    }
   }
 
   handleClear() {
-    this.setState({searchClicked: false});
+    this.setState({
+      searchClicked: false,
+      ingredientsOnly: true
+    });
     this.props.onClear();
   }
 
   render() {
     if (this.state.searchClicked === false) {
       return(
-        <button type="submit" className="findrecipe-btn" onClick={() => this.onSearch()}>Find a Recipe! </button>
+        <div>
+          <div className="checkbox">
+            <label>
+              <input value={1} type="checkbox" onChange={(e) => {
+                  this.handleChecked(e);
+                }}/>Find recipes that ONLY contain these ingredients
+            </label>
+          </div>
+          <button type="submit" className="findrecipe-btn" onClick={() => this.onSearch()}>Find a Recipe! </button>
+        </div>
       );
     } else if (this.state.recipes.length > 0 ){
       return (
@@ -44,7 +77,7 @@ export default class InstaResults extends React.Component {
       return(
         <div>
           <p>We were unable to find anything matching the ingredient you entered. Please try again.</p>
-          <button type="submit" className="findrecipe-btn" onClick={() => this.onClear()}>Clear Search</button>
+          <button type="submit" className="findrecipe-btn" onClick={() => this.handleClear()}>Clear Search</button>
         </div>
       )
     }

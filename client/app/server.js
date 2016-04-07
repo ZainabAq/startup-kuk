@@ -229,3 +229,17 @@ export function findRecipeByIngredients(ingredientsList, cb) {
     xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
     xhr.send(ingredientsList);
 }
+
+/**
+  * Gets the recipes that have the ingredients the user puts in
+  * @param ingredientsList is the list of ingredients entered in instamode
+  */
+export function findRecipeByOnlyIngredients(ingredientsList, cb) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/instaresults/ingredientsONLY');
+    xhr.addEventListener('load', function() {
+      cb(JSON.parse(xhr.responseText));
+    });
+    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    xhr.send(ingredientsList);
+}

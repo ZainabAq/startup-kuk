@@ -458,43 +458,86 @@ app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
 * clicks on the Find a recipe button, it is called)
 */
 app.post('/instaresults', function(req, res) {
-  var ingredientsList = req.body.split(',');
-  // console.log(ingredientsList);
-  var recipes = getCollection('recipe');
-  var i, recipeData = [];
-  for (i in recipes) {
-    if (recipes.hasOwnProperty(i)) {
-      recipeData.push(recipes[i]);
+  if (typeof(req.body) === 'string') {
+    var ingredientsList = req.body.split(',');
+    // console.log(ingredientsList);
+    var recipes = getCollection('recipe');
+    var i, recipeData = [];
+    for (i in recipes) {
+      if (recipes.hasOwnProperty(i)) {
+        recipeData.push(recipes[i]);
+      }
     }
-  }
-  // will store the list of recipes that match
-  var matchedIngredientRecipe = [];
-
-  for (var z=0; z<recipeData.length; z++) {
-    var ingredients = recipeData[z].ingredients;
-    // ingredients is the list for each recipe's ingredients
-    // deciding which list to loop over, depends on which is longer
-    // var longerList;
-    // console.log(ingredients.length);
-    // if (ingredientsList.length >= ingredients.length) {
-    //   longerList = ingredientsList;
-    // } else {
-    //   longerList = ingredients;
-    // }
-    for (var y=0; y<ingredients.length; y++) {
-      var splitIngredients = ingredients[y].split(' ');
-      // console.log(splitIngredients);
-      for (var x=0; x<ingredientsList.length; x++) {
-        // console.log(ingredientsList[x]);
-        if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
-          matchedIngredientRecipe.push(recipeData[z]);
-          break;
+    // will store the list of recipes that match
+    var matchedIngredientRecipe = [];
+    for (var z=0; z<recipeData.length; z++) {
+      var ingredients = recipeData[z].ingredients;
+      for (var y=0; y<ingredients.length; y++) {
+        var splitIngredients = ingredients[y].split(' ');
+        // console.log(splitIngredients);
+        for (var x=0; x<ingredientsList.length; x++) {
+          // console.log(ingredientsList[x]);
+          if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+            matchedIngredientRecipe.push(recipeData[z]);
+            break;
+          }
         }
       }
     }
+    res.send(matchedIngredientRecipe);
+  } else {
+    // 400: Bad Request.
+    res.status(400).end();
   }
-  res.send(matchedIngredientRecipe);
 });
+
+/**
+* Posts the results from searching with instamode (when a user
+* clicks on the Find a recipe button, it is called)
+*/
+app.post('/instaresults/ingredientsONLY', function(req, res) {
+  if (typeof(req.body) === 'string') {
+    var ingredientsList = req.body.split(',');
+    // console.log(ingredientsList);
+    var recipes = getCollection('recipe');
+    var i, recipeData = [];
+    for (i in recipes) {
+      if (recipes.hasOwnProperty(i)) {
+        recipeData.push(recipes[i]);
+      }
+    }
+    // will store the list of recipes that match
+    var matchedIngredientRecipe = [];
+    var ingredientMatch = [];
+    for (var z=0; z<recipeData.length; z++) {
+      var ingredients = recipeData[z].ingredients;
+      for (var y=0; y<ingredients.length; y++) {
+        // split ingredients = ingredients from recipe
+        var splitIngredients = ingredients[y].split(' ');
+        for (var x=0; x<ingredientsList.length; x++) {
+          // ingrdientList[x] = each ingredient in the list from user
+          if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+            ingredientMatch.push('yes');
+          } else {
+            ingredientMatch.push('no');
+          }
+        }
+      }
+      // console.log(ingredientMatch);
+      // console.log(ingredientMatch.indexOf('no') > -1);
+      if (ingredientMatch.indexOf('no') > -1) {
+        // do nothing
+      } else {
+        matchedIngredientRecipe.push(recipeData[z]);
+      }
+    }
+    res.send(matchedIngredientRecipe);
+  } else {
+    // 400: Bad Request.
+    res.status(400).end();
+  }
+});
+
 
 // Reset database.
 app.post('/resetdb', function(req, res) {
