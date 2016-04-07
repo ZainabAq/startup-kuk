@@ -16,7 +16,8 @@ export default class Favorites extends React.Component {
       /** the list of recipes of the favorited items is initially empty */
       recipeList: [],
       /** the default sort id */
-      sortId: 0
+      sortId: 0,
+      loading : true
     };
   }
 
@@ -35,8 +36,14 @@ export default class Favorites extends React.Component {
   handleSortNewFirst(e) {
     e.preventDefault();
     this.setState( { sortId : 1 } );
-    console.log("inhandle")
-    this.refresh(3);
+    this.refresh();
+  }
+
+  /** handles click of sort options to determine sorting */
+  handleSortDefault(e) {
+    e.preventDefault();
+    this.setState( { sortId : 0 } );
+    this.refresh();
   }
 
   /** gets the favorites' list for the current user and the recipes of the
@@ -44,29 +51,30 @@ export default class Favorites extends React.Component {
   refresh() {
     getProfileData(this.props.user, (userData) => {
       this.setState({favoritesList : userData.favorites});
-      console.log("hereee");
-      if (this.state.sortId === 1) {
-        console.log(this.state.favoritesList);
-        this.setState({favoritesList : this.state.favoritesList.reverse()});
-        console.log(this.state.favoritesList);
-      }
-      console.log("outsideif");
-      console.log(this.state.favoritesList);
       findRecipesFromId(this.props.user,this.state.favoritesList, (newRecipeList) => {
         this.setState({recipeList : newRecipeList});
-        console.log("outsideif2");
-        console.log(this.state.favoritesList);
+        if (this.state.sortId === 1) {
+          this.setState({recipeList : this.state.recipeList.reverse()});
+          console.log(this.state.recipeList)
+        }
       });
-
     });
-
   }
 
   componentDidMount() {
     this.refresh();
+    setTimeout(() => {
+      this.setState({loading : false});
+    }, 4);
+    console.log("hmm");
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <div><h1 className="center">Favorites</h1></div>
+      )
+  } else{
     return (
       <div>
         <div id="wrapper" className={this.state.condition ? "toggled" :""}>
@@ -85,9 +93,9 @@ export default class Favorites extends React.Component {
                   <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sort <span className="caret"></span></button>
                   <ul className="dropdown-menu pull-right">
-                    <li><button onClick={(e)=>this.handleSortNewFirst(e)}>By Date Added - Newest First</button></li>
+                    <li><button className="menubutton" onClick={(e)=>this.handleSortNewFirst(e)}>By Date Added - Newest First</button></li>
                     <li role="separator" className="divider"></li>
-                    <li><Link to={"/favorites/" + this.props.user}>By Date Added - Oldest First (Default)</Link></li>
+                    <li><button className="menubutton" onClick={(e)=>this.handleSortDefault(e)}>By Date Added - Oldest First (Default)</button></li>
                   </ul>
                 </div>
               </div>
@@ -105,5 +113,6 @@ export default class Favorites extends React.Component {
         </div>
       </div>
     )
+  }
   }
 }

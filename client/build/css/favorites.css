@@ -93,6 +93,21 @@
   margin-right: auto;
 }
 
+.favorites .menubutton {
+  background-color: #9C102E !important;
+  color: #c6d2d0 !important;
+  border: none;
+  background: none;
+}
+
+.favorites .menubutton:hover {
+  opacity: 0.4;
+}
+
+.favorites .dropdown-menu {
+  background-color: #9C102E !important;
+}
+
 #filter {
   padding-top: 20px;
   padding-left: 50px;
