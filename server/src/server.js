@@ -278,6 +278,7 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
  * Returns an array of the recipes whose names match the searched keyword.
  */
 app.post('/results', function(req, res) {
+   if (typeof(req.body) === 'string') {
   var searchText = req.body;
   var recipes = getCollection('recipe');
   // append all recipes in an array
@@ -306,6 +307,10 @@ app.post('/results', function(req, res) {
     match[m] = getRecipeSync(recipe);
   });
   res.send(match);
+  } else {
+     // 400: Bad Request.
+   res.status(400).end();
+ }
 });
 
 /*
