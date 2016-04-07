@@ -21,8 +21,9 @@ export default class FilterBar extends React.Component {
         booleans.push(false);
       }
     }
-    this.setState({checks: booleans});
-    return booleans;
+    setTimeout(() => {
+      this.setState({checks: booleans});
+    }, 4);
   }
 
   handleFilter(e) {
@@ -36,19 +37,17 @@ export default class FilterBar extends React.Component {
       var newRestrictions = this.state.restrictions.concat(checkEvent.target.value);
       // this.setState({restrictions : newRestrictions};
       this.setState({restrictions : newRestrictions}, function() {
-       var checks = this.getChecks();
-      //  console.log(checks);
+       this.getChecks();
       });
+      console.log(this.state.checks);
     } else {
       var oldRestrictions = this.state.restrictions;
       var i = oldRestrictions.indexOf(checkEvent.target.value);
       oldRestrictions.splice(i, 1);
       // this.setState({restrictions : oldRestrictions});
       this.setState({restrictions : oldRestrictions}, function() {
-       var checks = this.getChecks();
-      //  this.setState({checks : checks});
+       this.getChecks();
       });
-      // checks = this.getChecks();
     }
   }
 
