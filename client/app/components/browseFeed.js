@@ -27,7 +27,6 @@ export default class BrowseFeed extends React.Component {
     setTimeout(() => {
       this.refresh();
     }, 4);
-    // this.refresh();
   }
 
   /**
