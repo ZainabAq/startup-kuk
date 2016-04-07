@@ -341,18 +341,24 @@ app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
  * Gets the favorites data for a particular user.
  */
 app.get('/user/:userid/favorites/', function(req, res) {
-  // will contain the list of recipes
-  var recipes = [];
-  var userid = req.params.userid;
-  var userData = readDocument('users', userid);
-  var recipeIDs = userData.favorites;
-  // map each recipe id
-  recipeIDs.map((recipeID, i) => {
-    // i is the index
-    recipes[i] = getRecipeSync(recipeID);
-  });
-  // Send response.
-  res.send(recipes);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userid = parseInt(req.params.userid, 10);
+  if (userid === fromUser) {
+    // will contain the list of recipes
+    var recipes = [];
+    var userData = readDocument('users', userid);
+    var recipeIDs = userData.favorites;
+    // map each recipe id
+    recipeIDs.map((recipeID, i) => {
+      // i is the index
+      recipes[i] = getRecipeSync(recipeID);
+    });
+    // Send response.
+    res.send(recipes);
+  } else {
+     console.log("Authentication failed!");
+     res.status(401).end();
+  }
 });
 
 /**
