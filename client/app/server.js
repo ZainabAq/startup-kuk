@@ -158,7 +158,6 @@ export function removeUserRestriction(restrictionId, userId, cb) {
  * Emulates a REST call to get the feed data for a particular user.
  */
 export function getFeedData(restrictions, cb) {
-  console.log("client side restrictions",restrictions);
   sendXHR('PUT','/feed/', restrictions, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
