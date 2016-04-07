@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, getCollection, writeCalendar} from './database.js';
+import {readDocument, writeDocument, getCollection} from './database.js';
 
 //   XHR REQUEST MAIN CODE (from Workshop 6)
 var token = 'eyJpZCI6MX0='; // <-- Put your base64'd JSON token here
@@ -77,37 +77,6 @@ function emulateServerReturn(data, cb) {
   }, 4);
 }
 
-/**
- * Given a recipe ID, returns a recipe object with references resolved.
- * Internal to the server, since it's synchronous.
- */
-function getRecipeSync(recipeId) {
-  var recipe = readDocument('recipe', recipeId);
-  return recipe;
-}
-
-/**
-* Gets the day's calendar for a particular user.
-* @param calendarId and the day
-* @returns A 4-element array of that day's meals
-*/
-//
-// function removeRecipefromCalendarhere(userid, id, week, day, i) {
-//   var user = readDocument('users', userid);
-//   var calendar = readDocument('calendar', week);
-//   if (id !== -1) {
-//     calendar[day].splice(i, 1);
-//     //writeDocument('users', user);
-//     //writeDocument('calendar', calendar);
-//     writeCalendar('calendar', calendar, week);
-//     return calendar;
-//   }
-// }
-//
-// export function removeRecipefromCalendar(userid, id, week, day, i, cb) {
-//   var user = removeRecipefromCalendarhere(userid, id, week, day, i, cb);
-//   emulateServerReturn(user, cb);
-// }
 
 export function removeRecipefromCalendar(userid, week, day, meal, cb) {
   sendXHR('DELETE', '/user/' + userid + '/calendar/' + week + "/" + day + "/" + meal, undefined, (xhr) => {
@@ -116,29 +85,6 @@ export function removeRecipefromCalendar(userid, week, day, meal, cb) {
       });
 }
 
-function getCalendarData(userId, week, day) {
-  var calendar = readDocument('calendar', week);
-  var meals = [];
-  calendar[day].forEach((recipeId) => {
-    meals.push(getRecipeSync(recipeId));
-  })
-  return meals;
-}
-
-// export function getProfileCalendarData(user, week, cb) {
-//   // Get the User object with the id "user".
-//   var userData = readDocument('users', user);
-//   // Add upcoming calendar
-//   userData.Monday = getCalendarData(user, week, "Monday");
-//   userData.Tuesday = getCalendarData(user, week, "Tuesday");
-//   userData.Wednesday = getCalendarData(user, week, "Wednesday");
-//   userData.Thursday = getCalendarData(user, week, "Thursday");
-//   userData.Friday = getCalendarData(user, week, "Friday");
-//   userData.Saturday = getCalendarData(user, week, "Saturday");
-//   userData.Sunday = getCalendarData(user, week, "Sunday");
-//   // Return UserData with resolved references.
-//   emulateServerReturn(userData, cb);
-// }
 
 export function getProfileCalendarData(userid, week, cb) {
   sendXHR('GET', '/user/' + userid + '/calendar/' + week, undefined, (xhr) => {
@@ -278,25 +224,18 @@ export function findRecipesFromId(userId,recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   var xhr = new XMLHttpRequest();
-   xhr.open("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId);
-   xhr.addEventListener("load", function(){
+   sendXHR("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   xhr.send();
-
 }
 
 /**
 * The function that removes recipes from the user's list of favorites
 */
 export function removeFavorite (recipeId, userId, cb) {
-   var xhr = new XMLHttpRequest();
-   xhr.open("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId);
-   xhr.addEventListener("load", function(){
+   sendXHR("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   xhr.send();
 }
 
 /**
@@ -304,12 +243,9 @@ export function removeFavorite (recipeId, userId, cb) {
  * @param cb The callback function to be called at the end
  */
 export function checkUserFavorites(recipeId, userId, cb) {
- var xhr = new XMLHttpRequest();
-xhr.open("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
-xhr.addEventListener("load", function(){
-    cb(JSON.parse(xhr.responseText));
-});
-xhr.send();
+   sendXHR("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId, undefined, (xhr) => {
+      cb(JSON.parse(xhr.responseText));
+   });
 }
 
 // /**
@@ -336,15 +272,6 @@ export function addRecipeToCalendar(recipeId, userId, day, cb) {
       cb(JSON.parse(xhr.responseText));
    })
    xhr.send();
-   // var user = readDocument("users", userId);
-   // var calendar = readDocument("calendar", 2);
-   // if (calendar[day][3]) {
-   //    calendar[day][3] = recipeId;
-   // } else {
-   //    calendar[day].push(recipeId);
-   // }
-   // writeDocument('users', user);
-   // emulateServerReturn(user, cb);
 }
 
 /**
@@ -352,37 +279,11 @@ export function addRecipeToCalendar(recipeId, userId, day, cb) {
   * @param ingredientsList is the list of ingredients entered in instamode
   */
 export function findRecipeByIngredients(ingredientsList, cb) {
-    var recipes = getCollection('recipe');
-    var i, recipeData = [];
-    for (i in recipes) {
-      if (recipes.hasOwnProperty(i)) {
-        recipeData.push(recipes[i]);
-      }
-    }
-    // will store the list of recipes that match
-    var matchedIngredientRecipe = [];
-
-    for (var z=0; z<recipeData.length; z++) {
-      var ingredients = recipeData[z].ingredients;
-      // ingredients is the list for each recipe's ingredients
-      // deciding which list to loop over, depends on which is longer
-      // var longerList;
-      // console.log(ingredients.length);
-      // if (ingredientsList.length >= ingredients.length) {
-      //   longerList = ingredientsList;
-      // } else {
-      //   longerList = ingredients;
-      // }
-      for (var y=0; y<ingredients.length; y++) {
-        var splitIngredients = ingredients[y].split(' ');
-        for (var x=0; x<ingredientsList.length; x++) {
-          if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
-            matchedIngredientRecipe.push(recipeData[z]);
-            break;
-          }
-        }
-      }
-    }
-    // console.log(matchedIngredientRecipe);
-    emulateServerReturn(matchedIngredientRecipe, cb);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/instaresults');
+    xhr.addEventListener('load', function() {
+      cb(JSON.parse(xhr.responseText));
+    });
+    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    xhr.send(ingredientsList);
 }

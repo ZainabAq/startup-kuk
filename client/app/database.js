@@ -15,8 +15,8 @@ var initialData = {
       "email": "jdoe@gmail.com",
       "favorites": [2,3,5,1,4],
       "calendar": 1
-    }
-  },
+  }
+},
   "recipe": {
     "1": {
       "_id": 1,
@@ -99,20 +99,27 @@ var initialData = {
       "img": "http://www.eat-yourself-skinny.com/wp-content/uploads/2013/09/113.jpg",
       "description": "This healthy, tasty smoothie is the perfect way to start your work week"
    }
+ },
+   "calendars": {
+     "1": {
+     "_id": 1,
+     "firstWeek": {
+       "Monday": [1,2,3,4], "Tuesday":[2, 3, 4, 5], "Wednesday":[1, 2, 3, 4], "Thursday":[4, 3, 1, 2], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
+     },
 
+     "secondWeek": {
+       "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 4], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
+     },
+
+       "thirdWeek": {
+         "Monday": [5, 3, 1, 2], "Tuesday":[5, 4, 5, 1], "Wednesday":[1, 2, 4, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
+     },
+
+     "fourthWeek": {
+       "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 4], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
+     }
+  }
   },
-
-  "calendar": {
-    "1": {
-      "Monday": [1,2,3,4], "Tuesday":[2, 3, 4, 5], "Wednesday":[1, 2, 3, 4], "Thursday":[4, 3, 1, 2], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
-    },
-    "2": {
-      "Monday": [2, 3, 1, 5], "Tuesday":[5, 3, 2, 4], "Wednesday":[2, 3, 1, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[4, 3, 1, 2], "Sunday":[2, 5, 3, 4]
-    },
-    "3": {
-        "Monday": [5, 3, 1, 2], "Tuesday":[5, 4, 5, 1], "Wednesday":[1, 2, 4, 5], "Thursday":[2, 5, 3, 4], "Friday":[2, 5, 3, 4], "Saturday":[2, 5, 3, 4], "Sunday":[2, 5, 3, 4]
-    }
-},
 
   "restrictions": {
     "1": {
@@ -207,14 +214,6 @@ export function writeDocument(collection, changedDocument) {
   // Store a copy of the object into the database. Models a database's behavior.
   data[collection][id] = JSONClone(changedDocument);
   // Update our 'database'.
-  localStorage.setItem(kuk, JSON.stringify(data));
-}
-
-/***
-* Export function specifically for the calendar.
-**/
-export function writeCalendar(collection, changedDocument, week) {
-  data[collection][week] = JSONClone(changedDocument);
   localStorage.setItem(kuk, JSON.stringify(data));
 }
 

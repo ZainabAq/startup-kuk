@@ -14,6 +14,7 @@ var addDocument = database.addDocument;
 var writeCalendar = database.writeCalendar;
 var getCollection = database.getCollection;
 
+
 app.use(express.static('../client/build'));
 
 var bodyParser = require('body-parser');
@@ -110,10 +111,13 @@ function getRecipeSync(recipeId) {
 
 /**Zainab Calendar methods*/
 
-function getCalendarSync(week, day) {
-  var calendar = readDocument('calendar', week);
+function getCalendarSync(userData, week, day) {
+  var calId = userData.calendarId;
+  var calendar = readDocument('calendars', calId);
+  var weekno = parseInt(week, 10);
+  var week = calendar[weekno];
   var meals = [];
-  calendar[day].forEach((recipeId) => {
+  week[day].forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
@@ -127,11 +131,13 @@ function getCalendarSync(week, day) {
 function getUpcomingMeals(userId) {
   // Get the User object with the id "userId".
   var userData = readDocument('users', userId);
+  var calId = userData.calendarId;
+  var calendar = readDocument('calendars', calId);
   // Get the calendar for the user.
-  var calendar = readDocument('calendar',userData.calendar);
+  var week = calendar[1];
   // For now, static date is Monday.
   var meals = [];
-  calendar.Monday.forEach((recipeId) => {
+  week.Monday.forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
@@ -216,40 +222,47 @@ app.delete('/user/:userid/restriction/:restrictionid', function(req, res) {
 
 // Get ProfileCalendarData
 app.get('/user/:userid/calendar/:week', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
   var week = req.params.week;
-  var user = req.params.userid;
-  var userData = readDocument('users', user);
-  var calendar = readDocument('calendar', week);
-  userData.Monday = getCalendarSync(week, "Monday");
-  userData.Tuesday = getCalendarSync(week, "Tuesday");
-  userData.Wednesday = getCalendarSync(week, "Wednesday");
-  userData.Thursday = getCalendarSync(week, "Thursday");
-  userData.Friday = getCalendarSync(week, "Friday");
-  userData.Saturday = getCalendarSync(week, "Saturday");
-  userData.Sunday = getCalendarSync(week, "Sunday");
-  res.send(userData);
+  var user = parseInt(req.params.userid, 10);
+  if (fromUser === user) {
+      var userData = readDocument('users', user);
+      userData.Monday = getCalendarSync(userData, week, "Monday");
+      userData.Tuesday = getCalendarSync(userData, week, "Tuesday");
+      userData.Wednesday = getCalendarSync(userData, week, "Wednesday");
+      userData.Thursday = getCalendarSync(userData, week, "Thursday");
+      userData.Friday = getCalendarSync(userData, week, "Friday");
+      userData.Saturday = getCalendarSync(userData, week, "Saturday");
+      userData.Sunday = getCalendarSync(userData, week, "Sunday");
+      res.send(userData);
+}
+else {
+  res.status(401).end();
+}
 });
 
 //Delete recipe from Calendar
 app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
   var week = req.params.week;
-  var userid = req.params.userid;
+  var userid = parseInt(req.params.userid, 10);
   var day = req.params.day;
-  var meal = req.params.meal;
-  var user = parseInt(userid, 10);
-  var userData = readDocument('users', userid);
-  var calendar = readDocument('calendar', week);
-  if (calendar.length > 1) {
-  if (user !== -1) {
-    calendar[day].splice(meal, 1);
-    //writeCalendar('calendar', calendar, week);
-    //writeDocument('users', userData);
-    console.log(calendar);
-    writeCalendar('calendar', calendar, week);
-    writeDocument('calendar', calendar);
-    res.send(calendar);
-
-  }}
+  var meal = parseInt(req.params.meal, 10);
+  if (fromUser === userid) {
+        var userData = readDocument('users', userid);
+        var calId = userData.calendarId;
+        var calendar = readDocument('calendars', calId);
+        var weekno = parseInt(week, 10);
+        var weekCal = calendar[weekno];
+        if (meal !== -1) {
+          weekCal[day].splice(meal, 1);
+          writeDocument('calendars', calendar);
+          res.send(calendar);
+        }
+      }
+  else {
+    res.status(401).end();
+  }
 });
 
 /*
@@ -269,14 +282,21 @@ app.get('/recipe/:recipeid/', function(req, res) {
 * favorites. Replacement of addFavorite.
 */
 app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
-   var userid = req.params.userid;
-   var user = readDocument("users", userid);
-   var recipeid = parseInt(req.params.recipeid, 10);
-   console.log("favorites before favoriting: ", user.favorites);
-   user.favorites.push(recipeid);
-   writeDocument("users", user);
-   console.log("favorites after favoriting: ", user.favorites);
-   res.send(user);
+   var fromUser = getUserIdFromToken(req.get('Authorization'));
+   var userid = parseInt(req.params.userid, 10);
+   if (fromUser === userid) {
+      var user = readDocument("users", userid);
+      var recipeid = parseInt(req.params.recipeid, 10);
+      console.log("favorites before favoriting: ", user.favorites);
+      user.favorites.push(recipeid);
+      writeDocument("users", user);
+      console.log("favorites after favoriting: ", user.favorites);
+      res.send(user);
+   }
+   else {
+      console.log("Authentication failed!");
+      res.status(401).end();
+   }
 });
 
 /*
@@ -284,23 +304,31 @@ app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
 * of favorites. Replacement of removeFavorite.
 */
 app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
-   var userid = req.params.userid;
-   var user = readDocument("users", userid);
-   var recipeid = parseInt(req.params.recipeid, 10);
-   console.log("favorites before unfavoriting: ", user.favorites)
-   var favoriteIndex = user.favorites.indexOf(recipeid);
-   if (favoriteIndex !== -1) {
-      user.favorites.splice(favoriteIndex, 1);
+   var fromUser = getUserIdFromToken(req.get('Authorization'));
+   var userid = parseInt(req.params.userid, 10);
+   if (fromUser === userid) {
+      var user = readDocument("users", userid);
+      var recipeid = parseInt(req.params.recipeid, 10);
+      console.log("favorites before unfavoriting: ", user.favorites)
+      var favoriteIndex = user.favorites.indexOf(recipeid);
+      if (favoriteIndex !== -1) {
+         user.favorites.splice(favoriteIndex, 1);
+      }
+      writeDocument("users", user);
+      console.log("favorites after unfavoriting: ", user.favorites)
+      res.send(user);
    }
-   writeDocument("users", user);
-   console.log("favorites after unfavoriting: ", user.favorites)
-   res.send(user);
+   else {
+      console.log("Authentication failed!");
+      res.status(401).end();
+   }
 });
 
 /**
  * Returns an array of the recipes whose names match the searched keyword.
  */
 app.post('/results', function(req, res) {
+   if (typeof(req.body) === 'string') {
   var searchText = req.body;
   var recipes = getCollection('recipe');
   // append all recipes in an array
@@ -329,6 +357,10 @@ app.post('/results', function(req, res) {
     match[m] = getRecipeSync(recipe);
   });
   res.send(match);
+  } else {
+     // 400: Bad Request.
+   res.status(400).end();
+ }
 });
 
 /*
@@ -338,57 +370,115 @@ app.post('/results', function(req, res) {
 */
 
 app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
-   var userid = req.params.userid;
-   var recipeid = parseInt(req.params.recipeid, 10);
-   var user = readDocument("users", userid);
-   var favorites = user.favorites;
-   var isRecipeIn = false;
-   if (favorites.indexOf(recipeid) !== -1) {
-      isRecipeIn = true;
+   var fromUser = getUserIdFromToken(req.get('Authorization'));
+   var userid = parseInt(req.params.userid, 10);
+   if (userid === fromUser) {
+      var recipeid = parseInt(req.params.recipeid, 10);
+      var user = readDocument("users", userid);
+      var favorites = user.favorites;
+      var isRecipeIn = false;
+      if (favorites.indexOf(recipeid) !== -1) {
+         isRecipeIn = true;
+      }
+      res.send(isRecipeIn);
+   } else {
+      console.log("Authentication failed!");
+      res.status(401).end();
    }
-   res.send(isRecipeIn);
 });
-
 
  /**
  * Gets the favorites data for a particular user.
  */
 app.get('/user/:userid/favorites/', function(req, res) {
-  // will contain the list of recipes
-  var recipes = [];
-  var userid = req.params.userid;
-  var userData = readDocument('users', userid);
-  var recipeIDs = userData.favorites;
-  // map each recipe id
-  recipeIDs.map((recipeID, i) => {
-    // i is the index
-    recipes[i] = getRecipeSync(recipeID);
-  });
-  // Send response.
-  res.send(recipes);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userid = parseInt(req.params.userid, 10);
+  if (userid === fromUser) {
+    // will contain the list of recipes
+    var recipes = [];
+    var userData = readDocument('users', userid);
+    var recipeIDs = userData.favorites;
+    // map each recipe id
+    recipeIDs.map((recipeID, i) => {
+      // i is the index
+      recipes[i] = getRecipeSync(recipeID);
+    });
+    // Send response.
+    res.send(recipes);
+  } else {
+     console.log("Authentication failed!");
+     res.status(401).end();
+  }
 });
 
 /**
 * Add's a recipe to the user's calendar. Used on the recipe page (when a user
 * clicks on the calendar button, this gets called)
 */
+//need to resolve this - right now it's hardcoding both the meal and the week
 app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
    var userid = parseInt(req.params.userid, 10);
    var recipeid = parseInt(req.params.recipeid, 10);
    var day = req.params.dayid;
    var user = readDocument("users", userid);
-   var calendar = readDocument("calendar", 3);
-   console.log("calendar before:", calendar[day]);
-   if (calendar[day][3]) {
-      calendar[day][3] = recipeid;
+   var calendar = readDocument("calendars", user.calendarId);
+   // var week = calendar[2];
+   var weekno = 2;
+   var weekCal = calendar[weekno];
+   console.log(weekCal[day]);
+   if (weekCal[day][3]) {
+      weekCal[day][3] = recipeid;
    } else {
-      calendar[day].push(recipeid);
+      weekCal[day][3];
    }
+   console.log(weekCal[day]);
    writeDocument("users", user);
-   console.log("calendar after:", calendar[day]);
+   writeDocument("calendars", calendar);
    res.send(user);
 });
 
+/**
+* Posts the results from searching with instamode (when a user
+* clicks on the Find a recipe button, it is called)
+*/
+app.post('/instaresults', function(req, res) {
+  var ingredientsList = req.body.split(',');
+  // console.log(ingredientsList);
+  var recipes = getCollection('recipe');
+  var i, recipeData = [];
+  for (i in recipes) {
+    if (recipes.hasOwnProperty(i)) {
+      recipeData.push(recipes[i]);
+    }
+  }
+  // will store the list of recipes that match
+  var matchedIngredientRecipe = [];
+
+  for (var z=0; z<recipeData.length; z++) {
+    var ingredients = recipeData[z].ingredients;
+    // ingredients is the list for each recipe's ingredients
+    // deciding which list to loop over, depends on which is longer
+    // var longerList;
+    // console.log(ingredients.length);
+    // if (ingredientsList.length >= ingredients.length) {
+    //   longerList = ingredientsList;
+    // } else {
+    //   longerList = ingredients;
+    // }
+    for (var y=0; y<ingredients.length; y++) {
+      var splitIngredients = ingredients[y].split(' ');
+      // console.log(splitIngredients);
+      for (var x=0; x<ingredientsList.length; x++) {
+        // console.log(ingredientsList[x]);
+        if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+          matchedIngredientRecipe.push(recipeData[z]);
+          break;
+        }
+      }
+    }
+  }
+  res.send(matchedIngredientRecipe);
+});
 
 // Reset database.
 app.post('/resetdb', function(req, res) {
@@ -398,7 +488,6 @@ app.post('/resetdb', function(req, res) {
   // res.send() sends an empty response with status code 200
   res.send();
 });
-
 
 // Starts the server on port 3000
 app.listen(3000, function () {
