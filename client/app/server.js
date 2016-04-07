@@ -217,12 +217,17 @@ export function findRecipesFromId(userId,recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   var xhr = new XMLHttpRequest();
-   xhr.open("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId);
-   xhr.addEventListener("load", function(){
+   console.log("in add favorite");
+   sendXHR("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   xhr.send();
+   console.log("request sent")
+   // var xhr = new XMLHttpRequest();
+   // xhr.open("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId);
+   // xhr.addEventListener("load", function(){
+   //    cb(JSON.parse(xhr.responseText));
+   // });
+   // xhr.send();
 
 }
 

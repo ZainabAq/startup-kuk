@@ -337,21 +337,25 @@ app.get('/user/:userid/favorites/', function(req, res) {
 * Add's a recipe to the user's calendar. Used on the recipe page (when a user
 * clicks on the calendar button, this gets called)
 */
+//need to resolve this - right now it's hardcoding both the meal and the week
 app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
    var userid = parseInt(req.params.userid, 10);
    var recipeid = parseInt(req.params.recipeid, 10);
    var day = req.params.dayid;
    var user = readDocument("users", userid);
-   var calendar = readDocument("calendar", 3);
-   console.log("calendar before:", calendar[day]);
-   if (calendar[day][3]) {
-      calendar[day][3] = recipeid;
+   var calendar = readDocument("calendars", user.calendarId);
+   // var week = calendar[2];
+   var weekno = 2;
+   var weekCal = calendar[weekno];
+   console.log(weekCal[day]);
+   if (weekCal[day][3]) {
+      weekCal[day][3] = recipeid;
    } else {
-      calendar[day].push(recipeid);
+      weekCal[day][3];
    }
-   // writeDocument("users", user)
-   writeCalendar("calendar", calendar, 3);
-   console.log("calendar after:", calendar[day]);
+   console.log(weekCal[day]);
+   writeDocument("users", user);
+   writeDocument("calendars", calendar);
    res.send(user);
 });
 
@@ -369,10 +373,3 @@ app.post('/resetdb', function(req, res) {
 app.listen(3000, function () {
   console.log('Kuk server listening on port 3000!');
 });
-
-
-/*
-var user = readDocument(users, userid);
-var calId= user.calender
-var cal  = readDocument(cal, calid);
-*/
