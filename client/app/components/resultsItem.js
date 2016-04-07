@@ -13,7 +13,7 @@ export default class ResultsItem extends React.Component {
      for( var i = 0; i < ratings.length; i++ ){
         sum += parseInt(ratings[i], 10 );
      }
-     var average = sum/ratings.length;
+     var average = Math.floor(sum/ratings.length);
      return average;
   }
 
@@ -50,7 +50,7 @@ export default class ResultsItem extends React.Component {
                       <li className="rating">
                         {(() => {
                            var elements=[];
-                           for (var i=0; i<this.findAverageRating()-1; i++) {
+                           for (var i=0; i<this.findAverageRating(); i++) {
                               elements.push(<span key={i} className="fa fa-star fa-lg"></span>)
                            }
                            return elements;

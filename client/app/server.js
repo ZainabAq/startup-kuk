@@ -272,37 +272,11 @@ export function addRecipeToCalendar(recipeId, userId, day, cb) {
   * @param ingredientsList is the list of ingredients entered in instamode
   */
 export function findRecipeByIngredients(ingredientsList, cb) {
-    var recipes = getCollection('recipe');
-    var i, recipeData = [];
-    for (i in recipes) {
-      if (recipes.hasOwnProperty(i)) {
-        recipeData.push(recipes[i]);
-      }
-    }
-    // will store the list of recipes that match
-    var matchedIngredientRecipe = [];
-
-    for (var z=0; z<recipeData.length; z++) {
-      var ingredients = recipeData[z].ingredients;
-      // ingredients is the list for each recipe's ingredients
-      // deciding which list to loop over, depends on which is longer
-      // var longerList;
-      // console.log(ingredients.length);
-      // if (ingredientsList.length >= ingredients.length) {
-      //   longerList = ingredientsList;
-      // } else {
-      //   longerList = ingredients;
-      // }
-      for (var y=0; y<ingredients.length; y++) {
-        var splitIngredients = ingredients[y].split(' ');
-        for (var x=0; x<ingredientsList.length; x++) {
-          if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
-            matchedIngredientRecipe.push(recipeData[z]);
-            break;
-          }
-        }
-      }
-    }
-    // console.log(matchedIngredientRecipe);
-    emulateServerReturn(matchedIngredientRecipe, cb);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/instaresults');
+    xhr.addEventListener('load', function() {
+      cb(JSON.parse(xhr.responseText));
+    });
+    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    xhr.send(ingredientsList);
 }

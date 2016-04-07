@@ -341,18 +341,24 @@ app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
  * Gets the favorites data for a particular user.
  */
 app.get('/user/:userid/favorites/', function(req, res) {
-  // will contain the list of recipes
-  var recipes = [];
-  var userid = req.params.userid;
-  var userData = readDocument('users', userid);
-  var recipeIDs = userData.favorites;
-  // map each recipe id
-  recipeIDs.map((recipeID, i) => {
-    // i is the index
-    recipes[i] = getRecipeSync(recipeID);
-  });
-  // Send response.
-  res.send(recipes);
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
+  var userid = parseInt(req.params.userid, 10);
+  if (userid === fromUser) {
+    // will contain the list of recipes
+    var recipes = [];
+    var userData = readDocument('users', userid);
+    var recipeIDs = userData.favorites;
+    // map each recipe id
+    recipeIDs.map((recipeID, i) => {
+      // i is the index
+      recipes[i] = getRecipeSync(recipeID);
+    });
+    // Send response.
+    res.send(recipes);
+  } else {
+     console.log("Authentication failed!");
+     res.status(401).end();
+  }
 });
 
 /**
@@ -381,6 +387,48 @@ app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
    res.send(user);
 });
 
+/**
+* Posts the results from searching with instamode (when a user
+* clicks on the Find a recipe button, it is called)
+*/
+app.post('/instaresults', function(req, res) {
+  var ingredientsList = req.body.split(',');
+  // console.log(ingredientsList);
+  var recipes = getCollection('recipe');
+  var i, recipeData = [];
+  for (i in recipes) {
+    if (recipes.hasOwnProperty(i)) {
+      recipeData.push(recipes[i]);
+    }
+  }
+  // will store the list of recipes that match
+  var matchedIngredientRecipe = [];
+
+  for (var z=0; z<recipeData.length; z++) {
+    var ingredients = recipeData[z].ingredients;
+    // ingredients is the list for each recipe's ingredients
+    // deciding which list to loop over, depends on which is longer
+    // var longerList;
+    // console.log(ingredients.length);
+    // if (ingredientsList.length >= ingredients.length) {
+    //   longerList = ingredientsList;
+    // } else {
+    //   longerList = ingredients;
+    // }
+    for (var y=0; y<ingredients.length; y++) {
+      var splitIngredients = ingredients[y].split(' ');
+      // console.log(splitIngredients);
+      for (var x=0; x<ingredientsList.length; x++) {
+        // console.log(ingredientsList[x]);
+        if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+          matchedIngredientRecipe.push(recipeData[z]);
+          break;
+        }
+      }
+    }
+  }
+  res.send(matchedIngredientRecipe);
+});
 
 // Reset database.
 app.post('/resetdb', function(req, res) {
