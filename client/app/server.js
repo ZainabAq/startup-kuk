@@ -157,36 +157,43 @@ export function removeUserRestriction(restrictionId, userId, cb) {
 /**
  * @param array of restrictions to not be included
  * @param cb, callback function
- * gets the proper recipes to popualate the feed
+ * Emulates a REST call to get the feed data for a particular user.
  */
 export function getFeedData(restrictions, cb) {
-  // get the recipe collection & initialize feedData
-  var recipes = getCollection('recipe');
-  var feedData = [];
-  // if no filter has been applied yet, get all the recipes
-  if (restrictions.length == 0) {
-    for (var i in recipes) {
-      if (recipes.hasOwnProperty(i)) {
-        feedData.push(recipes[i]);
-      }
-    }
-  } else {
-    // get the set of recipes that have restrictions
-    var recipeSet = new Set();
-    for (var id in restrictions) {
-      var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
-      for (var recipeId in badRecipes) {
-        recipeSet.add(badRecipes[recipeId]);
-      }
-    }
-    // get recipes that don't match the set of restricted recipes
-    for(var j in recipes) {
-      if (!recipeSet.has(recipes[j]._id)) {
-        feedData.push(recipes[j]);
-      }
-    }
-  }
-  emulateServerReturn(feedData, cb);
+  console.log("client side restrictions",restrictions);
+  sendXHR('PUT','/feed/', restrictions, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+
+  // send reponse
+  // xhr.send();
+  // // get the recipe collection & initialize feedData
+  // var recipes = getCollection('recipe');
+  // var feedData = [];
+  // // if no filter has been applied yet, get all the recipes
+  // if (restrictions.length == 0) {
+  //   for (var i in recipes) {
+  //     if (recipes.hasOwnProperty(i)) {
+  //       feedData.push(recipes[i]);
+  //     }
+  //   }
+  // } else {
+  //   // get the set of recipes that have restrictions
+  //   var recipeSet = new Set();
+  //   for (var id in restrictions) {
+  //     var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
+  //     for (var recipeId in badRecipes) {
+  //       recipeSet.add(badRecipes[recipeId]);
+  //     }
+  //   }
+  //   // get recipes that don't match the set of restricted recipes
+  //   for(var j in recipes) {
+  //     if (!recipeSet.has(recipes[j]._id)) {
+  //       feedData.push(recipes[j]);
+  //     }
+  //   }
+  // }
+  // emulateServerReturn(feedData, cb);
 }
 
 /**
@@ -217,18 +224,9 @@ export function findRecipesFromId(userId,recipeIDs, cb) {
 * The function that adds recipes to the user's list of favorites
 */
 export function addFavorite(recipeId, userId, cb) {
-   console.log("in add favorite");
    sendXHR("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   console.log("request sent")
-   // var xhr = new XMLHttpRequest();
-   // xhr.open("PUT", "/recipe/" + recipeId + "/favorites/user/" + userId);
-   // xhr.addEventListener("load", function(){
-   //    cb(JSON.parse(xhr.responseText));
-   // });
-   // xhr.send();
-
 }
 
 /**
@@ -238,12 +236,6 @@ export function removeFavorite (recipeId, userId, cb) {
    sendXHR("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   // var xhr = new XMLHttpRequest();
-   // xhr.open("DELETE", "/recipe/" + recipeId + "/favorites/user/" + userId);
-   // xhr.addEventListener("load", function(){
-   //    cb(JSON.parse(xhr.responseText));
-   // });
-   // xhr.send();
 }
 
 /**
@@ -254,26 +246,20 @@ export function checkUserFavorites(recipeId, userId, cb) {
    sendXHR("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-//  var xhr = new XMLHttpRequest();
-// xhr.open("GET", "/recipe/" + recipeId + "/favorites/check/user/" + userId);
-// xhr.addEventListener("load", function(){
-//     cb(JSON.parse(xhr.responseText));
-// });
-// xhr.send();
 }
 
-/**
- * @param checkbox The DOM object triggering this call
- * @param cb The callback function to be called at the end
- * Returns recipes that don't match restrictionId
- */
-export function getRestriction(checkbox, cb) {
-  var restrictionId = checkbox.value;
-   //get the recipe object with the correct id
-  //  var dietData = readDocument('restrictions', restrictionId);
-   var result = {"restrictions":restrictionId, "target":checkbox};
-   emulateServerReturn(result, cb);
-}
+// /**
+//  * @param checkbox The DOM object triggering this call
+//  * @param cb The callback function to be called at the end
+//  * Returns recipes that don't match restrictionId
+//  */
+// export function getRestriction(checkbox, cb) {
+//   var restrictionId = checkbox.value;
+//    //get the recipe object with the correct id
+//   //  var dietData = readDocument('restrictions', restrictionId);
+//    var result = {"restrictions":restrictionId, "target":checkbox};
+//    emulateServerReturn(result, cb);
+// }
 
 /**
 * Adding a recipe to the user's calendar when given the user's id, the recipe's id,
@@ -286,15 +272,6 @@ export function addRecipeToCalendar(recipeId, userId, day, cb) {
       cb(JSON.parse(xhr.responseText));
    })
    xhr.send();
-   // var user = readDocument("users", userId);
-   // var calendar = readDocument("calendar", 2);
-   // if (calendar[day][3]) {
-   //    calendar[day][3] = recipeId;
-   // } else {
-   //    calendar[day].push(recipeId);
-   // }
-   // writeDocument('users', user);
-   // emulateServerReturn(user, cb);
 }
 
 /**
