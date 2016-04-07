@@ -65,10 +65,9 @@ export default class Favorites extends React.Component {
                   <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sort <span className="caret"></span></button>
                   <ul className="dropdown-menu pull-right">
-                    <li><Link to="/favorites/1">By Cuisine</Link></li>
-                    <li><Link to="/favorites/1">By Meal</Link></li>
+                    <li><Link to="/favorites/2">By Date Added - Newest First</Link></li>
                     <li role="separator" className="divider"></li>
-                    <li><Link to="/favorites/1">By Date Added</Link></li>
+                    <li><Link to={"/favorites/" + this.props.user}>By Date Added - Oldest First (Default)</Link></li>
                   </ul>
                 </div>
               </div>
