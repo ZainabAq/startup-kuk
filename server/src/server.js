@@ -10,10 +10,7 @@ var app = express();
 var database = require('./database');
 var readDocument = database.readDocument;
 var writeDocument = database.writeDocument;
-var addDocument = database.addDocument;
-var writeCalendar = database.writeCalendar;
 var getCollection = database.getCollection;
-
 
 app.use(express.static('../client/build'));
 
@@ -113,9 +110,9 @@ function getCalendarSync(userData, week, day) {
   var calId = userData.calendarId;
   var calendar = readDocument('calendars', calId);
   var weekno = parseInt(week, 10);
-  var week = calendar[weekno];
+  var weekCal = calendar[weekno];
   var meals = [];
-  week[day].forEach((recipeId) => {
+  weekCal[day].forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;

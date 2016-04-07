@@ -14,7 +14,7 @@ export default class Calendar extends React.Component {
       _id : this.props.user,
       edit: false,
       loading : true,
-      week: 2,
+      week: 1,
       Monday : [],
       Tuesday: [],
       Wednesday : [],
@@ -45,7 +45,7 @@ export default class Calendar extends React.Component {
     }
 
     componentDidMount() {
-      this.refresh(2);
+      this.refresh(this.state.week);
       setTimeout(() => {
         this.setState({loading : false});
       }, 4);
@@ -53,7 +53,7 @@ export default class Calendar extends React.Component {
 
     handleCalChangePrevious(e) {
       e.stopPropagation();
-      this.refresh(1);
+      this.refresh(2);
       }
 
     handleCalChangeNext(e) {
@@ -65,14 +65,7 @@ export default class Calendar extends React.Component {
       e.stopPropagation();
       var callbackFunction = () => {};
       removeRecipefromCalendar(this.props.user, this.state.week, day, meal, callbackFunction);
-      //this.refresh(2);
     }
-
-    handleCalChangeEdit(e) {
-      e.stopPropagation();
-      this.setState( {edit:true});
-    }
-
 
   render() {
     return (
