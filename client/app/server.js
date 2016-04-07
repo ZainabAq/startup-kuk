@@ -1,4 +1,3 @@
-// import {readDocument, writeDocument, getCollection} from './database.js';
 
 //   XHR REQUEST MAIN CODE (from Workshop 6)
 var token = 'eyJpZCI6MX0='; // <-- Put your base64'd JSON token here
@@ -268,12 +267,7 @@ export function addRecipeToCalendar(recipeId, userId, day, cb) {
    sendXHR("PUT", "/recipe/" +recipeId+ "/user/" +userId+ "/calendar/" + day, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
-   // var xhr = new XMLHttpRequest();
-   // xhr.open("PUT", "/recipe/" +recipeId+ "/user/" +userId+ "/calendar/" + day)
-   // xhr.addEventListener("load", function() {
-   //    cb(JSON.parse(xhr.responseText));
-   // })
-   // xhr.send();
+
 }
 
 /**

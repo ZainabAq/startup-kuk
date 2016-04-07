@@ -4,14 +4,13 @@ import { IndexRoute, Router, Route, hashHistory } from 'react-router';
 import BrowseFeed from './components/browseFeed';
 import Recipe from './components/recipe';
 import ProfileFeed from './components/profileFeed';
-import {hideElement} from './util';
 import ResultsFeed from './components/resultsFeed';
 import Instamode from './components/instamode';
 import Favorites from './components/favorites';
 import Calendar from './components/calendar';
 import Navbar from './components/navbar';
 import ErrorBanner from './components/errorbanner';
-import {ResetDatabase} from './database';
+import {ResetDatabase} from './components/resetbutton';
 
 
 /**
