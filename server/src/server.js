@@ -53,8 +53,6 @@ function getUserIdFromToken(authorizationLine) {
  * Get the feed data for a particular user.
  */
 function getFeedData(restrictions) {
-  // console.log(restrictions)
-  // console.log("in getFeed");
   // get the recipe collection & initialize feedData
   var recipes = getCollection('recipe');
   var feedData = [];
@@ -90,6 +88,11 @@ function getFeedData(restrictions) {
  * Get appropriate feed data to populate the browse page
  */
 app.put('/feed/', function(req, res) {
+  if (req.body.constructor !== Array) {
+      // 400: Bad request.
+      res.status(400).end();
+      // return;
+  }
   var restrictions = req.body;
   // Send response.
   res.send(getFeedData(restrictions));
@@ -324,7 +327,7 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
  * Returns an array of the recipes whose names match the searched keyword.
  */
 app.post('/results', function(req, res) {
-   if (typeof(req.body) === 'string') {
+  if (typeof(req.body) === 'string') {
   var searchText = req.body;
   var recipes = getCollection('recipe');
   // append all recipes in an array
