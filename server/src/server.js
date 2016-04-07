@@ -92,10 +92,8 @@ function getFeedData(restrictions) {
  * Get appropriate feed data to populate the browse page
  */
 app.put('/feed/', function(req, res) {
-  console.log("in this method");
-  console.log(req.body);
   var restrictions = req.body;
-  // // Send response.
+  // Send response.
   res.send(getFeedData(restrictions));
 });
 

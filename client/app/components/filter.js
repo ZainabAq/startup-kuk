@@ -11,7 +11,6 @@ export default class FilterBar extends React.Component {
 
   getChecks() {
     var restrictions = this.state.restrictions;
-    // console.log(this.state.restrictions);
     var iterable = [1,2,3,4,5,6,7,8,9,10];
     var booleans = [];
     for (let num of iterable) {
@@ -39,7 +38,6 @@ export default class FilterBar extends React.Component {
       this.setState({restrictions : newRestrictions}, function() {
        this.getChecks();
       });
-      console.log(this.state.checks);
     } else {
       var oldRestrictions = this.state.restrictions;
       var i = oldRestrictions.indexOf(checkEvent.target.value);
