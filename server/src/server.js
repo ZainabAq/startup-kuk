@@ -81,11 +81,13 @@ function getCalendarSync(userData, week, day) {
 function getUpcomingMeals(userId) {
   // Get the User object with the id "userId".
   var userData = readDocument('users', userId);
+  var calId = userData.calendarId;
+  var calendar = readDocument('calendars', calId);
   // Get the calendar for the user.
-  var calendar = readDocument('calendar',userData.calendar);
+  var week = calendar[1];
   // For now, static date is Monday.
   var meals = [];
-  calendar.Monday.forEach((recipeId) => {
+  week.Monday.forEach((recipeId) => {
     meals.push(getRecipeSync(recipeId));
   })
   return meals;
@@ -170,37 +172,46 @@ app.delete('/user/:userid/restriction/:restrictionid', function(req, res) {
 
 // Get ProfileCalendarData
 app.get('/user/:userid/calendar/:week', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
   var week = req.params.week;
-  var user = req.params.userid;
-  var userData = readDocument('users', user);
-  // var calId = userData.calendarId;
-  // var calendar = readDocument('calendars', calId);
-  //var calendar = readDocument('calendar', userData.calendar);
-  userData.Monday = getCalendarSync(userData, week, "Monday");
-  userData.Tuesday = getCalendarSync(userData, week, "Tuesday");
-  userData.Wednesday = getCalendarSync(userData, week, "Wednesday");
-  userData.Thursday = getCalendarSync(userData, week, "Thursday");
-  userData.Friday = getCalendarSync(userData, week, "Friday");
-  userData.Saturday = getCalendarSync(userData, week, "Saturday");
-  userData.Sunday = getCalendarSync(userData, week, "Sunday");
-  res.send(userData);
+  var user = parseInt(req.params.userid, 10);
+  if (fromUser === user) {
+      var userData = readDocument('users', user);
+      userData.Monday = getCalendarSync(userData, week, "Monday");
+      userData.Tuesday = getCalendarSync(userData, week, "Tuesday");
+      userData.Wednesday = getCalendarSync(userData, week, "Wednesday");
+      userData.Thursday = getCalendarSync(userData, week, "Thursday");
+      userData.Friday = getCalendarSync(userData, week, "Friday");
+      userData.Saturday = getCalendarSync(userData, week, "Saturday");
+      userData.Sunday = getCalendarSync(userData, week, "Sunday");
+      res.send(userData);
+}
+else {
+  res.status(401).end();
+}
 });
 
 //Delete recipe from Calendar
 app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
+  var fromUser = getUserIdFromToken(req.get('Authorization'));
   var week = req.params.week;
   var userid = parseInt(req.params.userid, 10);
   var day = req.params.day;
   var meal = parseInt(req.params.meal, 10);
-  var userData = readDocument('users', userid);
-  var calId = userData.calendarId;
-  var calendar = readDocument('calendars', calId);
-  var weekno = parseInt(week, 10);
-  var weekCal = calendar[weekno];
-  if (meal !== -1) {
-    weekCal[day].splice(meal, 1);
-    writeDocument('calendars', calendar);
-    res.send(calendar);
+  if (fromUser === userid) {
+        var userData = readDocument('users', userid);
+        var calId = userData.calendarId;
+        var calendar = readDocument('calendars', calId);
+        var weekno = parseInt(week, 10);
+        var weekCal = calendar[weekno];
+        if (meal !== -1) {
+          weekCal[day].splice(meal, 1);
+          writeDocument('calendars', calendar);
+          res.send(calendar);
+        }
+      }
+  else {
+    res.status(401).end();
   }
 });
 
