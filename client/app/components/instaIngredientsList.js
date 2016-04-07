@@ -22,7 +22,7 @@ export default class InstaIngredientsList extends React.Component {
               )}
             </ul>
           </form>
-          < InstaResults ingredients={this.props.ingredients}/>
+          < InstaResults ingredients={this.props.ingredients} onClear={() => this.props.onClear()}/>
         </div>
       </div>
     );

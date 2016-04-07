@@ -19,9 +19,9 @@ export default class InstaResults extends React.Component {
     this.setState({searchClicked: true});
   }
 
-  onClear() {
-    this.setState({ ingredients: [],
-                    searchClicked: false});
+  handleClear() {
+    this.setState({searchClicked: false});
+    this.props.onClear();
   }
 
   render() {
@@ -37,7 +37,7 @@ export default class InstaResults extends React.Component {
               <ResultsItem key={recipe._id} data={recipe} />
             );
           })}
-          <button type="submit" className="findrecipe-btn" onClick={() => this.onClear()}>Clear Search</button>
+          <button type="submit" className="findrecipe-btn" onClick={() => this.handleClear()}>Clear Search</button>
         </div>
       );
     } else {

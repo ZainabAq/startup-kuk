@@ -36,6 +36,12 @@ export default class Instamode extends React.Component {
     this.setState({ingredients: this.state.ingredients});
   }
 
+  handleClear(){
+    this.setState({
+      ingredients: []
+    });
+  }
+
   render() {
     return (
       <div>
@@ -48,12 +54,12 @@ export default class Instamode extends React.Component {
                 <h1>Instant Recipes <img src="img/logo.png" id="logo2" /></h1>
                 <div className="description">
                   Looking for a recipe, but don't want to run to the grocery store? Enter in your ingredients down below, and kuk will help you find a recipe that best fits your needs!
-                  *Note: Please enter up to 5 ingredients max.
                 </div>
                 <InstaIngredientsList
                     ingredients = {this.state.ingredients}
                     onPost={(commentText) => this.handleIngredientPost(commentText)}
-                    onDelete={(ingredient) => this.handleIngredientDelete(ingredient)}>
+                    onDelete={(ingredient) => this.handleIngredientDelete(ingredient)}
+                    onClear={() => this.handleClear()}>
                </InstaIngredientsList>
               </div>
             </div>
