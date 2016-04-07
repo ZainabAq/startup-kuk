@@ -1,5 +1,3 @@
-import {readDocument, writeDocument, getCollection} from './database.js';
-
 //   XHR REQUEST MAIN CODE (from Workshop 6)
 var token = 'eyJpZCI6MX0='; // <-- Put your base64'd JSON token here
 /**
