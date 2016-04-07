@@ -1,4 +1,4 @@
-import {readDocument, writeDocument, getCollection} from './database.js';
+// import {readDocument, writeDocument, getCollection} from './database.js';
 
 //   XHR REQUEST MAIN CODE (from Workshop 6)
 var token = 'eyJpZCI6MX0='; // <-- Put your base64'd JSON token here
@@ -160,7 +160,6 @@ export function removeUserRestriction(restrictionId, userId, cb) {
  * Emulates a REST call to get the feed data for a particular user.
  */
 export function getFeedData(restrictions, cb) {
-  console.log("client side restrictions",restrictions);
   sendXHR('PUT','/feed/', restrictions, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
@@ -266,12 +265,15 @@ export function checkUserFavorites(recipeId, userId, cb) {
 * and the day you want to add the recipe to
 */
 export function addRecipeToCalendar(recipeId, userId, day, cb) {
-   var xhr = new XMLHttpRequest();
-   xhr.open("PUT", "/recipe/" +recipeId+ "/user/" +userId+ "/calendar/" + day)
-   xhr.addEventListener("load", function() {
+   sendXHR("PUT", "/recipe/" +recipeId+ "/user/" +userId+ "/calendar/" + day, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
-   })
-   xhr.send();
+   });
+   // var xhr = new XMLHttpRequest();
+   // xhr.open("PUT", "/recipe/" +recipeId+ "/user/" +userId+ "/calendar/" + day)
+   // xhr.addEventListener("load", function() {
+   //    cb(JSON.parse(xhr.responseText));
+   // })
+   // xhr.send();
 }
 
 /**

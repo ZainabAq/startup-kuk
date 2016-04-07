@@ -36,13 +36,13 @@ export default class ResultsItem extends React.Component {
                     <div className="col-xs-4">
                        <ul className="list-inline pull-right">
                          <li className="presentation">
-                            <span className="fa fa-heart fa-lg social-but"></span>
+
                          </li>
                          <li className="presentation">
-                            <span className="fa fa-calendar-check-o fa-lg social-but"></span>
+
                          </li>
                          <li className="presentation">
-                            <span className="fa fa-share-square fa-lg social-but"></span>
+
                          </li>
                        </ul>
                     </div>

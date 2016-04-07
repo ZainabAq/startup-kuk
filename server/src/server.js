@@ -11,7 +11,7 @@ var database = require('./database');
 var readDocument = database.readDocument;
 var writeDocument = database.writeDocument;
 var addDocument = database.addDocument;
-var writeCalendar = database.writeCalendar;
+// var writeCalendar = database.writeCalendar;
 var getCollection = database.getCollection;
 
 
@@ -56,7 +56,7 @@ function getUserIdFromToken(authorizationLine) {
  */
 function getFeedData(restrictions) {
   // console.log(restrictions)
-  console.log("in getFeed");
+  // console.log("in getFeed");
   // get the recipe collection & initialize feedData
   var recipes = getCollection('recipe');
   var feedData = [];
@@ -285,14 +285,14 @@ app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
    if (fromUser === userid) {
       var user = readDocument("users", userid);
       var recipeid = parseInt(req.params.recipeid, 10);
-      console.log("favorites before favoriting: ", user.favorites);
+      // console.log("favorites before favoriting: ", user.favorites);
       user.favorites.push(recipeid);
       writeDocument("users", user);
-      console.log("favorites after favoriting: ", user.favorites);
+      // console.log("favorites after favoriting: ", user.favorites);
       res.send(user);
    }
    else {
-      console.log("Authentication failed!");
+      // console.log("Authentication failed!");
       res.status(401).end();
    }
 });
@@ -307,17 +307,17 @@ app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
    if (fromUser === userid) {
       var user = readDocument("users", userid);
       var recipeid = parseInt(req.params.recipeid, 10);
-      console.log("favorites before unfavoriting: ", user.favorites)
+      // console.log("favorites before unfavoriting: ", user.favorites)
       var favoriteIndex = user.favorites.indexOf(recipeid);
       if (favoriteIndex !== -1) {
          user.favorites.splice(favoriteIndex, 1);
       }
       writeDocument("users", user);
-      console.log("favorites after unfavoriting: ", user.favorites)
+      // console.log("favorites after unfavoriting: ", user.favorites)
       res.send(user);
    }
    else {
-      console.log("Authentication failed!");
+      // console.log("Authentication failed!");
       res.status(401).end();
    }
 });
@@ -380,7 +380,7 @@ app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
       }
       res.send(isRecipeIn);
    } else {
-      console.log("Authentication failed!");
+      // console.log("Authentication failed!");
       res.status(401).end();
    }
 });
@@ -404,7 +404,7 @@ app.get('/user/:userid/favorites/', function(req, res) {
     // Send response.
     res.send(recipes);
   } else {
-     console.log("Authentication failed!");
+   //   console.log("Authentication failed!");
      res.status(401).end();
   }
 });
@@ -415,24 +415,29 @@ app.get('/user/:userid/favorites/', function(req, res) {
 */
 //need to resolve this - right now it's hardcoding both the meal and the week
 app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
+   var fromUser = getUserIdFromToken(req.get('Authorization'));
    var userid = parseInt(req.params.userid, 10);
-   var recipeid = parseInt(req.params.recipeid, 10);
-   var day = req.params.dayid;
-   var user = readDocument("users", userid);
-   var calendar = readDocument("calendars", user.calendarId);
-   // var week = calendar[2];
-   var weekno = 2;
-   var weekCal = calendar[weekno];
-   console.log(weekCal[day]);
-   if (weekCal[day][3]) {
-      weekCal[day][3] = recipeid;
+   if (userid === fromUser) {
+      var recipeid = parseInt(req.params.recipeid, 10);
+      var day = req.params.dayid;
+      var user = readDocument("users", userid);
+      var calendar = readDocument("calendars", user.calendarId);
+      // var week = calendar[2];
+      var weekno = 2;
+      var weekCal = calendar[weekno];
+      // console.log(weekCal[day]);
+      if (weekCal[day][3]) {
+         weekCal[day][3] = recipeid;
+      } else {
+         weekCal[day][3];
+      }
+      // console.log(weekCal[day]);
+      writeDocument("users", user);
+      writeDocument("calendars", calendar);
+      res.send(user);
    } else {
-      weekCal[day][3];
+      res.status(401).end();
    }
-   console.log(weekCal[day]);
-   writeDocument("users", user);
-   writeDocument("calendars", calendar);
-   res.send(user);
 });
 
 /**
