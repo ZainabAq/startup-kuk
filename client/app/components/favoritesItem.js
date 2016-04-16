@@ -20,13 +20,13 @@ icon will appear depending on the status. */
      if (!this.state.favoriteStatus) {
        /** The addFavorite function adds the current recipe to
        the user's favorites' list. */
-           addFavorite(this.props.data._id, 1, callbackFunction);
+           addFavorite(this.props.data._id,  '000000000000000000000001', callbackFunction);
            this.setState({favoriteStatus: true});
         }
         else {
           /* The removeFavorite function removes the current recipe from
           the user's favorites' list. */
-           removeFavorite(this.props.data._id, 1, callbackFunction);
+           removeFavorite(this.props.data._id, '000000000000000000000001', callbackFunction);
            this.setState({favoriteStatus: false});
         }
   }

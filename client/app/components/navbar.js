@@ -39,9 +39,9 @@ export default class Navbar extends React.Component {
                   PIC
                 </button>
                 <ul className="dropdown-menu">
-                  <li><Link to={"/profile/1"}>Profile</Link></li>
-                  <li><Link to="/favorites/1">Favorites</Link></li>
-                  <li><Link to="/calendar/1">Calendar</Link></li>
+                  <li><Link to={"/profile/000000000000000000000001"}>Profile</Link></li>
+                  <li><Link to="/favorites/000000000000000000000001">Favorites</Link></li>
+                  <li><Link to="/calendar/000000000000000000000001">Calendar</Link></li>
                   <li role="separator" className="divider"></li>
                   <li><a href="#">Log out</a></li>
                 </ul></div></li>

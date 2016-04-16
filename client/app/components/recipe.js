@@ -56,11 +56,11 @@ export default class Recipe extends React.Component {
          var callbackFunction = () => {};
          this.didUserFavorite((result) => {
             if (result) {
-               removeFavorite(this.state._id, 1, callbackFunction);
+               removeFavorite(this.state._id, '000000000000000000000001', callbackFunction);
                this.setState({currentFavorite: result})
             }
             else {
-               addFavorite(this.state._id, 1, callbackFunction);
+               addFavorite(this.state._id, '000000000000000000000001', callbackFunction);
                this.setState({currentFavorite: result});
             }
          });
@@ -75,7 +75,7 @@ export default class Recipe extends React.Component {
    * is therefore fucking things up.
    */
    didUserFavorite(cb) {
-      checkUserFavorites(this.state._id, 1, cb);
+      checkUserFavorites(this.state._id, '000000000000000000000001', cb);
    }
 
 
@@ -84,7 +84,7 @@ export default class Recipe extends React.Component {
    */
    handleCalendarClick(clickEvent, day) {
       // just adds to the calendar so it doesn't return anything
-      addRecipeToCalendar(this.state._id, 1, day, (data) => {});
+      addRecipeToCalendar(this.state._id, '000000000000000000000001', day, (data) => {});
       alert("Recipe added to calendar!");
    }
 

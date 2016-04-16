@@ -1,6 +1,6 @@
 
 //   XHR REQUEST MAIN CODE (from Workshop 6)
-var token = 'eyJpZCI6MX0='; // <-- Put your base64'd JSON token here
+var token = 'eyJpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSJ9'; // <-- Put your base64'd JSON token here
 /**
  * Properly configure+send an XMLHttpRequest with error handling, authorization token,
  * and other needed properties.
