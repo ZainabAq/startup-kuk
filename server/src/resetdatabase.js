@@ -6,10 +6,10 @@ var initialData = {
    "users": {
      "1": {
        "_id": new ObjectID("000000000000000000000001"),
-       "firstName": "John",
-       "lastName": "Doe",
+       "firstName": "Stephanie",
+       "lastName": "Xie",
        "restrictions": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000004")],
-       "email": "jdoe@gmail.com",
+       "email": "sxie@smith.edu",
        "favorites": [new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003"),new ObjectID("000000000000000000000005"),new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000004")],
        "calendarId": new ObjectID("000000000000000000000001")
    }
@@ -190,13 +190,6 @@ function resetCollection(db, name, cb) {
 }
 
 /**
- * Adds any desired indexes to the database.
- */
-function addIndexes(db, cb) {
-  db.collection('feedItems').createIndex({ "contents.contents": "text" }, null, cb);
-}
-
-/**
  * Reset the MongoDB database.
  * @param db The database connection.
  */
@@ -216,7 +209,7 @@ function resetDatabase(db, cb) {
       // Use myself as a callback.
       resetCollection(db, collection, processNextCollection);
     } else {
-      addIndexes(db, cb);
+      cb();
     }
   }
 
