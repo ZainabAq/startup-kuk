@@ -1,0 +1,379 @@
+JSON File for Salad Results from API
+GET, http://api.yummly.com/v1/api/recipes?_app_id=c6761d46&_app_key=c7e9054a1497d7408ce494cd608647ee&q=salad
+
+
+
+{
+  "criteria": {
+    "q": "salad",
+    "allowedIngredient": null,
+    "excludedIngredient": null
+  },
+  "matches": [
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/3BVngCl1EWmPoGVs-XrVBn_l2RWQSbd98jMyRik6Aogqw52S4Mr6InSo8lUZkXC5ynilw4pcpzQRh9ol4KYBFoA=s90-c"
+      },
+      "sourceDisplayName": "ladiesboxx",
+      "ingredients": [
+        "cherry tomatoes",
+        "cucumber",
+        "avocado",
+        "feta cheese",
+        "purple onion",
+        "parsley",
+        "olive oil",
+        "lemon juice"
+      ],
+      "id": "Salad-For-Dinner-1537402",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/dfstGgVq4fu2Z9miLWYKo6fkJbNevRXRaY2SGsYZ3AOCD6E_99rnRy7CWq1ftT-rP1Wug_Xb1rNKBi1Q1Ndpek4=s90"
+      ],
+      "recipeName": "Salad For Dinner",
+      "totalTimeInSeconds": null,
+      "attributes": {},
+      "flavors": null,
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/K2cXA6wd5O0UTOb4JsMtxKWc2lBInr59nA2JvOvsvWtOxHGnTs4xHBL0Q7YRNi8a1xb7ajMx3OihpH0jnQKL=s90-c"
+      },
+      "sourceDisplayName": "EA Stewart",
+      "ingredients": [
+        "romaine lettuce",
+        "red cabbage",
+        "shredded carrots",
+        "cherries",
+        "rotisserie chicken",
+        "avocado",
+        "honey mustard dressing",
+        "pinenuts"
+      ],
+      "id": "Easy-7-Ingredient-Rainbow-Rotisserie-Chicken-Salad-w_-Avocado-and-Honey-Mustard-Dressing-1558995",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/JXZuH3cWPeDzd1ISRIk3D3zAcMQI7FSPXPaHc-VXzL2oonSR2pcmMWQxOiK3ZrseMwi0cTX0QGfVhGJZ-grdgA=s90"
+      ],
+      "recipeName": "Easy 7-Ingredient Rainbow Rotisserie Chicken Salad w/ Avocado and Honey Mustard Dressing",
+      "totalTimeInSeconds": 1200,
+      "attributes": {
+        "course": [
+          "Salads"
+        ]
+      },
+      "flavors": null,
+      "rating": 3
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/nHZIyZ4tUoIi795MKDqIHdE_MXC3xa1XVDbSri4N7j5gSUGvFrwLiCHWm5AX_BkRhdPQR-8Jj_Qbxe4sQA8LAw=s90-c"
+      },
+      "sourceDisplayName": "I Heart Nap Time",
+      "ingredients": [
+        "sliced almonds",
+        "sugar",
+        "salad",
+        "kiwi",
+        "strawberries",
+        "raspberries",
+        "chopped celery",
+        "avocado",
+        "pears",
+        "orange zest",
+        "olive oil",
+        "orange",
+        "lime"
+      ],
+      "id": "Zesty-Spring-Salad-1555416",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/sIlXei0cOh3zEIR8I2hmcB424Wuz6O28jO5QtdeUkMrCS_wYXg4tSdQtNE2BOl_m0_SQOudYe-pywcfKiCdyMw=s90"
+      ],
+      "recipeName": "Zesty Spring Salad",
+      "totalTimeInSeconds": 1200,
+      "attributes": {
+        "course": [
+          "Salads"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 0.16666666666666666,
+        "bitter": 0.16666666666666666,
+        "sweet": 0.5,
+        "sour": 0.8333333333333334,
+        "salty": 0.16666666666666666
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/Yjct7qfHYJTBVfFIYiYgmQ1QkCNMXaANO0whGbqPoIZe3vsmktd3Ug_TcRlECR3DdpvDAzK0i5hVwFeU9_YmBNg=s90-c"
+      },
+      "sourceDisplayName": "Ahead of Thyme",
+      "ingredients": [
+        "romaine lettuce",
+        "cherry tomatoes",
+        "purple onion",
+        "cucumber",
+        "whole kalamata olives",
+        "feta cheese",
+        "olive oil",
+        "lemon juice",
+        "dried oregano",
+        "sea salt",
+        "ground black pepper"
+      ],
+      "id": "The-Perfect-Greek-Salad-1558502",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/wjJq2_5eIYBLEJkQ-7U9HLZAoBKzq3pVC5MJV2-HX9lHbHcpGNqdIVnU76Ufcd7-WU3loI9w4mQSwWw3z2pxyQ=s90"
+      ],
+      "recipeName": "The Perfect Greek Salad",
+      "totalTimeInSeconds": 600,
+      "attributes": {
+        "course": [
+          "Salads"
+        ],
+        "cuisine": [
+          "Greek"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 0.16666666666666666,
+        "bitter": 0.16666666666666666,
+        "sweet": 0.16666666666666666,
+        "sour": 0.8333333333333334,
+        "salty": 0.5
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/3y57YmB84VTC5IzPdQ35WQax92njB2WAetqu3_8DZJ7Cod7JWfYhZm2PHakm3lD1ceaVKNdZYE6kIp7FMM6-0w=s90-c"
+      },
+      "sourceDisplayName": "Healthy Seasonal Recipes",
+      "ingredients": [
+        "garlic",
+        "salt",
+        "extra-virgin olive oil",
+        "lime juice",
+        "agave nectar",
+        "cumin",
+        "chili powder",
+        "lacinato kale",
+        "black beans",
+        "jicama",
+        "frozen corn kernels",
+        "carrots",
+        "hard-boiled egg",
+        "crispy bacon",
+        "queso fresco",
+        "chopped cilantro"
+      ],
+      "id": "Southwest-Cobb-Kale-Salad-1558656",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/7gIY51cgYDFUckI55m7njJwW12SK65pJ9XPJTNAAz6q9Q012HKDZmFmJuoJ8yO7pzldDDMPu8RpyxfCSGXguPQ=s90"
+      ],
+      "recipeName": "Southwest Cobb Kale Salad",
+      "totalTimeInSeconds": 900,
+      "attributes": {
+        "course": [
+          "Salads"
+        ]
+      },
+      "flavors": null,
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "http://lh3.ggpht.com/Pdy3vqxlz6E6MgYzZStbtlchbg_Opf0hnw45-jHGtD8vQM68H0S34M0kRp8VuUhFFR5vSAY05wnQuhXqPlBz=s90-c"
+      },
+      "sourceDisplayName": "Unilever North America",
+      "ingredients": [
+        "potatoes",
+        "hellmann' or best food real mayonnais",
+        "red vinegar white white, wine,",
+        "salt",
+        "sugar",
+        "ground black pepper",
+        "celery",
+        "onions",
+        "eggs"
+      ],
+      "id": "The-original-potato-salad-303892",
+      "smallImageUrls": [
+        "http://lh4.ggpht.com/bWS4aQXt-kNqnIeQzREZ2Ux-gOji4M19eBdTTBKHBq3D8yN5GR8MsRoyyI7UwbEDdpBBXs13-1gBDgzuYkHwuw=s90"
+      ],
+      "recipeName": "The Original Potato Salad",
+      "totalTimeInSeconds": 1500,
+      "attributes": {
+        "course": [
+          "Salads",
+          "Side Dishes"
+        ]
+      },
+      "flavors": {
+        "bitter": 1,
+        "meaty": 1,
+        "piquant": 0,
+        "salty": 1,
+        "sour": 1,
+        "sweet": 1
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/TbaiQ03b63uoOf9JLkyJu_dDBILvC4TkvY6Al4otG2tQHKoq5gchzVK77XviOski8ZDGPIFWOcaqhp8pgagPgg=s90-c"
+      },
+      "sourceDisplayName": "Wanna Be A Country Cleaver",
+      "ingredients": [
+        "salad",
+        "romaine lettuce",
+        "chicken breasts",
+        "lemon juice",
+        "olive oil",
+        "salt",
+        "pepper",
+        "oregano",
+        "garlic",
+        "italian seasoning",
+        "caesar salad dressing"
+      ],
+      "id": "Grilled-Chicken-Caesar-Tabbouleh-Salad-1557254",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/xd8a53wWFY9dGFXRe_5j_jDL5AJ4jQ-rEiygfbgSNFAjrO94Ig3ygdDOePRmd3p4rm915X5uAFNOB8TRxLJL=s90"
+      ],
+      "recipeName": "Grilled Chicken Caesar Tabbouleh Salad",
+      "totalTimeInSeconds": 5400,
+      "attributes": {
+        "course": [
+          "Salads"
+        ],
+        "cuisine": [
+          "Barbecue"
+        ]
+      },
+      "flavors": null,
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/Xm92X36ieDshzUSRHO41SnzBE0-wn9bVUgxNfCDclL_A3G3Hbe9ofqZ-Atc1wgMWWYi9xbAyHkDRMDLKT9yg9w=s90-c"
+      },
+      "sourceDisplayName": "Hunt's",
+      "ingredients": [
+        "white quinoa",
+        "salt",
+        "cucumber",
+        "diced tomatoes",
+        "ripe olives",
+        "feta cheese crumbles",
+        "purple onion"
+      ],
+      "id": "Mediterranean-Quinoa-Salad-1535288",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/VCmzCxTqrnZk_VZPPKjE1qydV2j7G6RFDA4T_10fCzvlyRdf2VXYQYvpEIrdut73F1ZZgiQx6Cn05IJqWpe8Gg=s90"
+      ],
+      "recipeName": "Mediterranean Quinoa Salad",
+      "totalTimeInSeconds": 1800,
+      "attributes": {
+        "course": [
+          "Salads"
+        ],
+        "cuisine": [
+          "Mediterranean"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 0.16666666666666666,
+        "bitter": 0.8333333333333334,
+        "sweet": 0.16666666666666666,
+        "sour": 0.3333333333333333,
+        "salty": 0.8333333333333334
+      },
+      "rating": 3
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "http://lh6.ggpht.com/v3rQlF1qD5rn_KW0KNnesPuJNdHhW5AxUm8PRkjQV7VinI-r4MRX5g5vSGG5aMWTvYJIeec5TvATJuiwF0MRwps=s90-c"
+      },
+      "sourceDisplayName": "Kalyn's Kitchen",
+      "ingredients": [
+        "salad greens",
+        "extra-virgin olive oil",
+        "balsamic vinegar",
+        "ground black pepper",
+        "cheese"
+      ],
+      "id": "Restaurant-quality-salad-at-home-309954",
+      "smallImageUrls": [
+        "http://lh3.ggpht.com/JZb-YFN345C9NH1Z4Cype-ZaRFs7pr7HiiEtL0n63QS9tnqKRHY3NLHnSCqX_Lw2ro-8skv56Qr89yrLQX4Eo9k=s90"
+      ],
+      "recipeName": "Restaurant Quality Salad at Home",
+      "totalTimeInSeconds": 1200,
+      "attributes": {
+        "course": [
+          "Salads"
+        ]
+      },
+      "flavors": null,
+      "rating": 5
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/wIVw6qNyZRSWPwcC-_WXNc_JQhUv8eyahd0IX4vxb4YAGRWqqXyth5jI0MbeL9yXAb2XzfeRyLUfxcsq-8ZfXA=s90-c"
+      },
+      "sourceDisplayName": "Renee Nicole's Kitchen",
+      "ingredients": [
+        "steak",
+        "spinach",
+        "red leaf lettuce",
+        "cilantro leaves",
+        "strawberries",
+        "avocado",
+        "sweet onion",
+        "soft goat cheese",
+        "vinaigrette dressing",
+        "olive oil",
+        "orange juice",
+        "fresh lemon juice",
+        "honey",
+        "salt",
+        "dried dill",
+        "dijon mustard",
+        "garlic powder"
+      ],
+      "id": "California-Steak-Salad-1559282",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/TjrQtLnZGyRYD_tRDOwJF776Zp_aKl-7sH1xP-We3Vm2IE7_AMxQOyLE-kpW0amCs38ZWGEEl1IwIajCfrBO0EY=s90"
+      ],
+      "recipeName": "California Steak Salad",
+      "totalTimeInSeconds": 1500,
+      "attributes": {
+        "course": [
+          "Salads",
+          "Main Dishes"
+        ]
+      },
+      "flavors": {
+        "piquant": 0.16666666666666666,
+        "meaty": 0.8333333333333334,
+        "bitter": 0.3333333333333333,
+        "sweet": 0.5,
+        "sour": 0.8333333333333334,
+        "salty": 0.5
+      },
+      "rating": 4
+    }
+  ],
+  "facetCounts": {},
+  "totalMatchCount": 126300,
+  "attribution": {
+    "html": "Recipe search powered by <a href='http://www.yummly.com/recipes'><img alt='Yummly' src='http://static.yummly.com/api-logo.png'/></a>",
+    "url": "http://www.yummly.com/recipes/",
+    "text": "Recipe search powered by Yummly",
+    "logo": "http://static.yummly.com/api-logo.png"
+  }
+}
