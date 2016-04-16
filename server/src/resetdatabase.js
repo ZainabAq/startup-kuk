@@ -1,0 +1,249 @@
+var ObjectID = require('mongodb').ObjectID;
+
+var databaseName = "kuk";
+// Put the initial mock objects here.
+var initialData = {
+   "users": {
+     "1": {
+       "_id": new ObjectID("000000000000000000000001"),
+       "firstName": "John",
+       "lastName": "Doe",
+       "restrictions": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000004")],
+       "email": "jdoe@gmail.com",
+       "favorites": [new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003"),new ObjectID("000000000000000000000005"),new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000004")],
+       "calendarId": new ObjectID("000000000000000000000001")
+   }
+ },
+   "recipe": {
+     "1": {
+       "_id": new ObjectID("000000000000000000000001"),
+       "name": "Brownies",
+       "ingredients": ["1/2 cup butter", "1 cup white sugar", "2 eggs", "1 tablespoon vanilla extract", "1/3 cup unsweetened cocoa powder", "1/2 cup flour", "1/4 teaspoon salt", "1/4 teaspoon baking powder"],
+       "cuisine": "American",
+       "mealType": "Dessert",
+       "averageRating": [new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000004")],
+       "instructions": ["Preheat the oven to 350 degrees.", "Melt the butter.",  "Mix all ingredients together.", "Bake for 30 minutes.", "Enjoy!"],
+       "time": "1 hour",
+       "restrictions": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005")],
+       "img":"http://s2.favim.com/orig/37/brownie-cake-candy-chocolate-delicious-Favim.com-298873.jpg",
+       "description":"Delicous fudge-like brownies"
+     },
+     "2": {
+       "_id": new ObjectID("000000000000000000000002"),
+       "name": "Chicken Parmesan",
+       "ingredients": ["2 boneless skinless chicken breasts (1 pound)","1/4 cup all purpose flour", "1 egg", "3/4 cup panko breadcrumbs", "1/2 cup parmesan cheese, grated", "2 tablespoons extra virgin olive oil", "1 cup tomato sauce", "1/2 cup mozzarella cheese, shredded", "basil for serving, if desired"],
+       "cuisine": "American",
+       "mealType": "Main Course",
+       "averageRating": [new ObjectID("000000000000000000000004"),new ObjectID("000000000000000000000003")],
+       "instructions": ["Cut chicken in half horizontally. Pound each piece until 1/2 inch thick. Sprinkle with salt and pepper.", "Add flour to a shallow dish.", "Add egg to a shallow bowl and whisk, set aside.", "Add breadcrumbs and Parmesan cheese to a shallow bowl and mix to combine.", "Starting with the flour and ending with breadcrumbs, dip the chicken into the flour, egg and Parmesan breadcrumbs.", "Add oil to a large skillet.", "Add chicken two at a time to the skillet. Cook 2-3 minutes on each side or until golden grown and cooked all the way through.", "Place chicken in a pan or sheet tray and top with mozzarella cheese.", "Broil on high until melted and bubbly. Top with tomato sauce and and a sprinkle of basil for serving, if desired. Serve immediately."],
+       "time": "30 mins",
+       "restrictions": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"),8],
+       "img": "http://farm3.static.flickr.com/2786/4280658636_a707c75ebc.jpg",
+       "description":"A traditional Italian dish, this chicken parmesan is seasonally flavored"
+     },
+
+     "3": {
+       "_id": new ObjectID("000000000000000000000003"),
+       "name": "Zha Jiang Mian",
+       "ingredients": ["1/2 pound ground pork", "cooking oil", "1 medium onion (about 1 cup, finely diced)", "4 cups napa cabbage (green parts roughly cut, white parts 1/4 dice", "1 medium zucchini (about 1 cup, diced)", "2 slices ginger",  "1/3 cup ground bean sauce", "1/3 cup hoisin sauce", "4 tablespoons soy sauce", "1/4 cup chicken broth", "1/2 cup water", "3 tablespoons cornstarch, mixed with 3 tablespoons water", "1/2 tablespoons pure sesame oil", "udon noodles", "cucumber"],
+       "cuisine": "Chinese",
+       "mealType": "Main Course",
+       "averageRating": [new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000005")],
+       "instructions": ["Wash and dry napa cabbage leaves. Green leafy parts may be left in larger pieces (2″ or so), but white parts must be diced small (cut white parts vertically into 1/4″ wide sticks, then cut sticks into 1/4″ dice).", "Cut zucchini in 1/4″ dice also (slice lengthwise into 1/4″ strips, then strips into 1/4″ sticks, then sticks into 1/4″ dice).", "Heat 2 tablespoons of cooking oil in a skillet over medium heat. Add onion and cook until softened; remove to a bowl. Add a bit more oil and cook cabbage until edges look translucent; remove and add to bowl. Add zucchini and cook briefly, just to coat with a bit of oil; remove and add to other vegetables.", "Heat a bit more oil and cook ground meat, breaking it up well with a spatula. When all traces of pink are gone, remove meat to a separate bowl.", "Heat 3 tablespoons of oil in the skillet with the ginger slices. Add ground bean sauce and hoisin sauce (also chunjang and miso, if using) and cook, stirring, until the sauces are bubbling hot and mostly mixed into the oil.", "Add meat back in (try and leave out any juice that may have accumulated), and mix well with sauce. Cook for another minute, then remove ginger slices. Add back vegetables and stir.", "Add soy sauce, water and chicken broth (you may substitute 3 tablespoons water plus 1 tablespoon soy sauce if you don’t have chicken broth) and stir. Cook to heat.", "Mix cornstarch with water, then stir into the skillet. Cook until sauce thickens. Add sesame oil to finish.", "Slice cucumber thinly on the diagonal. Then take one little stack of cucumber slices at a time and cut thin matchsticks. Set aside for garnish.", "Cook fresh noodles in boiling water (if you can’t read the directions, just know that fresh noodles cook quickly, so taste it after 3 minutes and check). Serve immediately, as the noodles get gummy and stick together as they cool. Top with meat sauce and garnish with slivered cucumber."],
+       "time": "1 hour",
+       "restrictions": [new ObjectID("000000000000000000000004"),10],
+       "img": "http://www.sbs.com.au/food/sites/sbs.com.au.food/files/styles/full/public/bejing-zha-pork-noodles_2.jpg?itok=ov2ONR2x&mtime=1382441740",
+       "description":"The bestest best dish on the website"
+     },
+
+     "4": {
+       "_id": new ObjectID("000000000000000000000004"),
+       "name": "Skillet Chicken Bulgogi",
+       "ingredients": ["1/4 cup chopped onion", "5 tablespoons soy sauce", "2 1/2 tablespoons brown sugar", "2 tablespoons minced garlic", "2 tablespoons minced garlic", "2 tablespoons sesame oil",  "1 tablespoon sesame seeds", "1/2 teaspoon cayenne", "salt and ground black pepper to taste", "1  pound skinless, boneless chicken breasts, cut into thin strips"],
+       "cuisine": "Korean",
+       "mealType": "Main Course",
+       "averageRating": [new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000005")],
+       "instructions": ["Whisk onion, soy sauce, brown sugar, garlic, sesame oil, sesame seeds, cayenne pepper, salt, and black pepper together in a bowl until marinade is smooth.", "Cook and stir chicken and marinade together in a large skillet over medium-high heat until chicken is cooked through, about 15 minutes."],
+       "time": "30 mins",
+       "restrictions": [new ObjectID("000000000000000000000004"),8],
+       "img": "http://www.chowstatic.com/assets/recipe_photos/25679_korean_grilled_chicken.jpg",
+       "description":"A Korean dish renowened for its simplicity and flavor"
+     },
+
+     "5": {
+       "_id": new ObjectID("000000000000000000000005"),
+       "name": "Creamy Smoked Salmon Pasta",
+       "ingredients": ["6 tablespoons butter", "1/2 onion, finely chopped", "2 tablespoons all-purpose flour", "2 teaspoons garlic powder", "2 cups skim milk", "1/2 cup grated Romano cheese",  "1  cup frozen green peas, thawed and drained", "1/2 cup canned mushrooms, drained", "10 ounces smoked salmon, chopped", "1 (16 ounce) package penne pasta"],
+       "cuisine": "Italian",
+       "mealType": "Main Course",
+       "averageRating": [new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005")],
+       "instructions": ["Bring a large pot of lightly salted water to a boil. Add pasta and cook for 8 to 10 minutes or until al dente; drain.", "Melt butter in a large skillet over medium heat. Saute onion in butter until tender.", "Stir flour and garlic powder into the butter and onions. Gradually stir in milk. Heat to just below boiling point, and then gradually stir in cheese until the sauce is smooth. Stir in peas and mushrooms., and cook over low heat for 4 minutes.", "Toss in smoked salmon, and cook for 2 more minutes. Serve over pasta."],
+       "time": "30 mins",
+       "restrictions": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000005"),new ObjectID("000000000000000000000006")],
+       "img": "http://images.media-allrecipes.com/userphotos/600x600/131597.jpg",
+       "description":"Using only fresh salmon, this recipe is the best in Alaskan cooking"
+    },
+    "6": {
+       "_id": new ObjectID("000000000000000000000006"),
+       "name": "Avocado Strawberry Smoothie",
+       "ingredients": ["1 avocado, peeled and pitted", "1 cup orange juice", "1/2 cup vanilla yogurt", "5 ice cubes", "4 frozen whole strawberries", "1 teaspoon honey", "1 teaspoon flax seed meal (optional)"],
+       "cuisine": "American",
+       "mealType": "Snack",
+       "averageRating": [new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000003")],
+       "instructions": ["Blend avocado, orange juice, vanilla yogurt, ice cubes, strawberries, honey, and flax seed meal together in a blender until smooth, at least 45 seconds."],
+       "time": "10 mins",
+       "restrictions": [new ObjectID("000000000000000000000001")],
+       "img": "http://www.eat-yourself-skinny.com/wp-content/uploads/2013/09/113.jpg",
+       "description": "This healthy, tasty smoothie is the perfect way to start your work week"
+    }
+
+   },
+   "calendars": {
+     "1": {
+     "_id": new ObjectID("000000000000000000000001"),
+     1: {
+       "Monday": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000003"),new ObjectID("000000000000000000000004")], "Tuesday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000005")], "Wednesday":[new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Thursday":[new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000002")], "Friday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Saturday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Sunday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")]
+     },
+
+     2: {
+       "Monday": [new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000005")], "Tuesday":[new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000004")], "Wednesday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000005")], "Thursday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Friday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Saturday":[new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000002")], "Sunday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")]
+     },
+
+       3: {
+         "Monday": [new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000002")], "Tuesday":[new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000001")], "Wednesday":[new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000005")], "Thursday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Friday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Saturday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Sunday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")]
+     },
+
+     4: {
+       "Monday": [new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000005")], "Tuesday":[new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000004")], "Wednesday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000005")], "Thursday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Friday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")], "Saturday":[new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000002")], "Sunday":[new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000003"), new ObjectID("000000000000000000000004")]
+     }
+ }
+ },
+
+   "restrictions": {
+     "1": {
+       "_id": new ObjectID("000000000000000000000001"),
+       "tag": "Dairy",
+       "recipes": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"),new ObjectID("000000000000000000000006")]
+     },
+     "2": {
+       "_id": new ObjectID("000000000000000000000002"),
+       "tag": "Eggs",
+       "recipes": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")]
+     },
+     "3": {
+       "_id": new ObjectID("000000000000000000000003"),
+       "tag": "Nuts",
+       "recipes":[]
+     },
+     "4": {
+       "_id": new ObjectID("000000000000000000000004"),
+       "tag": "Soy",
+       "recipes":[new ObjectID("000000000000000000000003"),new ObjectID("000000000000000000000004")]
+     },
+     "5": {
+       "_id": new ObjectID("000000000000000000000005"),
+       "tag": "Gluten",
+       "recipes":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005")]
+     },
+     "6": {
+       "_id": new ObjectID("000000000000000000000006"),
+       "tag": "Fish",
+       "recipes":[new ObjectID("000000000000000000000005")]
+     },
+     "7": {
+       "_id": new ObjectID("000000000000000000000007"),
+       "tag": "Shellfish",
+       "recipes":[]
+     },
+     "8": {
+       "_id": new ObjectID("000000000000000000000008"),
+       "tag": "Poultry",
+       "recipes":[new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000004")]
+     },
+     "9": {
+       "_id": new ObjectID("000000000000000000000009"),
+       "tag": "Beef",
+       "recipes":[]
+     },
+     "10": {
+       "_id": new ObjectID("000000000000000000000010"),
+       "tag": "Pork",
+       "recipes":[new ObjectID("000000000000000000000003")]
+     }
+   }
+};
+
+/**
+ * Resets a collection.
+ */
+function resetCollection(db, name, cb) {
+  // Drop / delete the entire object collection.
+  db.collection(name).drop(function() {
+    // Get all of the mock objects for this object collection.
+    var collection = initialData[name];
+    var objects = Object.keys(collection).map(function(key) {
+      return collection[key];
+    });
+    // Insert objects into the object collection.
+    db.collection(name).insertMany(objects, cb);
+  });
+}
+
+/**
+ * Adds any desired indexes to the database.
+ */
+function addIndexes(db, cb) {
+  db.collection('feedItems').createIndex({ "contents.contents": "text" }, null, cb);
+}
+
+/**
+ * Reset the MongoDB database.
+ * @param db The database connection.
+ */
+function resetDatabase(db, cb) {
+  // The code below is a bit complex, but it basically emulates a
+  // "for" loop over asynchronous operations.
+  var collections = Object.keys(initialData);
+  var i = 0;
+
+  // Processes the next collection in the collections array.
+  // If we have finished processing all of the collections,
+  // it triggers the callback.
+  function processNextCollection() {
+    if (i < collections.length) {
+      var collection = collections[i];
+      i++;
+      // Use myself as a callback.
+      resetCollection(db, collection, processNextCollection);
+    } else {
+      addIndexes(db, cb);
+    }
+  }
+
+  // Start processing the first collection!
+  processNextCollection();
+}
+
+// Check if called directly via 'node', or required() as a module.
+// http://stackoverflow.com/a/6398335
+if(require.main === module) {
+  // Called directly, via 'node src/resetdatabase.js'.
+  // Connect to the database, and reset it!
+  var MongoClient = require('mongodb').MongoClient;
+  var url = 'mongodb://localhost:27017/' + databaseName;
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      throw new Error("Could not connect to database: " + err);
+    } else {
+      console.log("Resetting database...");
+      resetDatabase(db, function() {
+        console.log("Database reset!");
+        // Close the database connection so NodeJS closes.
+        db.close();
+      });
+    }
+  });
+} else {
+  // require()'d.  Export the function.
+  module.exports = resetDatabase;
+}
