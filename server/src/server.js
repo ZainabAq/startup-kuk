@@ -576,4 +576,4 @@ MongoClient.connect(url, function(err, db) {
       console.log('Kuk server listening on port 3000!');
    });
 
-}
+});
