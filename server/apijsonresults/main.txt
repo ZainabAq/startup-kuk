@@ -1,0 +1,356 @@
+JSON File for Main Results from API
+GET, http://api.yummly.com/v1/api/recipes?_app_id=c6761d46&_app_key=c7e9054a1497d7408ce494cd608647ee&q=main
+{
+  "criteria": {
+    "q": "Main",
+    "allowedIngredient": null,
+    "excludedIngredient": null
+  },
+  "matches": [
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/L6BYGTYxtMiykJS0_sVUrWVnAsy10wDvIaetbN2BqomAKtpjot4CxBSvYnKzld7LZC-5w6aMYdzyYsiwPW4i=s90-c"
+      },
+      "sourceDisplayName": "Add a Pinch",
+      "ingredients": [
+        "salmon fillets",
+        "garlic",
+        "chopped parsley",
+        "parmesan cheese"
+      ],
+      "id": "Baked-Salmon-with-Parmesan-Herb-Crust-1545516",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/EBBbr2u57wbpkzv_P6nw1-cQ3Ey1k2xYFqPn1WbqlwKoi5sGtDcG4VamvCa5rOHfvXnyq-6k_4mP3vIdwc9tIg=s90"
+      ],
+      "recipeName": "Baked Salmon with Parmesan Herb Crust",
+      "totalTimeInSeconds": 1020,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 0.8333333333333334,
+        "bitter": 0.8333333333333334,
+        "sweet": 0.16666666666666666,
+        "sour": 0.8333333333333334,
+        "salty": 0.8333333333333334
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/tylEA4bu23U9c9kCm-W78HRHQAv7rugY4Np3ZJ6201KwmeGyQbUeLwNuTa_18oYOHwVVIJT8pXv2nV9mBFj-=s90-c"
+      },
+      "sourceDisplayName": "Chocolate Slopes",
+      "ingredients": [
+        "chicken breasts",
+        "taco seasoning",
+        "plain greek yogurt",
+        "black beans",
+        "salsa",
+        "Mexican cheese blend",
+        "tortilla chips"
+      ],
+      "id": "Cheesy-Mexican-Chicken-Casserole-1558719",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/bG7fU2rMxZGIi8sD9uPy3MIJxCW25T3-ZbQlNbumxO8tias-sySBB0izTqGnGixeYYR03b3pKot6jmlSyNPOaeM=s90"
+      ],
+      "recipeName": "Cheesy Mexican Chicken Casserole",
+      "totalTimeInSeconds": 1800,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ],
+        "cuisine": [
+          "Kid-Friendly"
+        ]
+      },
+      "flavors": null,
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/PFGtVC_FmmJoPxLfJIckIDpZ_D4ePE2TH5dOchXhCpnrjeGfDLmS8Qy4y35novx21qE-UQr7ciTYND9UCtv9=s90-c"
+      },
+      "sourceDisplayName": "Taste and Tell",
+      "ingredients": [
+        "brown sugar",
+        "ketchup",
+        "soy sauce",
+        "sherry",
+        "fresh ginger",
+        "minced garlic",
+        "boneless skinless chicken breasts"
+      ],
+      "id": "Grilled-Huli-Huli-Chicken-1560301",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/Sdun81FuDHadU_Xecv9kGPesCsAdLxihaXl35L_AWV_3EGUaHCJaKbbhVC9xpye_cesrTSAJ89gH3TaZxiyg=s90"
+      ],
+      "recipeName": "Grilled Huli Huli Chicken",
+      "totalTimeInSeconds": 30600,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ],
+        "cuisine": [
+          "Barbecue"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 0.5,
+        "bitter": 0.8333333333333334,
+        "sweet": 0.5,
+        "sour": 0.16666666666666666,
+        "salty": 0.8333333333333334
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/biFN8wAMjf8rdDYUnW4-fmH4-kMVixgnGutoYChT5Ls9EkDlhQN80c5PXKdmxQ4b-bz4hoHBS1JU0Tr3MgxoXQ=s90-c"
+      },
+      "sourceDisplayName": "Serena Bakes Simply from Scratch",
+      "ingredients": [
+        "chicken thighs",
+        "dijon mustard",
+        "honey",
+        "apple cider vinegar",
+        "fresh rosemary",
+        "salt",
+        "ground pepper"
+      ],
+      "id": "Honey-Mustard-Chicken-1526254",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/rbSNQiCE2qeUQpXTaW2rAGpQ-c6xXwyIO5PPY8CNmIHPyvkLVB2IQ5PM41CuhtGODca16VoTD1R0LSvCgnA4=s90"
+      ],
+      "recipeName": "Honey Mustard Chicken",
+      "totalTimeInSeconds": 4800,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ]
+      },
+      "flavors": {
+        "piquant": 0.16666666666666666,
+        "meaty": 0.8333333333333334,
+        "bitter": 0.16666666666666666,
+        "sweet": 0.5,
+        "sour": 0.16666666666666666,
+        "salty": 0.16666666666666666
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/ygWK1wdC-bjovw_aeLdcDHk879QwhUerQ9NMTCM_z8sJgrl1XoCXL_lz_39Btjg4mY2VnypHLXtf3uWF2_1Dig=s90-c"
+      },
+      "sourceDisplayName": "Sweet Somethings",
+      "ingredients": [
+        "bone-in skin-on chicken thighs",
+        "baby potatoes",
+        "baby carrots",
+        "olive oil",
+        "salt",
+        "pepper"
+      ],
+      "id": "Quick-and-Easy-4-Ingredient-Dinner-1558225",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/DbHQBf0uR1OQkJlF_s1D7E04lip5HOf3k_Gzs6TdFt5WZ96qUWhsghCcE5fTDjUC1odvrHmP4GwgGkxrQRM8NQ=s90"
+      ],
+      "recipeName": "Quick and Easy 4 Ingredient Dinner",
+      "totalTimeInSeconds": 4500,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 0.5,
+        "bitter": 0.16666666666666666,
+        "sweet": 0.16666666666666666,
+        "sour": 0.5,
+        "salty": 0.16666666666666666
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/v2jeGxuQ9HEMgABZBbsFeqUvNYn8i7sOp3CXP9ryZ_NL9SelnfKiapsNZTHTEAngFFQfaNw-RPCY24-LpsrW=s90-c"
+      },
+      "sourceDisplayName": "The Lemon Bowl",
+      "ingredients": [
+        "boneless skinless chicken breasts",
+        "salsa verde",
+        "beer",
+        "cumin",
+        "salt",
+        "pepper",
+        "corn tortillas"
+      ],
+      "id": "Slow-Cooker-Salsa-Verde-Chicken-Tacos-1559821",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/l8FmJAVsgHR68Kh2JJ9FitYHNFvNQC79uNiJ8mSN3_H6b_DkmcVovoyzYVkEuen1LReyuL9pQpsnUnMKcIax=s90"
+      ],
+      "recipeName": "Slow Cooker Salsa Verde Chicken Tacos",
+      "totalTimeInSeconds": 11100,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ],
+        "cuisine": [
+          "Mexican"
+        ]
+      },
+      "flavors": {
+        "piquant": 0.8333333333333334,
+        "meaty": 0.16666666666666666,
+        "bitter": 0.8333333333333334,
+        "sweet": 0.16666666666666666,
+        "sour": 0.16666666666666666,
+        "salty": 0.8333333333333334
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "http://lh3.googleusercontent.com/t9VMkmyyI1BkXpBODdVppzdzwuDiVROmNWDCwJyWOS4ibn7ZRhRZ5FLab2Jcf_sERGKhc3kKINTfpn3Gge2rTvY=s90-c"
+      },
+      "sourceDisplayName": "How Sweet It Is",
+      "ingredients": [
+        "boneless skinless chicken breasts",
+        "all-purpose flour",
+        "olive oil",
+        "butter",
+        "onions",
+        "sliced mushrooms",
+        "white wine",
+        "bread",
+        "salt",
+        "pepper"
+      ],
+      "id": "Caramelized-chicken-with-mushroom-sauce-and-grilled-herb-bread-333779",
+      "smallImageUrls": [
+        "http://lh3.googleusercontent.com/ulVMcRpUgW23TqZfN-056ZHpFBLNjzqFetbZELrEBbnMACX-mypLSYjFO7z96NAAgvsMBDNVoiJ9cuzeEH-9cw=s90"
+      ],
+      "recipeName": "Caramelized Chicken with Mushroom Sauce and Grilled Herb Bread",
+      "totalTimeInSeconds": 1800,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 0.8333333333333334,
+        "bitter": 0.16666666666666666,
+        "sweet": 0.16666666666666666,
+        "sour": 0.16666666666666666,
+        "salty": 0.5
+      },
+      "rating": 5
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/T2L3M-yLiezoMR4NqRy6hvSSaAieoLdo2xswBRCTCOjxFhzA0SURN_E7ERfnJerO9M8pDA5yPcTLwuO7Dk3Ang=s90-c"
+      },
+      "sourceDisplayName": "Magic Skillet",
+      "ingredients": [
+        "boneless chicken",
+        "mushrooms",
+        "cream of chicken soup",
+        "onion soup mix",
+        "chicken broth"
+      ],
+      "id": "Slow-Cooker-Creamy-Mushroom-Chicken-1535863",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/FKl6eh63DhGQVA3DQWglHA1JU80sIlS-QzjWkYADlf-3Yep3OXpOfB3OG63y0NiOSsQHpEweaNmEdbaOwIwMfWc=s90"
+      ],
+      "recipeName": "Slow Cooker Creamy Mushroom Chicken",
+      "totalTimeInSeconds": 600,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 1,
+        "bitter": 1,
+        "sweet": 1,
+        "sour": 1,
+        "salty": 1
+      },
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/fdsF0XnWCTlFl-otLQS-6bXB_SajLIaKknv-g38BexDlGvyEF53MoskVo-BwyDZr6Z8H7x5atJS75Vl0KScyhw=s90-c"
+      },
+      "sourceDisplayName": "Weekend Collective",
+      "ingredients": [
+        "taco seasoning",
+        "chicken broth",
+        "boneless skinless chicken breasts",
+        "salsa"
+      ],
+      "id": "_5_-Shredded-Chicken-Tacos-1506516",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/-GzpUcgMwtCC1pDF0QZ4N-_hMu-BkeePBC-L9ab5c-YjKGKJM6kD4DsoUziqvri8YJNMpAPM9aLdCuyDSWO0lQ=s90"
+      ],
+      "recipeName": "#5. Shredded Chicken Tacos",
+      "totalTimeInSeconds": 2400,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ]
+      },
+      "flavors": null,
+      "rating": 4
+    },
+    {
+      "imageUrlsBySize": {
+        "90": "https://lh3.googleusercontent.com/fqNHKxn_npSbULokAdAt3N3EgsENuD5ancVKJIz4HcVSlfk-Pjcr1otT49i4DAadYUGc0XJVJcKWNu6PtQ68kg=s90-c"
+      },
+      "sourceDisplayName": "01 Recipes",
+      "ingredients": [
+        "brown sugar",
+        "boneless skinless chicken breasts",
+        "garlic",
+        "butter",
+        "black pepper"
+      ],
+      "id": "Garlic-Brown-Sugar-Chicken-1516656",
+      "smallImageUrls": [
+        "https://lh3.googleusercontent.com/bqnPwVKmmCzYryRA08iaPXdspwbMmCVdZvzxHhBpY6oeQ27C0WnZUscvsv5YqePITPuxIJiHKGBYGFtfBHB5cw=s90"
+      ],
+      "recipeName": "Garlic Brown Sugar Chicken",
+      "totalTimeInSeconds": 1800,
+      "attributes": {
+        "course": [
+          "Main Dishes"
+        ]
+      },
+      "flavors": {
+        "piquant": 0,
+        "meaty": 0.8333333333333334,
+        "bitter": 0.16666666666666666,
+        "sweet": 0.16666666666666666,
+        "sour": 0.16666666666666666,
+        "salty": 0.16666666666666666
+      },
+      "rating": 4
+    }
+  ],
+  "facetCounts": {},
+  "totalMatchCount": 375459,
+  "attribution": {
+    "html": "Recipe search powered by <a href='http://www.yummly.com/recipes'><img alt='Yummly' src='http://static.yummly.com/api-logo.png'/></a>",
+    "url": "http://www.yummly.com/recipes/",
+    "text": "Recipe search powered by Yummly",
+    "logo": "http://static.yummly.com/api-logo.png"
+  }
+}
