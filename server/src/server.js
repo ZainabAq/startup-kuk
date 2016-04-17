@@ -8,10 +8,10 @@ var app = express();
 
 //importing methods from the database
 var database = require('./database');
-// var readDocument = database.readDocument;
-// var writeDocument = database.writeDocument;
-// // var writeCalendar = database.writeCalendar;
-// var getCollection = database.getCollection;
+var readDocument = database.readDocument;
+var writeDocument = database.writeDocument;
+// var writeCalendar = database.writeCalendar;
+var getCollection = database.getCollection;
 
 // app.use(express.static('../client/build'));
 
@@ -576,4 +576,4 @@ MongoClient.connect(url, function(err, db) {
       console.log('Kuk server listening on port 3000!');
    });
 
-}
+});
