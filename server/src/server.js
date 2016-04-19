@@ -72,6 +72,13 @@ MongoClient.connect(url, function(err, db) {
       }
    }
 
+   /**
+    * Helper function: Sends back HTTP response with error code 500 due to
+    * a database error.
+    */
+   function sendDatabaseError(res, err) {
+     res.status(500).send("A database error occurred: " + err);
+   }
 
    //our recipe id wasn't being sent correctly, so we made a method
    //to hexify the id to a 24 character string
@@ -454,10 +461,8 @@ MongoClient.connect(url, function(err, db) {
       var recipeid = hexify(req.params.recipeid);
       getRecipe(recipeid, function(err, recipe) {
          if (err) {
-            console.log("err");
             res.status(500).send("A database error occured" + err);
          } else {
-            console.log("sending recipe");
             res.send(recipe);
          }
       });
@@ -538,41 +543,58 @@ MongoClient.connect(url, function(err, db) {
    /**
    * Returns an array of the recipes whose names match the searched keyword.
    */
-   app.post('/results', function(req, res) {
-      if (typeof(req.body) === 'string') {
-         var searchText = req.body;
-         var recipes = getCollection('recipe');
-         // append all recipes in an array
-         var i, recipeData = [];
-         for (i in recipes) {
-            if (recipes.hasOwnProperty(i)) {
-               recipeData.push(recipes[i]);
+  app.post('/results', function(req, res) {
+     if (typeof(req.body) === 'string') {
+        var searchText = req.body.trim().toLowerCase();
+        // get Recipe collection
+        db.collection('recipe').find().toArray(function(err, recipes) {
+          if (err) {
+            sendDatabaseError(res, err);
+          }
+          // if recipe name contains search word, append its id
+          var text = searchText.split(" ");
+          var match = [];
+          for (var j=0; j<recipes.length; j++) {
+             var name = recipes[j].name.toLowerCase().split(" ");
+             for (var k=0; k<text.length; k++) {
+                for (var h=0; h<name.length; h++) {
+                   if (text[k] == name[h]) {
+                      match.push(recipes[j]._id);
+                   }
+                }
+             }
+          }
+          // Resolve all of the results items.
+          var resolvedItems = [];
+          var errored = false;
+          function onResolve(err, resultsItem) {
+            if (errored) {
+              return;
+            } else if (err) {
+              errored = true;
+              sendDatabaseError(res, err);
+            } else {
+              resolvedItems.push(resultsItem);
+              if (resolvedItems.length === match.length) {
+                // Send resolved items to the client!
+                res.send(resolvedItems);
+              }
             }
-         }
-         // if recipe name contains search word, append its id
-         var text = searchText.toLowerCase().split(" ");
-         var j, k, h, match = [];
-         for (j=0; j<recipeData.length; j++) {
-            var name = recipeData[j].name.toLowerCase().split(" ");
-            for (k=0; k<text.length; k++) {
-               for (h=0; h<name.length; h++) {
-                  if (text[k] == name[h]) {
-                     match.push(recipeData[j]._id);
-                  }
-               }
-            }
-         }
-         // map each recipe id
-         match.map((recipe, m) => {
-            // k is the index
-            match[m] = getRecipeSync(recipe);
-         });
-         res.send(match);
-      } else {
-         // 400: Bad Request.
-         res.status(400).end();
-      }
-   });
+          }
+          // Resolve all of the matched feed items in parallel.
+          for (var i=0; i<recipes.length; i++) {
+            getRecipe(match[i], onResolve);
+          }
+          // Special case: No results.
+          if (match.length === 0) {
+            res.send([]);
+          }
+        })
+     } else {
+        // 400: Bad Request.
+        res.status(400).end();
+     }
+  });
 
    /*
    * This function checks the user's favorites to see if
@@ -657,96 +679,85 @@ MongoClient.connect(url, function(err, db) {
    * Posts the results from searching with instamode (when a user
    * clicks on the Find a recipe button, it is called)
    */
-   app.post('/instaresults', function(req, res) {
-      if (typeof(req.body) === 'string') {
-         var ingredientsList = req.body.split(',');
-         // console.log(ingredientsList);
-         var recipes = getCollection('recipe');
-         var i, recipeData = [];
-         for (i in recipes) {
-            if (recipes.hasOwnProperty(i)) {
-               recipeData.push(recipes[i]);
-            }
+   app.post('/instaresults', function(req,res) {
+     if (typeof(req.body) === 'string') {
+       var ingredientsList = req.body.split(',');
+       db.collection('recipe').find({}).toArray(function(err, recipeData) {
+         if (err) {
+               return res.send(500);
          }
-         // will store the list of recipes that match
          var matchedIngredientRecipe = [];
          for (var z=0; z<recipeData.length; z++) {
-            var ingredients = recipeData[z].ingredients;
-            for (var y=0; y<ingredients.length; y++) {
-               var splitIngredients = ingredients[y].split(' ');
-               // console.log(splitIngredients);
-               for (var x=0; x<ingredientsList.length; x++) {
-                  // console.log(ingredientsList[x]);
-                  if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
-                     matchedIngredientRecipe.push(recipeData[z]);
-                     break;
-                  }
+           var ingredients = recipeData[z].ingredients;
+           for (var y=0; y<ingredients.length; y++) {
+             var splitIngredients = ingredients[y].split(' ');
+             // console.log(splitIngredients);
+             for (var x=0; x<ingredientsList.length; x++) {
+               // console.log(ingredientsList[x]);
+               if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+                 matchedIngredientRecipe.push(recipeData[z]);
+                 break;
                }
-            }
+             }
+           }
          }
          res.send(matchedIngredientRecipe);
-      } else {
-         // 400: Bad Request.
-         res.status(400).end();
-      }
+       })
+     } else {
+       res.status(400).end();
+     }
    });
 
-   /**
-   * Posts the results from searching with instamode (when a user
-   * clicks on the Find a recipe button, it is called)
-   */
-   app.post('/instaresults/ingredientsONLY', function(req, res) {
-      if (typeof(req.body) === 'string') {
-         var ingredientsList = req.body.split(',');
-         // console.log(ingredientsList);
-         var recipes = getCollection('recipe');
-         var i, recipeData = [];
-         for (i in recipes) {
-            if (recipes.hasOwnProperty(i)) {
-               recipeData.push(recipes[i]);
-            }
-         }
-         // will store the list of recipes that match
-         var matchedIngredientRecipe = [];
-         var ingredientMatch = [];
-         for (var z=0; z<recipeData.length; z++) {
-            var ingredients = recipeData[z].ingredients;
-            for (var y=0; y<ingredients.length; y++) {
-               // split ingredients = ingredients from recipe
-               var splitIngredients = ingredients[y].split(' ');
-               for (var x=0; x<ingredientsList.length; x++) {
-                  // ingrdientList[x] = each ingredient in the list from user
-                  if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
-                     ingredientMatch.push('yes');
-                  } else {
-                     ingredientMatch.push('no');
-                  }
-               }
-            }
-            // console.log(ingredientMatch);
-            // console.log(ingredientMatch.indexOf('no') > -1);
-            if (ingredientMatch.indexOf('no') > -1) {
-               // do nothing
-            } else {
-               matchedIngredientRecipe.push(recipeData[z]);
-            }
-         }
-         res.send(matchedIngredientRecipe);
-      } else {
-         // 400: Bad Request.
-         res.status(400).end();
-      }
-   });
+ /**
+ * Posts the results from searching with instamode (when a user
+ * clicks on the Find a recipe button, it is called)
+ */
+  app.post('/instaresults/ingredientsONLY', function(req, res) {
+    if (typeof(req.body) === 'string') {
+      var ingredientsList = req.body.split(',');
+      db.collection('recipe').find({}).toArray(function(err, recipeData) {
+        if (err) {
+          return res.send(500);
+        }
+        // will store the list of recipes that match
+        var matchedIngredientRecipe = [];
+        var ingredientMatch = [];
+        for (var z=0; z<recipeData.length; z++) {
+           var ingredients = recipeData[z].ingredients;
+           for (var y=0; y<ingredients.length; y++) {
+              // split ingredients = ingredients from recipe
+              var splitIngredients = ingredients[y].split(' ');
+              for (var x=0; x<ingredientsList.length; x++) {
+                 // ingrdientList[x] = each ingredient in the list from user
+                 if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+                    ingredientMatch.push('yes');
+                 } else {
+                    ingredientMatch.push('no');
+                 }
+              }
+           }
+           // console.log(ingredientMatch);
+           // console.log(ingredientMatch.indexOf('no') > -1);
+           if (ingredientMatch.indexOf('no') > -1) {
+              // do nothing
+           } else {
+              matchedIngredientRecipe.push(recipeData[z]);
+           }
+        }
+        res.send(matchedIngredientRecipe);
+      })
+    } else {
+      res.status(400).end();
+    }
+  });
 
-
-   // Reset database.
-   app.post('/resetdb', function(req, res) {
-      console.log("Resetting database...");
-      // This is a debug route, so don't do any validation.
-      database.resetDatabase();
-      // res.send() sends an empty response with status code 200
+  // Reset the database.
+  app.post('/resetdb', function(req, res) {
+    console.log("Resetting database...");
+    ResetDatabase(db, function() {
       res.send();
-   });
+    });
+  });
 
    // Starts the server on port 3000
    app.listen(3000, function () {
