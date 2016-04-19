@@ -493,13 +493,13 @@ MongoClient.connect(url, function(err, db) {
             sendDatabaseError(res, err);
           }
           // if recipe name contains search word, append its id
-          var ugh = searchText.split(" ");
+          var text = searchText.split(" ");
           var match = [];
           for (var j=0; j<recipes.length; j++) {
              var name = recipes[j].name.toLowerCase().split(" ");
-             for (var k=0; k<ugh.length; k++) {
+             for (var k=0; k<text.length; k++) {
                 for (var h=0; h<name.length; h++) {
-                   if (ugh[k] == name[h]) {
+                   if (text[k] == name[h]) {
                       match.push(recipes[j]._id);
                    }
                 }
@@ -525,6 +525,10 @@ MongoClient.connect(url, function(err, db) {
           // Resolve all of the matched feed items in parallel.
           for (var i=0; i<recipes.length; i++) {
             getRecipe(match[i], onResolve);
+          }
+          // Special case: No results.
+          if (match.length === 0) {
+            res.send([]);
           }
         })
      } else {
@@ -688,15 +692,13 @@ MongoClient.connect(url, function(err, db) {
     }
   });
 
-
-   // Reset database.
-   app.post('/resetdb', function(req, res) {
-      console.log("Resetting database...");
-      // This is a debug route, so don't do any validation.
-      database.resetDatabase();
-      // res.send() sends an empty response with status code 200
+  // Reset the database.
+  app.post('/resetdb', function(req, res) {
+    console.log("Resetting database...");
+    ResetDatabase(db, function() {
       res.send();
-   });
+    });
+  });
 
    // Starts the server on port 3000
    app.listen(3000, function () {
