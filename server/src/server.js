@@ -129,7 +129,7 @@ MongoClient.connect(url, function(err, db) {
    function getRecipeSync(recipeId) {
       var recipe = readDocument('recipe', recipeId);
       return recipe;
-   }
+}
 
    /**Zainab Calendar methods*/
 
@@ -315,17 +315,41 @@ MongoClient.connect(url, function(err, db) {
    * This function adds a recipe to a user's list of
    * favorites. Replacement of addFavorite.
    */
+   //PUT a recipe into the user's list of favorites
    app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userid = parseInt(req.params.userid, 10);
+      var userid = req.params.userid;
+      var recipeid = new ObjectID(req.params.recipeid);
+      //not sure if this should be wrapped in an object
       if (fromUser === userid) {
-         var user = readDocument("users", userid);
-         var recipeid = parseInt(req.params.recipeid, 10);
-         // console.log("favorites before favoriting: ", user.favorites);
-         user.favorites.push(recipeid);
-         writeDocument("users", user);
-         // console.log("favorites after favoriting: ", user.favorites);
-         res.send(user);
+
+         db.collection("users").updateOne({_id:userid},
+            {
+               $push: {
+                  favorites: new ObjectID(recipeid)
+               }
+            }, function(err) {
+               if (err) {
+                  res.status(500).send("Database error: " + err);
+               }
+               //get the user object now that we've updated it
+               db.collection("users").findOne( {_id:recipeid}, function(err, user) {
+                  if (err) {
+                     res.status(500).send("Database error: "+err);
+                  }
+                  res.send(user);
+               });
+            }
+         );
+
+         //MUST CHANGE EVERYTHING IN HERE
+         // var user = readDocument("users", userid);
+         // var recipeid = parseInt(req.params.recipeid, 10);
+         // // console.log("favorites before favoriting: ", user.favorites);
+         // user.favorites.push(recipeid);
+         // writeDocument("users", user);
+         // // console.log("favorites after favoriting: ", user.favorites);
+         // res.send(user);
       }
       else {
          // console.log("Authentication failed!");
@@ -339,7 +363,7 @@ MongoClient.connect(url, function(err, db) {
    */
    app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userid = parseInt(req.params.userid, 10);
+      var userid = req.params.userid;
       if (fromUser === userid) {
          var user = readDocument("users", userid);
          var recipeid = parseInt(req.params.recipeid, 10);
@@ -405,7 +429,7 @@ MongoClient.connect(url, function(err, db) {
 
    app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userid = parseInt(req.params.userid, 10);
+      var userid = req.params.userid;
       if (userid === fromUser) {
          var recipeid = parseInt(req.params.recipeid, 10);
          var user = readDocument("users", userid);
