@@ -72,6 +72,13 @@ MongoClient.connect(url, function(err, db) {
       }
    }
 
+   /**
+    * Helper function: Sends back HTTP response with error code 500 due to
+    * a database error.
+    */
+   function sendDatabaseError(res, err) {
+     res.status(500).send("A database error occurred: " + err);
+   }
 
    //our recipe id wasn't being sent correctly, so we made a method
    //to hexify the id to a 24 character string
@@ -138,16 +145,12 @@ MongoClient.connect(url, function(err, db) {
    * Comes directly from the old server.js.
    */
    function getRecipe(recipeId, callback) {
-      console.log(recipeId);
       db.collection("recipe").findOne({_id:recipeId}, function(err, recipe) {
          if (err) {
-            console.log("ERROR");
             return callback(err, null);
          } else if (recipe == null) {
-            console.log("NULL");
             return callback(null, null);
          } else {
-            console.log("recipe is: ", recipe)
             return callback(null, recipe);
          }
       });
@@ -335,10 +338,8 @@ MongoClient.connect(url, function(err, db) {
       var recipeid = hexify(req.params.recipeid);
       getRecipe(recipeid, function(err, recipe) {
          if (err) {
-            console.log("err");
             res.status(500).send("A database error occured" + err);
          } else {
-            console.log("sending recipe");
             res.send(recipe);
          }
       });
@@ -419,41 +420,54 @@ MongoClient.connect(url, function(err, db) {
    /**
    * Returns an array of the recipes whose names match the searched keyword.
    */
-   app.post('/results', function(req, res) {
-      if (typeof(req.body) === 'string') {
-         var searchText = req.body;
-         var recipes = getCollection('recipe');
-         // append all recipes in an array
-         var i, recipeData = [];
-         for (i in recipes) {
-            if (recipes.hasOwnProperty(i)) {
-               recipeData.push(recipes[i]);
+  app.post('/results', function(req, res) {
+     if (typeof(req.body) === 'string') {
+        var searchText = req.body.trim().toLowerCase();
+        // get Recipe collection
+        db.collection('recipe').find().toArray(function(err, recipes) {
+          if (err) {
+            sendDatabaseError(res, err);
+          }
+          // if recipe name contains search word, append its id
+          var ugh = searchText.split(" ");
+          var match = [];
+          for (var j=0; j<recipes.length; j++) {
+             var name = recipes[j].name.toLowerCase().split(" ");
+             for (var k=0; k<ugh.length; k++) {
+                for (var h=0; h<name.length; h++) {
+                   if (ugh[k] == name[h]) {
+                      match.push(recipes[j]._id);
+                   }
+                }
+             }
+          }
+          // Resolve all of the results items.
+          var resolvedItems = [];
+          var errored = false;
+          function onResolve(err, resultsItem) {
+            if (errored) {
+              return;
+            } else if (err) {
+              errored = true;
+              sendDatabaseError(res, err);
+            } else {
+              resolvedItems.push(resultsItem);
+              if (resolvedItems.length === match.length) {
+                // Send resolved items to the client!
+                res.send(resolvedItems);
+              }
             }
-         }
-         // if recipe name contains search word, append its id
-         var text = searchText.toLowerCase().split(" ");
-         var j, k, h, match = [];
-         for (j=0; j<recipeData.length; j++) {
-            var name = recipeData[j].name.toLowerCase().split(" ");
-            for (k=0; k<text.length; k++) {
-               for (h=0; h<name.length; h++) {
-                  if (text[k] == name[h]) {
-                     match.push(recipeData[j]._id);
-                  }
-               }
-            }
-         }
-         // map each recipe id
-         match.map((recipe, m) => {
-            // k is the index
-            match[m] = getRecipeSync(recipe);
-         });
-         res.send(match);
-      } else {
-         // 400: Bad Request.
-         res.status(400).end();
-      }
-   });
+          }
+          // Resolve all of the matched feed items in parallel.
+          for (var i=0; i<recipes.length; i++) {
+            getRecipe(match[i], onResolve);
+          }
+        })
+     } else {
+        // 400: Bad Request.
+        res.status(400).end();
+     }
+  });
 
    /*
    * This function checks the user's favorites to see if
