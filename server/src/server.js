@@ -5,44 +5,21 @@
 var express = require('express');
 // Creates an Express server.
 var app = express();
-
-//importing methods from the database
-var database = require('./database');
-var readDocument = database.readDocument;
-var writeDocument = database.writeDocument;
-// var writeCalendar = database.writeCalendar;
-var getCollection = database.getCollection;
-
-// app.use(express.static('../client/build'));
-
 var bodyParser = require('body-parser');
-
-//importing the reset database file so the reset db button will work again
+// importing the reset database file so the reset db button will work again
 var ResetDatabase = require('./resetdatabase');
-
-// Support receiving text in HTTP request bodies
-// app.use(bodyParser.text());
-// // Support receiving JSON in HTTP request bodies
-// app.use(bodyParser.json());
-
-
-//importing mongodb
+// importing mongodb
 var mongo_express = require('mongo-express/lib/middleware');
 // import the default Mongo Express configuration
 var mongo_express_config = require('mongo-express/config.default.js');
 app.use('/mongo_express', mongo_express(mongo_express_config));
-
-
-
 var MongoDB = require('mongodb');
 var MongoClient = MongoDB.MongoClient;
 var ObjectID = MongoDB.ObjectID;
 var url = 'mongodb://localhost:27017/kuk';
 
 // HTTP REQUEST FUNCTIONS GO HERE
-
 MongoClient.connect(url, function(err, db) {
-
    app.use(bodyParser.text());
    app.use(bodyParser.json());
    app.use(express.static('../client/build'));
@@ -154,11 +131,7 @@ MongoClient.connect(url, function(err, db) {
             return callback(null, recipe);
          }
       });
-
-
-      // var recipe = readDocument('recipe', recipeId);
-      // return recipe;
-}
+    }
 
    /**Zainab Calendar methods*/
 
@@ -493,13 +466,13 @@ MongoClient.connect(url, function(err, db) {
             sendDatabaseError(res, err);
           }
           // if recipe name contains search word, append its id
-          var ugh = searchText.split(" ");
+          var text = searchText.split(" ");
           var match = [];
           for (var j=0; j<recipes.length; j++) {
-             var name = recipes[j].name.toLowerCase().split(" ");
-             for (var k=0; k<ugh.length; k++) {
+             var name = recipes[j].name.split(" ");
+             for (var k=0; k<text.length; k++) {
                 for (var h=0; h<name.length; h++) {
-                   if (ugh[k] == name[h]) {
+                   if (text[k] == name[h]) {
                       match.push(recipes[j]._id);
                    }
                 }
@@ -698,13 +671,12 @@ MongoClient.connect(url, function(err, db) {
    });
 
 
-   // Reset database.
+   // Reset the database.
    app.post('/resetdb', function(req, res) {
-      console.log("Resetting database...");
-      // This is a debug route, so don't do any validation.
-      database.resetDatabase();
-      // res.send() sends an empty response with status code 200
-      res.send();
+     console.log("Resetting database...");
+     ResetDatabase(db, function() {
+       res.send();
+     });
    });
 
    // Starts the server on port 3000
