@@ -39,7 +39,18 @@ export default class ProfileFeed extends React.Component {
 
   getRestrictionChecks() {
     var restrictions = this.state.restrictions;
-    var iterable = [1,2,3,4,5,6,7,8,9,10];
+    var iterable = [
+      "000000000000000000000001",
+      "000000000000000000000002",
+      "000000000000000000000003",
+      "000000000000000000000004",
+      "000000000000000000000005",
+      "000000000000000000000006",
+      "000000000000000000000007",
+      "000000000000000000000008",
+      "000000000000000000000009",
+      "000000000000000000000010"
+    ];
     var booleans = [];
     for (let num of iterable) {
       if (restrictions.includes(num)) {

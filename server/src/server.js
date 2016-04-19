@@ -272,25 +272,61 @@ MongoClient.connect(url, function(err, db) {
    * @param id An array of the ids of the restrictions to get
    * @returns An array holding the tag names of the restriction ids passed in
    */
-   function getRestrictionStrings(ids) {
+   function getRestrictionStrings(ids, callback) {
       var strings = [];
-      ids.forEach((id => {
-         var restrictionData = readDocument("restrictions",id);
-         strings.push(restrictionData.tag);
-      }));
-      return strings;
+      var errored = false;
+      console.log("here");
+
+      function processRestrictions(err, restrictionData) {
+        if (errored) {
+          return;
+        } else if (err) {
+          errored = true;
+          callback(err);
+        } else {
+          // Success!
+          strings.push(restrictionData.tag);
+          if (strings.length === ids.length) {
+            callback(null, strings);
+          }
+        }
+      }
+
+      ids.forEach((id) => {
+         db.collection('restrictions').findOne({
+           _id : id
+         }, processRestrictions);
+      });
    }
 
    // GET User Restriction Tags
    app.get('/user/:userid/restrictions', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      // Convert params from string to number.
-      var userId = parseInt(req.params.userid, 10);
+      var userId = req.params.userid;
       if (fromUser === userId) {
-         var userData = readDocument("users", userId);
-         var restrictions = userData.restrictions;
-         restrictions = getRestrictionStrings(restrictions);
-         res.send(restrictions);
+        var user = new ObjectID(userId);
+        db.collection('users').findOne({
+          _id : user
+        }, function(err, userData) {
+          if (err) {
+            res.status(500).send("Database Error: " + err);
+          } else if (userData === null) {
+            // User not found.
+            res.status(400).send("Could not find data for user " + userId);
+          } else {
+            var restrictions = userData.restrictions;
+            getRestrictionStrings(restrictions, function(err, restrictionTags) {
+              if (err) {
+                res.status(500).send("Database Error: " + err);
+              } else if (restrictions === null) {
+                // Restrictions not found.
+                res.status(400).send("Could not find data for restrictions " + restrictions);
+              } else {
+                res.send(restrictionTags);
+              }
+            });
+          }
+        });
       } else {
          res.status(401).end();
       }
@@ -299,18 +335,31 @@ MongoClient.connect(url, function(err, db) {
    // PUT A restriction id in a user's data.
    app.put('/user/:userid/restriction/:restrictionid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      // Convert params from string to number.
-      var restrictionId = parseInt(req.params.restrictionid, 10);
-      var userId = parseInt(req.params.userid, 10);
+      var restrictionId = new ObjectID(req.params.restrictionid);
+      var userId = req.params.userid;
       if (fromUser === userId) {
-         var userData = readDocument("users", userId);
-         // Add to user restrictions if not already present.
-         if (userData.restrictions.indexOf(restrictionId) === -1) {
-            userData.restrictions.push(restrictionId);
-            writeDocument('users', userData);
-         }
-         // Return an updated version of the restrictions list
-         res.send(userData.restrictions);
+        var user = new ObjectID(userId);
+        db.collection('users').updateOne({ _id : user },
+          {
+            // Add 'restrictionId' to the user's list of restrictions
+            // if it is not already in the array.
+            $addToSet: {
+              restrictions: restrictionId
+            }
+          }, function(err) {
+            if (err) {
+              res.status(500).send("A database error occured: " + err);
+            }
+            // Get updated user object
+            db.collection('users').findOne({ _id: user }, function(err, userData) {
+              if (err) {
+                res.status(500).send("A database error occured: " + err);
+              }
+              // Return the updated restrictions list (unresolved).
+              res.send(userData.restrictions);
+            });
+          }
+        );
       } else {
          // 401: Unauthorized.
          res.status(401).end();
@@ -320,20 +369,30 @@ MongoClient.connect(url, function(err, db) {
    // DELETE a restriction id from a user's data.
    app.delete('/user/:userid/restriction/:restrictionid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      // Convert params from string to number.
-      var restrictionId = parseInt(req.params.restrictionid, 10);
-      var userId = parseInt(req.params.userid, 10);
+      var restrictionId = new ObjectID(req.params.restrictionid);
+      var userId = req.params.userid;
       if (fromUser === userId) {
-         var userData = readDocument('users', userId);
-         var restrictionIndex = userData.restrictions.indexOf(restrictionId);
-         // Remove from restriction array if present
-         if (restrictionIndex !== -1) {
-            userData.restrictions.splice(restrictionIndex, 1);
-            writeDocument('users', userData);
-         }
-         // Return an updated version of the restrictions array
-         // Note that this request succeeds even if the user already unliked the request!
-         res.send(userData.restrictions);
+        var user = new ObjectID(userId);
+        db.collection('users').updateOne({ _id: user },
+          {
+            $pull: {
+              restrictions: restrictionId
+            }
+          }, function(err) {
+            if (err) {
+              res.status(500).send("A database error occured: " + err);
+            }
+            // Get the updated restrictions
+            db.collection('users').findOne({ _id: user }, function(err, userData) {
+              if (err) {
+                res.status(500).send("A database error occured: " + err);
+              }
+              // Return the updated restrictions (unresolved).
+              // Note that this request succeeds even if the user already unliked the request!
+              res.send(userData.restrictions);
+            });
+          }
+        );
       } else {
          // 401: Unauthorized
          res.status(401).end();
