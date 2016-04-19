@@ -60,7 +60,7 @@ MongoClient.connect(url, function(err, db) {
          var tokenObj = JSON.parse(regularString);
          var id = tokenObj['id'];
          // Check that id is a number.
-         if (typeof id === 'number') {
+         if (typeof id === 'string') {
             return id;
          } else {
             // Not a number. Return -1, an invalid ID.
@@ -138,16 +138,12 @@ MongoClient.connect(url, function(err, db) {
    * Comes directly from the old server.js.
    */
    function getRecipe(recipeId, callback) {
-      console.log(recipeId);
       db.collection("recipe").findOne({_id:recipeId}, function(err, recipe) {
          if (err) {
-            console.log("ERROR");
             return callback(err, null);
          } else if (recipe == null) {
-            console.log("NULL");
             return callback(null, null);
          } else {
-            console.log("recipe is: ", recipe)
             return callback(null, recipe);
          }
       });
@@ -173,38 +169,102 @@ MongoClient.connect(url, function(err, db) {
 
    /**
    * Gets next 4 meals for a particular user.
-   * @param userId The ID of the user whose calendar we are requesting.
+   * @param userId The ObjectID of the user whose calendar we are requesting.
    * @returns A 4-element array of the next 4 meals.
    */
-   function getUpcomingMeals(userId) {
-      // Get the User object with the id "userId".
-      var userData = readDocument('users', userId);
-      var calId = userData.calendarId;
-      var calendar = readDocument('calendars', calId);
-      // Get the calendar for the user.
-      var week = calendar[1];
-      // For now, static date is Monday.
-      var meals = [];
-      week.Monday.forEach((recipeId) => {
-         meals.push(getRecipeSync(recipeId));
-      })
-      return meals;
+   function getUpcomingMeals(userId, callback) {
+     db.collection('users').findOne({
+       _id: userId
+     }, function(err, userData) {
+       if (err) {
+         return callback(err);
+       } else if (userData === null) {
+         return callback(null, null);
+       }
+
+       db.collection('calendars').findOne({
+         _id: userData.calendarId
+       }, function(err, calendarData) {
+         if (err) {
+           return callback(err);
+         } else if (calendarData === null) {
+           return callback(null, null);
+         }
+
+         // Resolve each recipe in parallel,
+         // and push them into this array.
+         var resolvedContents = [];
+         var errored = false;
+
+         // Callback function for each call to 'getRecipe.'
+         function processRecipe(err, recipeItem) {
+           if (errored) {
+             // A previous callback already called callback() with
+             // an error.
+             return;
+           } else if (err) {
+             // Pass an error to the callback, and flip the error boolean.
+             errored = true;
+             callback(err);
+           } else {
+             // Success!
+             resolvedContents.push(recipeItem);
+             if (resolvedContents.length === calendarData[1].Monday.length) {
+               // I am the final recipe item; all others are resolved.
+               // Pass the resolved recipes back to the callback.
+               callback(null, resolvedContents);
+             }
+           }
+         }
+
+         // Process all of the day's recipes in parallel.
+         for (var i = 0; i < calendarData[1].Monday.length; i++) {
+           getRecipe(calendarData[1].Monday[i], processRecipe);
+         }
+
+         // Special case: Calendar for Monday is empty.
+         if (calendarData[1].Monday.length === 0) {
+           callback(null, []);
+         }
+       })
+     })
    }
 
    // Get Profile data
    app.get('/user/:userid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      // Convert params from string to number.
-      var userId = parseInt(req.params.userid, 10);
+      var userId = req.params.userid;
       if (fromUser === userId) {
-         // Get the User object with the id "user."
-         var userData = readDocument('users', userId);
-         // Add upcoming meals
-         userData.upcomingMeals = getUpcomingMeals(userId);
-         // Return UserData with resolved references.
-         res.send(userData);
+        var user = new ObjectID(userId);
+        // Get the User object with the id "user."
+        db.collection('users').findOne({
+          _id: user
+        }, function(err, userData) {
+          if (err) {
+            // Database Error
+            res.status(500).send("Database Error: " + err);
+          } else if (userData === null) {
+            // User not found.
+            res.status(400).send("Could not look up data for user " + userId);
+          } else {
+            getUpcomingMeals(user, function(err, meals) {
+              if (err) {
+                // Database Error
+                res.status(500).send("Database Error: " + err);
+              } else if (meals === null) {
+                // Meals not found.
+                res.status(400).send("Could not look up meal data for user " + userId);
+              } else {
+                // Add upcoming meals
+                userData.upcomingMeals = meals;
+                // Send data.
+                res.send(userData);
+              }
+            });
+          }
+        });
       } else {
-         res.status(401).end();
+        res.status(401).end();
       }
    });
 
