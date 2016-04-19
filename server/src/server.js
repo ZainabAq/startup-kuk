@@ -72,6 +72,17 @@ MongoClient.connect(url, function(err, db) {
       }
    }
 
+
+   //our recipe id wasn't being sent correctly, so we made a method
+   //to hexify the id to a 24 character string
+   function hexify(idNum) {
+      var length = idNum.toString().length;
+      var numZero = 24-length;
+      var newId = "0".repeat(numZero) + idNum.toString();
+      newId = new ObjectID (newId);
+      return newId;
+   }
+
    /**
    * Get the feed data for a particular user.
    */
@@ -126,9 +137,24 @@ MongoClient.connect(url, function(err, db) {
    * Internal to the server, since it's synchronous.
    * Comes directly from the old server.js.
    */
-   function getRecipeSync(recipeId) {
-      var recipe = readDocument('recipe', recipeId);
-      return recipe;
+   function getRecipe(recipeId, callback) {
+      console.log(recipeId);
+      db.collection("recipe").findOne({_id:recipeId}, function(err, recipe) {
+         if (err) {
+            console.log("ERROR");
+            return callback(err, null);
+         } else if (recipe == null) {
+            console.log("NULL");
+            return callback(null, null);
+         } else {
+            console.log("recipe is: ", recipe)
+            return callback(null, recipe);
+         }
+      });
+
+
+      // var recipe = readDocument('recipe', recipeId);
+      // return recipe;
 }
 
    /**Zainab Calendar methods*/
@@ -299,15 +325,23 @@ MongoClient.connect(url, function(err, db) {
       }
    });
 
+
+
    /*
    * This method replaces "getRecipe" from the old server.
    * It gives recipe data from the database given a recipe id.
    */
    app.get('/recipe/:recipeid/', function(req, res) {
-      //get the recipe id out of the url
-      var recipeid = req.params.recipeid;
-      //send the response
-      res.send(getRecipeSync(recipeid));
+      var recipeid = hexify(req.params.recipeid);
+      getRecipe(recipeid, function(err, recipe) {
+         if (err) {
+            console.log("err");
+            res.status(500).send("A database error occured" + err);
+         } else {
+            console.log("sending recipe");
+            res.send(recipe);
+         }
+      });
    });
 
 
