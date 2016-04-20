@@ -111,7 +111,7 @@ export function getRecipe(recipeId, cb) {
  * @param cb The callback function to be called at the end
  */
 export function getUserRestrictions(user, cb) {
-  sendXHR('GET', '/user/' + user, undefined, (xhr) => {
+  sendXHR('GET', '/user/' + user + '/restriction', undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   })
 }
