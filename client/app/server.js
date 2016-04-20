@@ -157,14 +157,9 @@ export function getFeedData(restrictions, cb) {
  * Returns an array of the recipes whose names match the searched keyword.
  */
 export function findRecipe(searchText, cb) {
-  var xhr = new XMLHttpRequest();
-  //console.log(searchText)
-  xhr.open('POST', '/results');
-  xhr.addEventListener('load', function() {
+  sendXHR('POST', '/results', searchText, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
-  xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-  xhr.send(searchText);
 }
 
 /**
