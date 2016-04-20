@@ -147,10 +147,6 @@ MongoClient.connect(url, function(err, db) {
             return callback(null, recipe);
          }
       });
-
-
-      // var recipe = readDocument('recipe', recipeId);
-      // return recipe;
 }
 
    /**Zainab Calendar methods*/
@@ -395,10 +391,8 @@ MongoClient.connect(url, function(err, db) {
       var recipeid = hexify(req.params.recipeid);
       getRecipe(recipeid, function(err, recipe) {
          if (err) {
-            console.log("err");
             res.status(500).send("A database error occured" + err);
          } else {
-            console.log("sending recipe");
             res.send(recipe);
          }
       });
@@ -413,13 +407,13 @@ MongoClient.connect(url, function(err, db) {
    app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
-      var recipeid = new ObjectID(req.params.recipeid);
+      var recipeid = hexify(req.params.recipeid);
       //not sure if this should be wrapped in an object
       if (fromUser === userid) {
-
+         userid = new ObjectID(userid);
          db.collection("users").updateOne({_id:userid},
             {
-               $push: {
+               $addToSet: {
                   favorites: new ObjectID(recipeid)
                }
             }, function(err) {
@@ -427,7 +421,7 @@ MongoClient.connect(url, function(err, db) {
                   res.status(500).send("Database error: " + err);
                }
                //get the user object now that we've updated it
-               db.collection("users").findOne( {_id:recipeid}, function(err, user) {
+               db.collection("users").findOne( {_id:userid}, function(err, user) {
                   if (err) {
                      res.status(500).send("Database error: "+err);
                   }
@@ -435,15 +429,6 @@ MongoClient.connect(url, function(err, db) {
                });
             }
          );
-
-         //MUST CHANGE EVERYTHING IN HERE
-         // var user = readDocument("users", userid);
-         // var recipeid = parseInt(req.params.recipeid, 10);
-         // // console.log("favorites before favoriting: ", user.favorites);
-         // user.favorites.push(recipeid);
-         // writeDocument("users", user);
-         // // console.log("favorites after favoriting: ", user.favorites);
-         // res.send(user);
       }
       else {
          // console.log("Authentication failed!");
@@ -455,20 +440,32 @@ MongoClient.connect(url, function(err, db) {
    * This function removes a recipe from the user's list
    * of favorites. Replacement of removeFavorite.
    */
+   //DELETE a recipe from the user's list of favorites
    app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
+      var recipeid = hexify(req.params.recipeid);
       if (fromUser === userid) {
-         var user = readDocument("users", userid);
-         var recipeid = parseInt(req.params.recipeid, 10);
-         // console.log("favorites before unfavoriting: ", user.favorites)
-         var favoriteIndex = user.favorites.indexOf(recipeid);
-         if (favoriteIndex !== -1) {
-            user.favorites.splice(favoriteIndex, 1);
-         }
-         writeDocument("users", user);
-         // console.log("favorites after unfavoriting: ", user.favorites)
-         res.send(user);
+         userid = new ObjectID(userid);
+         db.collection("users").updateOne({_id:userid},
+            {
+            $pull: {
+               favorites:new ObjectID(recipeid)
+               }
+            },
+            function (err) {
+               if (err) {
+                  res.status(500).send("Database Error: " + err);
+               }
+               db.collection("users").findOne({_id:userid}, function(err, user) {
+                  if (err) {
+                     res.status(500).send("Database Error: " + err);
+                  } else {
+                     res.send(user);
+                  }
+               });
+            }
+         );
       }
       else {
          // console.log("Authentication failed!");
@@ -520,19 +517,32 @@ MongoClient.connect(url, function(err, db) {
    * a given recipe already exists in their list of
    * favorites. Replacement of checkUserFavorites.
    */
-
+   //GET the user's favorites
    app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       if (userid === fromUser) {
-         var recipeid = parseInt(req.params.recipeid, 10);
-         var user = readDocument("users", userid);
-         var favorites = user.favorites;
-         var isRecipeIn = false;
-         if (favorites.indexOf(recipeid) !== -1) {
-            isRecipeIn = true;
-         }
-         res.send(isRecipeIn);
+         var recipeid = hexify(req.params.recipeid);
+         userid = new ObjectID(userid);
+         db.collection("users").findOne({_id:userid}, function(err, user) {
+            if (err) {
+               res.status(500).send("Database Error: " + err);
+            } else {
+               //this is the replacement of indexOf, to see if a recipe is in
+               //the user's list of favorites
+               var i;
+               var isRecipeIn;
+               for (i=0; i<user.favorites.length; i++) {
+                  if (user.favorites[i].toString() === recipeid.toString()) {
+                     isRecipeIn = true;
+                     break;
+                  } else {
+                     isRecipeIn = false;
+                  }
+               }
+               res.send(isRecipeIn);
+            }
+         });
       } else {
          // console.log("Authentication failed!");
          res.status(401).end();
@@ -544,7 +554,7 @@ MongoClient.connect(url, function(err, db) {
    */
    app.get('/user/:userid/favorites/', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userid = parseInt(req.params.userid, 10);
+      var userid = req.params.userid;
       if (userid === fromUser) {
          // will contain the list of recipes
          var recipes = [];
@@ -570,25 +580,64 @@ MongoClient.connect(url, function(err, db) {
    //need to resolve this - right now it's hardcoding both the meal and the week
    app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userid = parseInt(req.params.userid, 10);
+      var userid = req.params.userid;
+      var recipeid = hexify(req.params.recipeid);
+      var weekno = 2;
+      var meal = 3;
       if (userid === fromUser) {
-         var recipeid = parseInt(req.params.recipeid, 10);
          var day = req.params.dayid;
-         var user = readDocument("users", userid);
-         var calendar = readDocument("calendars", user.calendarId);
-         // var week = calendar[2];
-         var weekno = 2;
-         var weekCal = calendar[weekno];
-         // console.log(weekCal[day]);
-         if (weekCal[day][3]) {
-            weekCal[day][3] = recipeid;
-         } else {
-            weekCal[day][3];
-         }
-         // console.log(weekCal[day]);
-         writeDocument("users", user);
-         writeDocument("calendars", calendar);
-         res.send(user);
+         userid = new ObjectID(userid);
+         db.collection("users").findOne({_id:userid}, function(err, user) {
+            if (err) {
+               res.status(500).send("Database error occured: "+err);
+            } else {
+               var calenderId = user.calendarId;
+            }
+            //now that we have the calendar id from the user, update it
+            //ok to just use update because we're sending the user in the end
+            // db.collection("calendars").updateOne({_id:calenderId},
+            //    {
+            //       $set: {
+            //          ["calendar." + weekno + day + meal] :new ObjectID(recipeid)
+            //       }
+            //    }, function(err) {
+            //       if (err) {
+            //          res.status(500).send("Database Error: " + err);
+            //       }
+            //    }
+            // );
+            db.collection("calendars").findAndModify({_id:calenderId}, [['_id', 'asc']], {
+               $set: {[weekno + "." + day + "."+ meal]:new ObjectID(recipeid)}
+            }, {"new": true}, function(err, calendar) {
+               if (err) {
+                  res.status(500).send("Database error occured: "+err);
+               } else if (calendar == null) {
+                  console.log("No document found!");
+               } else {
+                  console.log(calendar.value[weekno][day]);
+               }
+            });
+            //now finding the user object so that we can return it
+            res.send(user);
+         });
+
+         // var recipeid = parseInt(req.params.recipeid, 10);
+         // var day = req.params.dayid;
+         // var user = readDocument("users", userid);
+         // var calendar = readDocument("calendars", user.calendarId);
+         // // var week = calendar[2];
+         // var weekno = 2;
+         // var weekCal = calendar[weekno];
+         // // console.log(weekCal[day]);
+         // if (weekCal[day][3]) {
+         //    weekCal[day][3] = recipeid;
+         // } else {
+         //    weekCal[day][3];
+         // }
+         // // console.log(weekCal[day]);
+         // writeDocument("users", user);
+         // writeDocument("calendars", calendar);
+         // res.send(user);
       } else {
          res.status(401).end();
       }
