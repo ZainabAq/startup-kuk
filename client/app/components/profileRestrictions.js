@@ -13,7 +13,18 @@ export default class ProfileRestrictions extends React.Component {
 
   getChecks() {
     var restrictions = this.state.restrictions;
-    var iterable = [1,2,3,4,5,6,7,8,9,10];
+    var iterable = [
+      "000000000000000000000001",
+      "000000000000000000000002",
+      "000000000000000000000003",
+      "000000000000000000000004",
+      "000000000000000000000005",
+      "000000000000000000000006",
+      "000000000000000000000007",
+      "000000000000000000000008",
+      "000000000000000000000009",
+      "000000000000000000000010"
+    ];
     var booleans = [];
     for (let num of iterable) {
       if (restrictions.includes(num)) {
@@ -56,7 +67,7 @@ export default class ProfileRestrictions extends React.Component {
                   <div className="col-xs-6">
                     <div className="checkbox">
                       <label>
-                        <input value={1} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000001" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(1)}
                           checked={this.state.checks[0]} />Dairy
@@ -64,7 +75,7 @@ export default class ProfileRestrictions extends React.Component {
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input value={2} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000002" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(2)}
                           checked={this.state.checks[1]} />Eggs
@@ -72,7 +83,7 @@ export default class ProfileRestrictions extends React.Component {
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input value={3} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000003" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(3)}
                           checked={this.state.checks[2]} />Nuts
@@ -80,7 +91,7 @@ export default class ProfileRestrictions extends React.Component {
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input value={4} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000004" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(4)}
                           checked={this.state.checks[3]} />Soy
@@ -88,7 +99,7 @@ export default class ProfileRestrictions extends React.Component {
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input value={5} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000005" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(5)}
                           checked={this.state.checks[4]} />Gluten
@@ -98,7 +109,7 @@ export default class ProfileRestrictions extends React.Component {
                   <div className="col-xs-6">
                     <div className="checkbox">
                       <label>
-                        <input value={6} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000006" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(6)}
                           checked={this.state.checks[5]} />Fish
@@ -106,7 +117,7 @@ export default class ProfileRestrictions extends React.Component {
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input value={7} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000007" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(7)}
                           checked={this.state.checks[6]} />Shellfish
@@ -114,7 +125,7 @@ export default class ProfileRestrictions extends React.Component {
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input value={8} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000008" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(8)}
                           checked={this.state.checks[7]} />Poultry
@@ -122,7 +133,7 @@ export default class ProfileRestrictions extends React.Component {
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input value={9} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000009" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(9)}
                           checked={this.state.checks[8]} />Beef
@@ -130,7 +141,7 @@ export default class ProfileRestrictions extends React.Component {
                     </div>
                     <div className="checkbox">
                       <label>
-                        <input value={10} type="checkbox" onChange={(e) => {
+                        <input value="000000000000000000000010" type="checkbox" onChange={(e) => {
                             this.handleChange(e);
                           }} defaultChecked={this.state.restrictions.includes(10)}
                           checked={this.state.checks[9]} />Pork
