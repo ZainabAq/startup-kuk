@@ -465,7 +465,7 @@ function getRecipeSync(recipeId) {
    }
 
    // GET User Restriction Tags
-   app.get('/user/:userid/restrictions', function(req, res) {
+   app.get('/user/:userid/restriction', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userId = req.params.userid;
       if (fromUser === userId) {
