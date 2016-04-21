@@ -25,12 +25,26 @@ export default class Calendar extends React.Component {
     }
 
   }
+
     refresh(week) {
        getProfileCalendarData(this.state._id, week, (profileData) => {
          this.setState({week : week});
          this.setState(profileData);
               });
     }
+
+    // distributeCalendar() {
+    // var weekList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    // ];
+    //   for (var day in weekList) {
+    //     for (var calday in this.state.Calendar) {
+    //       if (day === calday) {
+    //         this.state[day] = calday;
+    //       }
+    //     }
+    //   }
+    // }
+
 
     checkMealType(i) {
       if (i === 0){
@@ -80,7 +94,7 @@ export default class Calendar extends React.Component {
         <ul className = "day list-inline">
           <li><h5 className="days"> Monday </h5></li>
              {this.state.Monday.map((meal, i) => {
-                            // i is the index
+               //console.log(this.state.Monday[i]);
               return (
                 <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Monday", i)}/>
               )
@@ -142,6 +156,6 @@ export default class Calendar extends React.Component {
         </ul>
       </div>
     </div>
-    )
+  )
   }
   }

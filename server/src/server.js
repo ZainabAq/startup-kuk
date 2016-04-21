@@ -10,7 +10,6 @@ var app = express();
 var database = require('./database');
 var readDocument = database.readDocument;
 var writeDocument = database.writeDocument;
-// var writeCalendar = database.writeCalendar;
 var getCollection = database.getCollection;
 
 // app.use(express.static('../client/build'));
@@ -156,19 +155,182 @@ MongoClient.connect(url, function(err, db) {
       });
 }
 
+/*
+* Given a recipe ID, returns a recipe object with references resolved.
+* Internal to the server, since it's synchronous.
+* Comes directly from the old server.js.
+*/
+function getRecipeSync(recipeId) {
+   var recipe = readDocument('recipe', recipeId);
+   return recipe;
+}
+
    /**Zainab Calendar methods*/
 
-   function getCalendarSync(userData, week, day) {
-      var calId = userData.calendarId;
-      var calendar = readDocument('calendars', calId);
-      var weekno = parseInt(week, 10);
-      var weekCal = calendar[weekno];
-      var meals = [];
-      weekCal[day].forEach((recipeId) => {
-         meals.push(getRecipeSync(recipeId));
-      })
-      return meals;
-   }
+  //  function getCalendarSync(userData, week) {
+  //     var calId = userData.calendarId;
+  //     var calendar = readDocument('calendars', calId);
+  //     var weekno = parseInt(week, 10);
+  //     var weekCal = calendar[weekno];
+  //     var meals = [[],[],[],[],[],[],[]];
+  //     var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  //     var index = 0;
+  //     days.forEach((day) => {
+  //       meals.push([
+  //     weekCal[day].forEach((recipeId) => {
+  //        meals.index.push(getRecipeSync(recipeId));
+  //        index = index + 1;
+  //     })])
+  //   })
+  //   console.log(meals);
+  //   return meals;
+  //  }
+
+  function getWeekCal(userData, week, callback) {
+    var weekno = parseInt(week, 10);
+    var calId = userData.calendarId;
+    db.collection("calendars").findOne({_id:calId
+    }, function(err, calendar) {
+      if (err) {
+        return callback(err, null);
+      }
+      else if (calendar === null) {
+        return callback(null, null);
+      }
+      else {
+        var weekCal = calendar[weekno];
+        return callback(null, weekCal);
+      }
+    });
+  }
+
+  function getMealsforDay(weekCal, day, callback) {
+    var meals = [];
+    var errored = false;
+    var myCal = weekCal[day];
+
+         function processRecipe(err, recipeItem) {
+             meals.push(recipeItem);
+             if (meals.length === myCal.length) {
+               callback(null, meals);
+             }
+           }
+
+      for (var i = 0; i < myCal.length; i++) {
+            getRecipe(myCal[i], processRecipe);
+
+          } 
+        }
+
+// //Get ProfileCalendarData
+//    app.get('/user/:userid/calendar/:week', function(req, res) {
+//       var fromUser = getUserIdFromToken(req.get('Authorization'));
+//       var userid = req.params.userid;
+//       var week = req.params.week;
+
+//       if (fromUser === userid) {
+//          var user = new ObjectID(userid);
+//       db.collection("users").findOne({_id : user
+//       }, function(err, user) {
+//         if (err) {
+//           res.status(500).send("Database Error: " + err);
+//         } else if (user === null){
+//           res.status(400).send("Could not look up data for user " + userid);
+//         }
+//         else {
+//           getWeekCal(user, week, function(err, calendarObject) {
+//             if (err) {
+//               sendDatabaseError(res, err);
+//             } else {
+//               user.Calendar = calendarObject;
+//                 //console.log(user);
+
+//                 //console.log(user)                  
+//                 //console.log(Object.keys(user).length);
+
+//               //console.log(user);
+//               res.send(user);
+//             }
+//           });
+//         }
+//       });
+//     }
+//     else {
+//       res.status(401).end();
+//     }
+//    });
+
+   Get ProfileCalendarData
+   app.get('/user/:userid/calendar/:week', function(req, res) {
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var userid = req.params.userid;
+      var week = req.params.week;
+      var weekList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    ];
+      if (fromUser === userid) {
+         var user = new ObjectID(userid);
+      db.collection("users").findOne({_id : user
+      }, function(err, user) {
+        if (err) {
+          res.status(500).send("Database Error: " + err);
+        } else if (user === null){
+          res.status(400).send("Could not look up data for user " + userid);
+        }
+        else {
+          getWeekCal(user, week, function(err, calendarObject) {
+            if (err) {
+              sendDatabaseError(res, err);
+            } else {
+              for (var i = 0; i < weekList.length; i++) {
+                var day = weekList[i];
+                  getMealsforDay(calendarObject, day, function(err, meals) {
+                  if (err) {
+                    sendDatabaseError(res, err);
+                  }
+                  else {
+                      user[day] = meals;
+                      console.log(day);
+                }})}
+                //console.log(user);
+
+                //console.log(user)                  
+                //console.log(Object.keys(user).length);
+
+              //console.log(user);
+              res.send(user);
+            }
+          });
+        }
+      });
+    }
+    else {
+      res.status(401).end();
+    }
+   });
+
+   //Delete recipe from Calendar
+   app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var week = req.params.week;
+      var userid = parseInt(req.params.userid, 10);
+      var day = req.params.day;
+      var meal = parseInt(req.params.meal, 10);
+      if (fromUser === userid) {
+         var userData = readDocument('users', userid);
+         var calId = userData.calendarId;
+         var calendar = readDocument('calendars', calId);
+         var weekno = parseInt(week, 10);
+         var weekCal = calendar[weekno];
+         if (meal !== -1) {
+            weekCal[day].splice(meal, 1);
+            writeDocument('calendars', calendar);
+            res.send(calendar);
+         }
+      }
+      else {
+         res.status(401).end();
+      }
+   });
 
    /**
    * Gets next 4 meals for a particular user.
@@ -401,53 +563,6 @@ MongoClient.connect(url, function(err, db) {
          res.status(401).end();
       }
    })
-
-   // Get ProfileCalendarData
-   app.get('/user/:userid/calendar/:week', function(req, res) {
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var week = req.params.week;
-      var user = parseInt(req.params.userid, 10);
-      if (fromUser === user) {
-         var userData = readDocument('users', user);
-         userData.Monday = getCalendarSync(userData, week, "Monday");
-         userData.Tuesday = getCalendarSync(userData, week, "Tuesday");
-         userData.Wednesday = getCalendarSync(userData, week, "Wednesday");
-         userData.Thursday = getCalendarSync(userData, week, "Thursday");
-         userData.Friday = getCalendarSync(userData, week, "Friday");
-         userData.Saturday = getCalendarSync(userData, week, "Saturday");
-         userData.Sunday = getCalendarSync(userData, week, "Sunday");
-         res.send(userData);
-      }
-      else {
-         res.status(401).end();
-      }
-   });
-
-   //Delete recipe from Calendar
-   app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var week = req.params.week;
-      var userid = parseInt(req.params.userid, 10);
-      var day = req.params.day;
-      var meal = parseInt(req.params.meal, 10);
-      if (fromUser === userid) {
-         var userData = readDocument('users', userid);
-         var calId = userData.calendarId;
-         var calendar = readDocument('calendars', calId);
-         var weekno = parseInt(week, 10);
-         var weekCal = calendar[weekno];
-         if (meal !== -1) {
-            weekCal[day].splice(meal, 1);
-            writeDocument('calendars', calendar);
-            res.send(calendar);
-         }
-      }
-      else {
-         res.status(401).end();
-      }
-   });
-
-
 
    /*
    * This method replaces "getRecipe" from the old server.
