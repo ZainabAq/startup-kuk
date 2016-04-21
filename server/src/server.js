@@ -219,7 +219,7 @@ function getRecipeSync(recipeId) {
       for (var i = 0; i < myCal.length; i++) {
             getRecipe(myCal[i], processRecipe);
 
-          } 
+          }
         }
 
 // //Get ProfileCalendarData
@@ -245,7 +245,7 @@ function getRecipeSync(recipeId) {
 //               user.Calendar = calendarObject;
 //                 //console.log(user);
 
-//                 //console.log(user)                  
+//                 //console.log(user)
 //                 //console.log(Object.keys(user).length);
 
 //               //console.log(user);
@@ -293,7 +293,7 @@ function getRecipeSync(recipeId) {
                 }})}
                 //console.log(user);
 
-                //console.log(user)                  
+                //console.log(user)
                 //console.log(Object.keys(user).length);
 
               //console.log(user);
@@ -845,9 +845,9 @@ function getRecipeSync(recipeId) {
    * Posts the results from searching with instamode (when a user
    * clicks on the Find a recipe button, it is called)
    */
-   app.post('/instaresults', function(req,res) {
-     if (typeof(req.body) === 'string') {
-       var ingredientsList = req.body.split(',');
+   app.post('/instaresults/:ingredientString', function(req,res) {
+     if (typeof(req.params.ingredientString) === 'string') {
+       var ingredientsList = req.params.ingredientString.split('=');
        db.collection('recipe').find({}).toArray(function(err, recipeData) {
          if (err) {
                return res.send(500);
@@ -878,9 +878,9 @@ function getRecipeSync(recipeId) {
  * Posts the results from searching with instamode (when a user
  * clicks on the Find a recipe button, it is called)
  */
-  app.post('/instaresults/ingredientsONLY', function(req, res) {
-    if (typeof(req.body) === 'string') {
-      var ingredientsList = req.body.split(',');
+  app.post('/instaresults/ingredientsONLY/:ingredientString', function(req, res) {
+    if (typeof(req.params.ingredientString) === 'string') {
+      var ingredientsList = req.params.ingredientString.split('=');
       db.collection('recipe').find({}).toArray(function(err, recipeData) {
         if (err) {
           return res.send(500);
