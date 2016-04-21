@@ -260,7 +260,7 @@ function getRecipeSync(recipeId) {
 //     }
 //    });
 
-   Get ProfileCalendarData
+  // Get ProfileCalendarData
    app.get('/user/:userid/calendar/:week', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
