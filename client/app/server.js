@@ -216,13 +216,17 @@ export function addRecipeToCalendar(recipeId, userId, day, cb) {
   * @param ingredientsList is the list of ingredients entered in instamode
   */
 export function findRecipeByIngredients(ingredientsList, cb) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/instaresults');
-    xhr.addEventListener('load', function() {
+    var ingredientString = "";
+    for (var i = 0; i < ingredientsList.length; i++) {
+      if (i===0) {
+        ingredientString += ingredientsList[i];
+      } else {
+        ingredientString += '='+ingredientsList[i];
+      }
+    }
+    sendXHR("POST", '/instaresults/'+ ingredientString, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
-    });
-    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-    xhr.send(ingredientsList);
+    })
 }
 
 /**
@@ -230,11 +234,15 @@ export function findRecipeByIngredients(ingredientsList, cb) {
   * @param ingredientsList is the list of ingredients entered in instamode
   */
 export function findRecipeByOnlyIngredients(ingredientsList, cb) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/instaresults/ingredientsONLY');
-    xhr.addEventListener('load', function() {
-      cb(JSON.parse(xhr.responseText));
-    });
-    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-    xhr.send(ingredientsList);
+  var ingredientString = "";
+  for (var i = 0; i < ingredientsList.length; i++) {
+    if (i===0) {
+      ingredientString += ingredientsList[i];
+    } else {
+      ingredientString += '='+ingredientsList[i];
+    }
+  }
+  sendXHR("POST", '/instaresults/ingredientsONLY/'+ ingredientString, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  })
 }

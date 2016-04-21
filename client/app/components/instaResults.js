@@ -76,7 +76,7 @@ export default class InstaResults extends React.Component {
     } else {
       return(
         <div>
-          <p>We were unable to find anything matching the ingredient you entered. Please try again.</p>
+          <p>We were unable to find anything matching the ingredient(s) you entered. Please try again.</p>
           <button type="submit" className="findrecipe-btn" onClick={() => this.handleClear()}>Clear Search</button>
         </div>
       )
