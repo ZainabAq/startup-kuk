@@ -33,18 +33,6 @@ export default class Calendar extends React.Component {
               });
     }
 
-    // distributeCalendar() {
-    // var weekList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-    // ];
-    //   for (var day in weekList) {
-    //     for (var calday in this.state.Calendar) {
-    //       if (day === calday) {
-    //         this.state[day] = calday;
-    //       }
-    //     }
-    //   }
-    // }
-
 
     checkMealType(i) {
       if (i === 0){

@@ -5,6 +5,8 @@
 var express = require('express');
 // Creates an Express server.
 var app = express();
+//var async = require('async');
+
 
 //importing methods from the database
 var database = require('./database');
@@ -42,101 +44,92 @@ var url = 'mongodb://localhost:27017/kuk';
 
 MongoClient.connect(url, function(err, db) {
 
-   app.use(bodyParser.text());
-   app.use(bodyParser.json());
-   app.use(express.static('../client/build'));
+  app.use(bodyParser.text());
+  app.use(bodyParser.json());
+  app.use(express.static('../client/build'));
 
-   /**
-   * Get the user ID from a token. Returns -1 (an invalid ID) if it fails.
-   */
-   function getUserIdFromToken(authorizationLine) {
-      try {
-         // Cut off "Bearer " from the header value.
-         var token = authorizationLine.slice(7);
-         // Convert the base64 string to a UTF-8 string.
-         var regularString = new Buffer(token, 'base64').toString('utf8');
-         // Convert the UTF-8 string into a JavaScript object.
-         var tokenObj = JSON.parse(regularString);
-         var id = tokenObj['id'];
-         // Check that id is a number.
-         if (typeof id === 'string') {
-            return id;
-         } else {
-            // Not a number. Return -1, an invalid ID.
-            return -1;
-         }
-      } catch (e) {
-         // Return an invalid ID.
-         return -1;
+  /**
+  * Get the user ID from a token. Returns -1 (an invalid ID) if it fails.
+  */
+  function getUserIdFromToken(authorizationLine) {
+    try {
+      // Cut off "Bearer " from the header value.
+      var token = authorizationLine.slice(7);
+      // Convert the base64 string to a UTF-8 string.
+      var regularString = new Buffer(token, 'base64').toString('utf8');
+      // Convert the UTF-8 string into a JavaScript object.
+      var tokenObj = JSON.parse(regularString);
+      var id = tokenObj['id'];
+      // Check that id is a number.
+      if (typeof id === 'string') {
+        return id;
+      } else {
+        // Not a number. Return -1, an invalid ID.
+        return -1;
       }
-   }
+    } catch (e) {
+      // Return an invalid ID.
+      return -1;
+    }
+  }
 
-   /**
-    * Helper function: Sends back HTTP response with error code 500 due to
-    * a database error.
-    */
-   function sendDatabaseError(res, err) {
-     res.status(500).send("A database error occurred: " + err);
-   }
+  /**
+  * Helper function: Sends back HTTP response with error code 500 due to
+  * a database error.
+  */
+  function sendDatabaseError(res, err) {
+    res.status(500).send("A database error occurred: " + err);
+  }
 
-   //our recipe id wasn't being sent correctly, so we made a method
-   //to hexify the id to a 24 character string
-   function hexify(idNum) {
-      var length = idNum.toString().length;
-      var numZero = 24-length;
-      var newId = "0".repeat(numZero) + idNum.toString();
-      newId = new ObjectID (newId);
-      return newId;
-   }
+  //our recipe id wasn't being sent correctly, so we made a method
+  //to hexify the id to a 24 character string
+  function hexify(idNum) {
+    var length = idNum.toString().length;
+    var numZero = 24-length;
+    var newId = "0".repeat(numZero) + idNum.toString();
+    newId = new ObjectID (newId);
+    return newId;
+  }
 
-   /**
+  /**
    * Get the feed data for a particular user.
    */
-   function getFeedData(restrictions) {
-      // get the recipe collection & initialize feedData
-      var recipes = getCollection('recipe');
-      var feedData = [];
-      // if no filter has been applied yet, get all the recipes
-      if (restrictions.length == 0) {
-         for (var i in recipes) {
-            if (recipes.hasOwnProperty(i)) {
-               feedData.push(recipes[i]);
-            }
+   function getFeedData(restrictions, callback) {
+     var feedData = [];
+     db.collection('recipe').find().toArray(function(err, recipes) {
+       if (err) {
+         callback(err);
+       } else {
+         if (restrictions.length == 0) {
+           recipes.forEach((recipe) => {
+             feedData.push(recipe);
+           });
+           callback(null, feedData);
          }
-      } else {
-         // get the unique set of recipes that have restrictions
-         var recipeSet = [];
-         for (var id in restrictions) {
-            var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
-            for (var recipeId in badRecipes) {
-               if (recipeSet.indexOf(badRecipes[recipeId]) === -1) {
-                  recipeSet.push(badRecipes[recipeId]);
-               }
-            }
-         }
-         // get recipes that don't match the set of restricted recipes
-         for(var j in recipes) {
-            if (recipeSet.indexOf(recipes[j]._id) === -1) {
-               feedData.push(recipes[j]);
-            }
-         }
-      }
-      return feedData;
+       }
+     });
    }
 
    /**
    * Get appropriate feed data to populate the browse page
    */
    app.put('/feed/', function(req, res) {
-      if (req.body.constructor !== Array) {
-         // 400: Bad request.
-         res.status(400).end();
-         // return;
-      }
-      var restrictions = req.body;
-      // Send response.
-      res.send(getFeedData(restrictions));
+     if (req.body.constructor !== Array) {
+       // 400: Bad request.
+       res.status(400).end();
+       // return;
+     }
+     var restrictions = req.body;
+     // Send response.
+     getFeedData(restrictions, function(err, feedData) {
+       if(err) {
+         sendDatabaseError(res, err);
+       } else {
+         res.send(feedData);
+       }
+     });
    });
+
 
    /*
    * Given a recipe ID, returns a recipe object with references resolved.
@@ -144,6 +137,7 @@ MongoClient.connect(url, function(err, db) {
    * Comes directly from the old server.js.
    */
    function getRecipe(recipeId, callback) {
+
       db.collection("recipe").findOne({_id:recipeId}, function(err, recipe) {
          if (err) {
             return callback(err, null);
@@ -153,42 +147,14 @@ MongoClient.connect(url, function(err, db) {
             return callback(null, recipe);
          }
       });
-}
+    }
 
-/*
-* Given a recipe ID, returns a recipe object with references resolved.
-* Internal to the server, since it's synchronous.
-* Comes directly from the old server.js.
-*/
-function getRecipeSync(recipeId) {
-   var recipe = readDocument('recipe', recipeId);
-   return recipe;
-}
-
-   /**Zainab Calendar methods*/
-
-  //  function getCalendarSync(userData, week) {
-  //     var calId = userData.calendarId;
-  //     var calendar = readDocument('calendars', calId);
-  //     var weekno = parseInt(week, 10);
-  //     var weekCal = calendar[weekno];
-  //     var meals = [[],[],[],[],[],[],[]];
-  //     var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  //     var index = 0;
-  //     days.forEach((day) => {
-  //       meals.push([
-  //     weekCal[day].forEach((recipeId) => {
-  //        meals.index.push(getRecipeSync(recipeId));
-  //        index = index + 1;
-  //     })])
-  //   })
-  //   console.log(meals);
-  //   return meals;
-  //  }
 
   function getWeekCal(userData, week, callback) {
     var weekno = parseInt(week, 10);
     var calId = userData.calendarId;
+    var weekList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+  ];
     db.collection("calendars").findOne({_id:calId
     }, function(err, calendar) {
       if (err) {
@@ -197,206 +163,178 @@ function getRecipeSync(recipeId) {
       else if (calendar === null) {
         return callback(null, null);
       }
-      else {
-        var weekCal = calendar[weekno];
-        return callback(null, weekCal);
+
+      var resolvedContents = [];
+      var errored = false;
+
+
+      // Callback function for each call to 'getRecipe.'
+      function processRecipe(err, recipeItem) {
+        if (errored) {
+          // A previous callback already called callback() with
+          // an error.
+          return;
+        } else if (err) {
+          // Pass an error to the callback, and flip the error boolean.
+          errored = true;
+          callback(err);
+        } else {
+          // Success!
+          resolvedContents.push(recipeItem);
+          if (resolvedContents.length === 28) {
+            callback(null, resolvedContents, calendar);
+          }
+        }
       }
+
+        for (var i = 0; i < weekList.length; i++) {
+
+          var cal = calendar[weekno];
+          var weekly = weekList[i];
+          for (var k = 0; k < 4; k++) {
+          getRecipe(cal[weekly][k], processRecipe);
+        // }
+      }
+      }
+
     });
   }
 
-  function getMealsforDay(weekCal, day, callback) {
-    var meals = [];
-    var errored = false;
-    var myCal = weekCal[day];
-
-         function processRecipe(err, recipeItem) {
-             meals.push(recipeItem);
-             if (meals.length === myCal.length) {
-               callback(null, meals);
-             }
-           }
-
-      for (var i = 0; i < myCal.length; i++) {
-            getRecipe(myCal[i], processRecipe);
-
-          }
-        }
-
-// //Get ProfileCalendarData
-//    app.get('/user/:userid/calendar/:week', function(req, res) {
-//       var fromUser = getUserIdFromToken(req.get('Authorization'));
-//       var userid = req.params.userid;
-//       var week = req.params.week;
-
-//       if (fromUser === userid) {
-//          var user = new ObjectID(userid);
-//       db.collection("users").findOne({_id : user
-//       }, function(err, user) {
-//         if (err) {
-//           res.status(500).send("Database Error: " + err);
-//         } else if (user === null){
-//           res.status(400).send("Could not look up data for user " + userid);
-//         }
-//         else {
-//           getWeekCal(user, week, function(err, calendarObject) {
-//             if (err) {
-//               sendDatabaseError(res, err);
-//             } else {
-//               user.Calendar = calendarObject;
-//                 //console.log(user);
-
-//                 //console.log(user)
-//                 //console.log(Object.keys(user).length);
-
-//               //console.log(user);
-//               res.send(user);
-//             }
-//           });
-//         }
-//       });
-//     }
-//     else {
-//       res.status(401).end();
-//     }
-//    });
-
   // Get ProfileCalendarData
-   app.get('/user/:userid/calendar/:week', function(req, res) {
-      var fromUser = getUserIdFromToken(req.get('Authorization'));
-      var userid = req.params.userid;
-      var week = req.params.week;
-      var weekList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-    ];
-      if (fromUser === userid) {
-         var user = new ObjectID(userid);
-      db.collection("users").findOne({_id : user
-      }, function(err, user) {
-        if (err) {
-          res.status(500).send("Database Error: " + err);
-        } else if (user === null){
-          res.status(400).send("Could not look up data for user " + userid);
-        }
-        else {
-          getWeekCal(user, week, function(err, calendarObject) {
-            if (err) {
-              sendDatabaseError(res, err);
-            } else {
-              for (var i = 0; i < weekList.length; i++) {
-                var day = weekList[i];
-                  getMealsforDay(calendarObject, day, function(err, meals) {
-                  if (err) {
-                    sendDatabaseError(res, err);
-                  }
-                  else {
-                      user[day] = meals;
-                      console.log(day);
-                }})}
-                //console.log(user);
-
-                //console.log(user)
-                //console.log(Object.keys(user).length);
-
-              //console.log(user);
-              res.send(user);
+  app.get('/user/:userid/calendar/:week', function(req, res) {
+    var fromUser = getUserIdFromToken(req.get('Authorization'));
+    var userid = req.params.userid;
+    var week = req.params.week;
+  if (fromUser === userid) {
+    var user = new ObjectID(userid);
+    db.collection("users").findOne({_id : user
+    }, function(err, user) {
+      if (err) {
+        res.status(500).send("Database Error: " + err);
+      } else if (user === null){
+        res.status(400).send("Could not look up data for user " + userid);
+      }
+      else {
+        getWeekCal(user, week, function(err, calendarObject, calendar) {
+          if (err) {
+            sendDatabaseError(res, err);
+          } else {
+            var monLength = calendar[week].Monday.length;
+            user.Monday = calendarObject.slice(0, monLength);
+            var tueLength = calendar[week].Tuesday.length + monLength;
+            user.Tuesday = calendarObject.slice(monLength, tueLength);
+            var wedLength = calendar[week].Wednesday.length + tueLength;
+            user.Wednesday = calendarObject.slice(tueLength, wedLength);
+            var thurLength = calendar[week].Thursday.length + wedLength;
+            user.Thursday = calendarObject.slice(wedLength, thurLength);
+            var friLength = calendar[week].Friday.length + thurLength;
+            user.Friday = calendarObject.slice(thurLength, friLength);
+            var satLength = calendar[week].Saturday.length + friLength;
+            user.Saturday = calendarObject.slice(friLength, satLength);
+            var sunLength = calendar[week].Sunday.length + satLength;
+            user.Sunday = calendarObject.slice(satLength, sunLength);
+            res.send(user);
             }
-          });
-        }
-      });
-    }
-    else {
-      res.status(401).end();
-    }
-   });
 
-   //Delete recipe from Calendar
-   app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
+        });
+
+    }
+    });
+  }
+  else {
+    res.status(401).end();
+  }
+ });
+
+    //Delete recipe from Calendar
+    app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var week = req.params.week;
       var userid = parseInt(req.params.userid, 10);
       var day = req.params.day;
       var meal = parseInt(req.params.meal, 10);
       if (fromUser === userid) {
-         var userData = readDocument('users', userid);
-         var calId = userData.calendarId;
-         var calendar = readDocument('calendars', calId);
-         var weekno = parseInt(week, 10);
-         var weekCal = calendar[weekno];
-         if (meal !== -1) {
-            weekCal[day].splice(meal, 1);
-            writeDocument('calendars', calendar);
-            res.send(calendar);
-         }
+        var userData = readDocument('users', userid);
+        var calId = userData.calendarId;
+        var calendar = readDocument('calendars', calId);
+        var weekno = parseInt(week, 10);
+        var weekCal = calendar[weekno];
+        if (meal !== -1) {
+          weekCal[day].splice(meal, 1);
+          writeDocument('calendars', calendar);
+          res.send(calendar);
+        }
       }
       else {
-         res.status(401).end();
+        res.status(401).end();
       }
-   });
+    });
 
-   /**
-   * Gets next 4 meals for a particular user.
-   * @param userId The ObjectID of the user whose calendar we are requesting.
-   * @returns A 4-element array of the next 4 meals.
-   */
-   function getUpcomingMeals(userId, callback) {
-     db.collection('users').findOne({
-       _id: userId
-     }, function(err, userData) {
-       if (err) {
-         return callback(err);
-       } else if (userData === null) {
-         return callback(null, null);
-       }
+    /**
+    * Gets next 4 meals for a particular user.
+    * @param userId The ObjectID of the user whose calendar we are requesting.
+    * @returns A 4-element array of the next 4 meals.
+    */
+    function getUpcomingMeals(userId, callback) {
+      db.collection('users').findOne({
+        _id: userId
+      }, function(err, userData) {
+        if (err) {
+          return callback(err);
+        } else if (userData === null) {
+          return callback(null, null);
+        }
 
-       db.collection('calendars').findOne({
-         _id: userData.calendarId
-       }, function(err, calendarData) {
-         if (err) {
-           return callback(err);
-         } else if (calendarData === null) {
-           return callback(null, null);
-         }
+        db.collection('calendars').findOne({
+          _id: userData.calendarId
+        }, function(err, calendarData) {
+          if (err) {
+            return callback(err);
+          } else if (calendarData === null) {
+            return callback(null, null);
+          }
 
-         // Resolve each recipe in parallel,
-         // and push them into this array.
-         var resolvedContents = [];
-         var errored = false;
+          // Resolve each recipe in parallel,
+          // and push them into this array.
+          var resolvedContents = [];
+          var errored = false;
 
-         // Callback function for each call to 'getRecipe.'
-         function processRecipe(err, recipeItem) {
-           if (errored) {
-             // A previous callback already called callback() with
-             // an error.
-             return;
-           } else if (err) {
-             // Pass an error to the callback, and flip the error boolean.
-             errored = true;
-             callback(err);
-           } else {
-             // Success!
-             resolvedContents.push(recipeItem);
-             if (resolvedContents.length === calendarData[1].Monday.length) {
-               // I am the final recipe item; all others are resolved.
-               // Pass the resolved recipes back to the callback.
-               callback(null, resolvedContents);
-             }
-           }
-         }
+          // Callback function for each call to 'getRecipe.'
+          function processRecipe(err, recipeItem) {
+            if (errored) {
+              // A previous callback already called callback() with
+              // an error.
+              return;
+            } else if (err) {
+              // Pass an error to the callback, and flip the error boolean.
+              errored = true;
+              callback(err);
+            } else {
+              // Success!
+              resolvedContents.push(recipeItem);
+              if (resolvedContents.length === calendarData[1].Monday.length) {
+                // I am the final recipe item; all others are resolved.
+                // Pass the resolved recipes back to the callback.
+                callback(null, resolvedContents);
+              }
+            }
+          }
 
-         // Process all of the day's recipes in parallel.
-         for (var i = 0; i < calendarData[1].Monday.length; i++) {
-           getRecipe(calendarData[1].Monday[i], processRecipe);
-         }
+          // Process all of the day's recipes in parallel.
+          for (var i = 0; i < calendarData[1].Monday.length; i++) {
+            getRecipe(calendarData[1].Monday[i], processRecipe);
+          }
 
-         // Special case: Calendar for Monday is empty.
-         if (calendarData[1].Monday.length === 0) {
-           callback(null, []);
-         }
-       })
-     })
-   }
+          // Special case: Calendar for Monday is empty.
+          if (calendarData[1].Monday.length === 0) {
+            callback(null, []);
+          }
+        })
+      })
+    }
 
-   // Get Profile data
-   app.get('/user/:userid', function(req, res) {
+    // Get Profile data
+    app.get('/user/:userid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userId = req.params.userid;
       if (fromUser === userId) {
@@ -431,13 +369,13 @@ function getRecipeSync(recipeId) {
       } else {
         res.status(401).end();
       }
-   });
+    });
 
-   /**
-   * @param id An array of the ids of the restrictions to get
-   * @returns An array holding the tag names of the restriction ids passed in
-   */
-   function getRestrictionStrings(ids, callback) {
+    /**
+    * @param id An array of the ids of the restrictions to get
+    * @returns An array holding the tag names of the restriction ids passed in
+    */
+    function getRestrictionStrings(ids, callback) {
       var strings = [];
       var errored = false;
       console.log("here");
@@ -458,14 +396,14 @@ function getRecipeSync(recipeId) {
       }
 
       ids.forEach((id) => {
-         db.collection('restrictions').findOne({
-           _id : id
-         }, processRestrictions);
+        db.collection('restrictions').findOne({
+          _id : id
+        }, processRestrictions);
       });
-   }
+    }
 
-   // GET User Restriction Tags
-   app.get('/user/:userid/restriction', function(req, res) {
+    // GET User Restriction Tags
+    app.get('/user/:userid/restriction', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userId = req.params.userid;
       if (fromUser === userId) {
@@ -493,12 +431,12 @@ function getRecipeSync(recipeId) {
           }
         });
       } else {
-         res.status(401).end();
+        res.status(401).end();
       }
-   });
+    });
 
-   // PUT A restriction id in a user's data.
-   app.put('/user/:userid/restriction/:restrictionid', function(req, res) {
+    // PUT A restriction id in a user's data.
+    app.put('/user/:userid/restriction/:restrictionid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var restrictionId = new ObjectID(req.params.restrictionid);
       var userId = req.params.userid;
@@ -526,13 +464,13 @@ function getRecipeSync(recipeId) {
           }
         );
       } else {
-         // 401: Unauthorized.
-         res.status(401).end();
+        // 401: Unauthorized.
+        res.status(401).end();
       }
-   });
+    });
 
-   // DELETE a restriction id from a user's data.
-   app.delete('/user/:userid/restriction/:restrictionid', function(req, res) {
+    // DELETE a restriction id from a user's data.
+    app.delete('/user/:userid/restriction/:restrictionid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var restrictionId = new ObjectID(req.params.restrictionid);
       var userId = req.params.userid;
@@ -559,106 +497,106 @@ function getRecipeSync(recipeId) {
           }
         );
       } else {
-         // 401: Unauthorized
-         res.status(401).end();
+        // 401: Unauthorized
+        res.status(401).end();
       }
-   })
+    })
 
-   /*
-   * This method replaces "getRecipe" from the old server.
-   * It gives recipe data from the database given a recipe id.
-   */
-   app.get('/recipe/:recipeid/', function(req, res) {
+    /*
+    * This method replaces "getRecipe" from the old server.
+    * It gives recipe data from the database given a recipe id.
+    */
+    app.get('/recipe/:recipeid/', function(req, res) {
       var recipeid = hexify(req.params.recipeid);
       getRecipe(recipeid, function(err, recipe) {
-         if (err) {
-            res.status(500).send("A database error occured" + err);
-         } else {
-            res.send(recipe);
-         }
+        if (err) {
+          res.status(500).send("A database error occured" + err);
+        } else {
+          res.send(recipe);
+        }
       });
-   });
+    });
 
 
-   /*
-   * This function adds a recipe to a user's list of
-   * favorites. Replacement of addFavorite.
-   */
-   //PUT a recipe into the user's list of favorites
-   app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
+    /*
+    * This function adds a recipe to a user's list of
+    * favorites. Replacement of addFavorite.
+    */
+    //PUT a recipe into the user's list of favorites
+    app.put('/recipe/:recipeid/favorites/user/:userid', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       var recipeid = hexify(req.params.recipeid);
       //not sure if this should be wrapped in an object
       if (fromUser === userid) {
-         userid = new ObjectID(userid);
-         db.collection("users").updateOne({_id:userid},
-            {
-               $addToSet: {
-                  favorites: new ObjectID(recipeid)
-               }
-            }, function(err) {
-               if (err) {
-                  res.status(500).send("Database error: " + err);
-               }
-               //get the user object now that we've updated it
-               db.collection("users").findOne( {_id:userid}, function(err, user) {
-                  if (err) {
-                     res.status(500).send("Database error: "+err);
-                  }
-                  res.send(user);
-               });
+        userid = new ObjectID(userid);
+        db.collection("users").updateOne({_id:userid},
+          {
+            $addToSet: {
+              favorites: new ObjectID(recipeid)
             }
-         );
+          }, function(err) {
+            if (err) {
+              res.status(500).send("Database error: " + err);
+            }
+            //get the user object now that we've updated it
+            db.collection("users").findOne( {_id:userid}, function(err, user) {
+              if (err) {
+                res.status(500).send("Database error: "+err);
+              }
+              res.send(user);
+            });
+          }
+        );
       }
       else {
-         // console.log("Authentication failed!");
-         res.status(401).end();
+        // console.log("Authentication failed!");
+        res.status(401).end();
       }
-   });
+    });
 
-   /*
-   * This function removes a recipe from the user's list
-   * of favorites. Replacement of removeFavorite.
-   */
-   //DELETE a recipe from the user's list of favorites
-   app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
+    /*
+    * This function removes a recipe from the user's list
+    * of favorites. Replacement of removeFavorite.
+    */
+    //DELETE a recipe from the user's list of favorites
+    app.delete("/recipe/:recipeid/favorites/user/:userid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       var recipeid = hexify(req.params.recipeid);
       if (fromUser === userid) {
-         userid = new ObjectID(userid);
-         db.collection("users").updateOne({_id:userid},
-            {
+        userid = new ObjectID(userid);
+        db.collection("users").updateOne({_id:userid},
+          {
             $pull: {
-               favorites:new ObjectID(recipeid)
-               }
-            },
-            function (err) {
-               if (err) {
-                  res.status(500).send("Database Error: " + err);
-               }
-               db.collection("users").findOne({_id:userid}, function(err, user) {
-                  if (err) {
-                     res.status(500).send("Database Error: " + err);
-                  } else {
-                     res.send(user);
-                  }
-               });
+              favorites:new ObjectID(recipeid)
             }
-         );
+          },
+          function (err) {
+            if (err) {
+              res.status(500).send("Database Error: " + err);
+            }
+            db.collection("users").findOne({_id:userid}, function(err, user) {
+              if (err) {
+                res.status(500).send("Database Error: " + err);
+              } else {
+                res.send(user);
+              }
+            });
+          }
+        );
       }
       else {
-         // console.log("Authentication failed!");
-         res.status(401).end();
+        // console.log("Authentication failed!");
+        res.status(401).end();
       }
-   });
+    });
 
-   /**
-   * Returns an array of the recipes whose names match the searched keyword.
-   */
-  app.post('/results', function(req, res) {
-     if (typeof(req.body) === 'string') {
+    /**
+    * Returns an array of the recipes whose names match the searched keyword.
+    */
+    app.post('/results', function(req, res) {
+      if (typeof(req.body) === 'string') {
         var searchText = req.body.trim().toLowerCase();
         // get Recipe collection
         db.collection('recipe').find().toArray(function(err, recipes) {
@@ -669,14 +607,14 @@ function getRecipeSync(recipeId) {
           var text = searchText.split(" ");
           var match = [];
           for (var j=0; j<recipes.length; j++) {
-             var name = recipes[j].name.toLowerCase().split(" ");
-             for (var k=0; k<text.length; k++) {
-                for (var h=0; h<name.length; h++) {
-                   if (text[k] == name[h]) {
-                      match.push(recipes[j]._id);
-                   }
+            var name = recipes[j].name.toLowerCase().split(" ");
+            for (var k=0; k<text.length; k++) {
+              for (var h=0; h<name.length; h++) {
+                if (text[k] == name[h]) {
+                  match.push(recipes[j]._id);
                 }
-             }
+              }
+            }
           }
           // Resolve all of the results items.
           var resolvedItems = [];
@@ -704,230 +642,244 @@ function getRecipeSync(recipeId) {
             res.send([]);
           }
         })
-     } else {
+      } else {
         // 400: Bad Request.
         res.status(400).end();
-     }
-  });
+      }
+    });
 
-   /*
-   * This function checks the user's favorites to see if
-   * a given recipe already exists in their list of
-   * favorites. Replacement of checkUserFavorites.
-   */
-   //GET the user's favorites
-   app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
+    /*
+    * This function checks the user's favorites to see if
+    * a given recipe already exists in their list of
+    * favorites. Replacement of checkUserFavorites.
+    */
+    //GET the user's favorites
+    app.get("/recipe/:recipeid/favorites/check/user/:userid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       if (userid === fromUser) {
-         var recipeid = hexify(req.params.recipeid);
-         userid = new ObjectID(userid);
-         db.collection("users").findOne({_id:userid}, function(err, user) {
-            if (err) {
-               res.status(500).send("Database Error: " + err);
-            } else {
-               //this is the replacement of indexOf, to see if a recipe is in
-               //the user's list of favorites
-               var i;
-               var isRecipeIn;
-               for (i=0; i<user.favorites.length; i++) {
-                  if (user.favorites[i].toString() === recipeid.toString()) {
-                     isRecipeIn = true;
-                     break;
-                  } else {
-                     isRecipeIn = false;
-                  }
-               }
-               res.send(isRecipeIn);
+        var recipeid = hexify(req.params.recipeid);
+        userid = new ObjectID(userid);
+        db.collection("users").findOne({_id:userid}, function(err, user) {
+          if (err) {
+            res.status(500).send("Database Error: " + err);
+          } else {
+            //this is the replacement of indexOf, to see if a recipe is in
+            //the user's list of favorites
+            var i;
+            var isRecipeIn;
+            for (i=0; i<user.favorites.length; i++) {
+              if (user.favorites[i].toString() === recipeid.toString()) {
+                isRecipeIn = true;
+                break;
+              } else {
+                isRecipeIn = false;
+              }
             }
-         });
+            res.send(isRecipeIn);
+          }
+        });
       } else {
-         // console.log("Authentication failed!");
-         res.status(401).end();
+        // console.log("Authentication failed!");
+        res.status(401).end();
       }
-   });
+    });
 
-   /**
-   * Gets the favorites data for a particular user.
-   */
-   app.get('/user/:userid/favorites/', function(req, res) {
+    /**
+    * Gets the favorites data for a particular user.
+    */
+    /**
+    * Gets the favorites data for a particular user.
+    */
+    app.get('/user/:userid/favorites/', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       if (userid === fromUser) {
-         // will contain the list of recipes
-         var recipes = [];
-         var userData = readDocument('users', userid);
-         var recipeIDs = userData.favorites;
-         // map each recipe id
-         recipeIDs.map((recipeID, i) => {
-            // i is the index
-            recipes[i] = getRecipeSync(recipeID);
-         });
-         // Send response.
-         res.send(recipes);
+        userid = new ObjectID(userid);
+        db.collection("users").findOne({_id:userid}, function(err, user) {
+          if (err) {
+            res.status(500).send("Database Error: " + err);
+          } else {
+            // will contain the list of recipes
+            var recipes = [];
+            for (var i=0; i<user.favorites.length; i++) {
+              var recipeid = new ObjectID(user.favorites[i]);
+              getRecipe(recipeid, function(err, recipe) {
+                if (err) {
+                  res.status(500).send("Database Error: " + err);
+                } else {
+                  recipes.push(recipe);
+                  if (recipes.length === user.favorites.length) {
+                    // Send all the recipes to the client!
+                    res.send(recipes);
+                  }
+                }
+              });
+            }
+          }
+        });
       } else {
-         //   console.log("Authentication failed!");
-         res.status(401).end();
+        res.status(401).end();
       }
-   });
+    });
 
-   /**
-   * Add's a recipe to the user's calendar. Used on the recipe page (when a user
-   * clicks on the calendar button, this gets called)
-   */
-   //need to resolve this - right now it's hardcoding both the meal and the week
-   app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
+    /**
+    * Add's a recipe to the user's calendar. Used on the recipe page (when a user
+    * clicks on the calendar button, this gets called)
+    */
+    //need to resolve this - right now it's hardcoding both the meal and the week
+    app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       var recipeid = hexify(req.params.recipeid);
       var weekno = 2;
       var meal = 3;
       if (userid === fromUser) {
-         var day = req.params.dayid;
-         userid = new ObjectID(userid);
-         db.collection("users").findOne({_id:userid}, function(err, user) {
+        var day = req.params.dayid;
+        userid = new ObjectID(userid);
+        db.collection("users").findOne({_id:userid}, function(err, user) {
+          if (err) {
+            res.status(500).send("Database error occured: "+err);
+          } else {
+            var calenderId = user.calendarId;
+          }
+          //now that we have the calendar id from the user, update it
+          //ok to just use update because we're sending the user in the end
+          // db.collection("calendars").updateOne({_id:calenderId},
+          //    {
+          //       $set: {
+          //          ["calendar." + weekno + day + meal] :new ObjectID(recipeid)
+          //       }
+          //    }, function(err) {
+          //       if (err) {
+          //          res.status(500).send("Database Error: " + err);
+          //       }
+          //    }
+          // );
+          db.collection("calendars").findAndModify({_id:calenderId}, [['_id', 'asc']], {
+            $set: {[weekno + "." + day + "."+ meal]:new ObjectID(recipeid)}
+          }, {"new": true}, function(err, calendar) {
             if (err) {
-               res.status(500).send("Database error occured: "+err);
+              res.status(500).send("Database error occured: "+err);
+            } else if (calendar == null) {
+              console.log("No document found!");
             } else {
-               var calenderId = user.calendarId;
+              console.log(calendar.value[weekno][day]);
             }
-            //now that we have the calendar id from the user, update it
-            //ok to just use update because we're sending the user in the end
-            // db.collection("calendars").updateOne({_id:calenderId},
-            //    {
-            //       $set: {
-            //          ["calendar." + weekno + day + meal] :new ObjectID(recipeid)
-            //       }
-            //    }, function(err) {
-            //       if (err) {
-            //          res.status(500).send("Database Error: " + err);
-            //       }
-            //    }
-            // );
-            db.collection("calendars").findAndModify({_id:calenderId}, [['_id', 'asc']], {
-               $set: {[weekno + "." + day + "."+ meal]:new ObjectID(recipeid)}
-            }, {"new": true}, function(err, calendar) {
-               if (err) {
-                  res.status(500).send("Database error occured: "+err);
-               } else if (calendar == null) {
-                  console.log("No document found!");
-               } else {
-                  console.log(calendar.value[weekno][day]);
-               }
-            });
-            //now finding the user object so that we can return it
-            res.send(user);
-         });
+          });
+          //now finding the user object so that we can return it
+          res.send(user);
+        });
 
-         // var recipeid = parseInt(req.params.recipeid, 10);
-         // var day = req.params.dayid;
-         // var user = readDocument("users", userid);
-         // var calendar = readDocument("calendars", user.calendarId);
-         // // var week = calendar[2];
-         // var weekno = 2;
-         // var weekCal = calendar[weekno];
-         // // console.log(weekCal[day]);
-         // if (weekCal[day][3]) {
-         //    weekCal[day][3] = recipeid;
-         // } else {
-         //    weekCal[day][3];
-         // }
-         // // console.log(weekCal[day]);
-         // writeDocument("users", user);
-         // writeDocument("calendars", calendar);
-         // res.send(user);
+        // var recipeid = parseInt(req.params.recipeid, 10);
+        // var day = req.params.dayid;
+        // var user = readDocument("users", userid);
+        // var calendar = readDocument("calendars", user.calendarId);
+        // // var week = calendar[2];
+        // var weekno = 2;
+        // var weekCal = calendar[weekno];
+        // // console.log(weekCal[day]);
+        // if (weekCal[day][3]) {
+        //    weekCal[day][3] = recipeid;
+        // } else {
+        //    weekCal[day][3];
+        // }
+        // // console.log(weekCal[day]);
+        // writeDocument("users", user);
+        // writeDocument("calendars", calendar);
+        // res.send(user);
       } else {
-         res.status(401).end();
+        res.status(401).end();
       }
-   });
+    });
 
-   /**
-   * Posts the results from searching with instamode (when a user
-   * clicks on the Find a recipe button, it is called)
-   */
-   app.post('/instaresults/:ingredientString', function(req,res) {
-     if (typeof(req.params.ingredientString) === 'string') {
-       var ingredientsList = req.params.ingredientString.split('=');
-       db.collection('recipe').find({}).toArray(function(err, recipeData) {
-         if (err) {
-               return res.send(500);
-         }
-         var matchedIngredientRecipe = [];
-         for (var z=0; z<recipeData.length; z++) {
-           var ingredients = recipeData[z].ingredients;
-           for (var y=0; y<ingredients.length; y++) {
-             var splitIngredients = ingredients[y].split(' ');
-             // console.log(splitIngredients);
-             for (var x=0; x<ingredientsList.length; x++) {
-               // console.log(ingredientsList[x]);
-               if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
-                 matchedIngredientRecipe.push(recipeData[z]);
-                 break;
-               }
-             }
-           }
-         }
-         res.send(matchedIngredientRecipe);
-       })
-     } else {
-       res.status(400).end();
-     }
-   });
+    /**
+    * Posts the results from searching with instamode (when a user
+    * clicks on the Find a recipe button, it is called)
+    */
+    app.post('/instaresults/:ingredientString', function(req,res) {
+      if (typeof(req.params.ingredientString) === 'string') {
+        var ingredientsList = req.params.ingredientString.split('=');
+        db.collection('recipe').find({}).toArray(function(err, recipeData) {
+          if (err) {
+            return res.send(500);
+          }
+          var matchedIngredientRecipe = [];
+          for (var z=0; z<recipeData.length; z++) {
+            var ingredients = recipeData[z].ingredients;
+            for (var y=0; y<ingredients.length; y++) {
+              var splitIngredients = ingredients[y].split(' ');
+              // console.log(splitIngredients);
+              for (var x=0; x<ingredientsList.length; x++) {
+                // console.log(ingredientsList[x]);
+                if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+                  matchedIngredientRecipe.push(recipeData[z]);
+                  break;
+                }
+              }
+            }
+          }
+          res.send(matchedIngredientRecipe);
+        })
+      } else {
+        res.status(400).end();
+      }
+    });
 
- /**
- * Posts the results from searching with instamode (when a user
- * clicks on the Find a recipe button, it is called)
- */
-  app.post('/instaresults/ingredientsONLY/:ingredientString', function(req, res) {
-    if (typeof(req.params.ingredientString) === 'string') {
-      var ingredientsList = req.params.ingredientString.split('=');
-      db.collection('recipe').find({}).toArray(function(err, recipeData) {
-        if (err) {
-          return res.send(500);
-        }
-        // will store the list of recipes that match
-        var matchedIngredientRecipe = [];
-        var ingredientMatch = [];
-        for (var z=0; z<recipeData.length; z++) {
-           var ingredients = recipeData[z].ingredients;
-           for (var y=0; y<ingredients.length; y++) {
+    /**
+    * Posts the results from searching with instamode (when a user
+    * clicks on the Find a recipe button, it is called)
+    */
+    app.post('/instaresults/ingredientsONLY/:ingredientString', function(req, res) {
+      if (typeof(req.params.ingredientString) === 'string') {
+        var ingredientsList = req.params.ingredientString.split('=');
+        db.collection('recipe').find({}).toArray(function(err, recipeData) {
+          if (err) {
+            return res.send(500);
+          }
+          // will store the list of recipes that match
+          var matchedIngredientRecipe = [];
+          var ingredientMatch = [];
+          for (var z=0; z<recipeData.length; z++) {
+            var ingredients = recipeData[z].ingredients;
+            for (var y=0; y<ingredients.length; y++) {
               // split ingredients = ingredients from recipe
               var splitIngredients = ingredients[y].split(' ');
               for (var x=0; x<ingredientsList.length; x++) {
-                 // ingrdientList[x] = each ingredient in the list from user
-                 if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
-                    ingredientMatch.push('yes');
-                 } else {
-                    ingredientMatch.push('no');
-                 }
+                // ingrdientList[x] = each ingredient in the list from user
+                if (splitIngredients.indexOf(ingredientsList[x]) > -1 && matchedIngredientRecipe.indexOf(recipeData[z]) === -1) {
+                  ingredientMatch.push('yes');
+                } else {
+                  ingredientMatch.push('no');
+                }
               }
-           }
-           // console.log(ingredientMatch);
-           // console.log(ingredientMatch.indexOf('no') > -1);
-           if (ingredientMatch.indexOf('no') > -1) {
+            }
+            // console.log(ingredientMatch);
+            // console.log(ingredientMatch.indexOf('no') > -1);
+            if (ingredientMatch.indexOf('no') > -1) {
               // do nothing
-           } else {
+            } else {
               matchedIngredientRecipe.push(recipeData[z]);
-           }
-        }
-        res.send(matchedIngredientRecipe);
-      })
-    } else {
-      res.status(400).end();
-    }
-  });
-
-  // Reset the database.
-  app.post('/resetdb', function(req, res) {
-    console.log("Resetting database...");
-    ResetDatabase(db, function() {
-      res.send();
+            }
+          }
+          res.send(matchedIngredientRecipe);
+        })
+      } else {
+        res.status(400).end();
+      }
     });
-  });
 
-   // Starts the server on port 3000
-   app.listen(3000, function () {
+    // Reset the database.
+    app.post('/resetdb', function(req, res) {
+      console.log("Resetting database...");
+      ResetDatabase(db, function() {
+        res.send();
+      });
+    });
+
+    // Starts the server on port 3000
+    app.listen(3000, function () {
       console.log('Kuk server listening on port 3000!');
-   });
+    });
 
-});
+  });
