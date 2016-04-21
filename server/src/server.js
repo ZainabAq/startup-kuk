@@ -94,37 +94,42 @@ MongoClient.connect(url, function(err, db) {
   /**
    * Get the feed data for a particular user.
    */
-   function getFeedData(restrictions) {
-      // get the recipe collection & initialize feedData
-      var recipes = getCollection('recipe');
-      var feedData = [];
-      // if no filter has been applied yet, get all the recipes
-      if (restrictions.length == 0) {
-         for (var i in recipes) {
-            if (recipes.hasOwnProperty(i)) {
-               feedData.push(recipes[i]);
-            }
+   function getFeedData(restrictions, callback) {
+     var feedData = [];
+     db.collection('recipe').find().toArray(function(err, recipes) {
+       if (err) {
+         callback(err);
+       } else {
+         if (restrictions.length == 0) {
+           recipes.forEach((recipe) => {
+             feedData.push(recipe);
+           });
+           callback(null, feedData);
          }
-      } else {
-         // get the unique set of recipes that have restrictions
-         var recipeSet = [];
-         for (var id in restrictions) {
-            var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
-            for (var recipeId in badRecipes) {
-               if (recipeSet.indexOf(badRecipes[recipeId]) === -1) {
-                  recipeSet.push(badRecipes[recipeId]);
-               }
-            }
-         }
-         // get recipes that don't match the set of restricted recipes
-         for(var j in recipes) {
-            if (recipeSet.indexOf(recipes[j]._id) === -1) {
-               feedData.push(recipes[j]);
-            }
-         }
-      }
-      return feedData;
+       }
+     });
    }
+
+   /**
+   * Get appropriate feed data to populate the browse page
+   */
+   app.put('/feed/', function(req, res) {
+     if (req.body.constructor !== Array) {
+       // 400: Bad request.
+       res.status(400).end();
+       // return;
+     }
+     var restrictions = req.body;
+     // Send response.
+     getFeedData(restrictions, function(err, feedData) {
+       if(err) {
+         sendDatabaseError(res, err);
+       } else {
+         res.send(feedData);
+       }
+     });
+   });
+
 
    /*
    * Given a recipe ID, returns a recipe object with references resolved.
@@ -142,21 +147,7 @@ MongoClient.connect(url, function(err, db) {
             return callback(null, recipe);
          }
       });
-}
-
-  /**
-  * Get appropriate feed data to populate the browse page
-  */
-  app.put('/feed/', function(req, res) {
-    if (req.body.constructor !== Array) {
-      // 400: Bad request.
-      res.status(400).end();
-      // return;
     }
-    var restrictions = req.body;
-    // Send response.
-    res.send(getFeedData(restrictions));
-  });
 
 
   function getWeekCal(userData, week, callback) {
