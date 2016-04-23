@@ -742,7 +742,7 @@ MongoClient.connect(url, function(err, db) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       var recipeid = hexify(req.params.recipeid);
-      var weekno = 2;
+      var weekno = 1;
       var meal = 3;
       if (userid === fromUser) {
         var day = req.params.dayid;
