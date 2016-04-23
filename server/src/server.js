@@ -9,10 +9,10 @@ var app = express();
 
 
 //importing methods from the database
-var database = require('./database');
-var readDocument = database.readDocument;
-var writeDocument = database.writeDocument;
-var getCollection = database.getCollection;
+// var database = require('./database');
+// var readDocument = database.readDocument;
+// var writeDocument = database.writeDocument;
+// var getCollection = database.getCollection;
 
 // app.use(express.static('../client/build'));
 
@@ -94,37 +94,42 @@ MongoClient.connect(url, function(err, db) {
   /**
    * Get the feed data for a particular user.
    */
-   function getFeedData(restrictions) {
-      // get the recipe collection & initialize feedData
-      var recipes = getCollection('recipe');
-      var feedData = [];
-      // if no filter has been applied yet, get all the recipes
-      if (restrictions.length == 0) {
-         for (var i in recipes) {
-            if (recipes.hasOwnProperty(i)) {
-               feedData.push(recipes[i]);
-            }
+   function getFeedData(restrictions, callback) {
+     var feedData = [];
+     db.collection('recipe').find().toArray(function(err, recipes) {
+       if (err) {
+         callback(err);
+       } else {
+         if (restrictions.length == 0) {
+           recipes.forEach((recipe) => {
+             feedData.push(recipe);
+           });
+           callback(null, feedData);
          }
-      } else {
-         // get the unique set of recipes that have restrictions
-         var recipeSet = [];
-         for (var id in restrictions) {
-            var badRecipes = readDocument('restrictions', restrictions[id]).recipes;
-            for (var recipeId in badRecipes) {
-               if (recipeSet.indexOf(badRecipes[recipeId]) === -1) {
-                  recipeSet.push(badRecipes[recipeId]);
-               }
-            }
-         }
-         // get recipes that don't match the set of restricted recipes
-         for(var j in recipes) {
-            if (recipeSet.indexOf(recipes[j]._id) === -1) {
-               feedData.push(recipes[j]);
-            }
-         }
-      }
-      return feedData;
+       }
+     });
    }
+
+   /**
+   * Get appropriate feed data to populate the browse page
+   */
+   app.put('/feed/', function(req, res) {
+     if (req.body.constructor !== Array) {
+       // 400: Bad request.
+       res.status(400).end();
+       // return;
+     }
+     var restrictions = req.body;
+     // Send response.
+     getFeedData(restrictions, function(err, feedData) {
+       if(err) {
+         sendDatabaseError(res, err);
+       } else {
+         res.send(feedData);
+       }
+     });
+   });
+
 
    /*
    * Given a recipe ID, returns a recipe object with references resolved.
@@ -142,21 +147,7 @@ MongoClient.connect(url, function(err, db) {
             return callback(null, recipe);
          }
       });
-}
-
-  /**
-  * Get appropriate feed data to populate the browse page
-  */
-  app.put('/feed/', function(req, res) {
-    if (req.body.constructor !== Array) {
-      // 400: Bad request.
-      res.status(400).end();
-      // return;
     }
-    var restrictions = req.body;
-    // Send response.
-    res.send(getFeedData(restrictions));
-  });
 
 
   function getWeekCal(userData, week, callback) {
@@ -259,20 +250,30 @@ MongoClient.connect(url, function(err, db) {
     app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var week = req.params.week;
-      var userid = parseInt(req.params.userid, 10);
+      var userid = req.params.userid;
       var day = req.params.day;
       var meal = parseInt(req.params.meal, 10);
       if (fromUser === userid) {
-        var userData = readDocument('users', userid);
-        var calId = userData.calendarId;
-        var calendar = readDocument('calendars', calId);
-        var weekno = parseInt(week, 10);
-        var weekCal = calendar[weekno];
-        if (meal !== -1) {
-          weekCal[day].splice(meal, 1);
-          writeDocument('calendars', calendar);
-          res.send(calendar);
-        }
+        userid = new ObjectID(userid);
+        db.collection("users").findOne({_id:userid}, function(err, user) {
+          if (err) {
+            res.status(500).send("Database error occured: "+err);
+          } else {
+            var calenderId = user.calendarId;
+          }
+
+          db.collection("calendars").findAndModify({_id:calenderId}, [['_id', 'asc']], {
+            $set: {[week + "." + day + "."+ meal]: new ObjectID("000000000000000000000100")}
+          }, {"new": true}, function(err, calendar) {
+            if (err) {
+              res.status(500).send("Database error occured: "+err);
+            } else if (calendar == null) {
+              console.log("No document found!");
+            }
+          });
+
+          res.send(user);
+        });
       }
       else {
         res.status(401).end();

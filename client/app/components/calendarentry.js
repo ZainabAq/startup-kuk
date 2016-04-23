@@ -32,7 +32,7 @@ onRemove(e, id) {
         return (
           <li>
           <div className="col-md-10 ">
-        <h5>Please add a recipe!</h5>
+        <h5>Add a recipe here!</h5>
       </div>
     </li>
         )
