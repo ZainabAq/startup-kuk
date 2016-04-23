@@ -209,12 +209,24 @@ export function checkUserFavorites(recipeId, userId, cb) {
 * Adding a recipe to the user's calendar when given the user's id, the recipe's id,
 * and the day you want to add the recipe to
 */
-export function addRecipeToCalendar(recipeId, userId, day, cb) {
-   sendXHR("PUT", "/recipe/" +recipeId+ "/user/" +userId+ "/calendar/" + day, undefined, (xhr) => {
+export function addRecipeToCalendar(recipeId, userId, week, day, meal, cb) {
+   sendXHR("PUT", "/recipe/" +recipeId+ "/user/" +userId+ "/calendar/" + week + "/"+ day + "/"+ meal, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    });
 
 }
+
+/**
+* Looks through the user's weekly list of recipes and gives back a shopping
+* list based on the calendar.
+*/
+export function getShoppingList(userId) {
+   sendXHR("GET", "/user/" +userId + "/shoppinglist/",
+   undefined, (xhr) => {
+      cb(JSON.parse(xhr.responseText));
+   })
+}
+
 
 /**
   * Gets the recipes that have the ingredients the user puts in
