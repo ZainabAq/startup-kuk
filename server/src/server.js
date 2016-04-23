@@ -7,25 +7,10 @@ var express = require('express');
 var app = express();
 //var async = require('async');
 
-
-//importing methods from the database
-// var database = require('./database');
-// var readDocument = database.readDocument;
-// var writeDocument = database.writeDocument;
-// var getCollection = database.getCollection;
-
-// app.use(express.static('../client/build'));
-
 var bodyParser = require('body-parser');
 
 //importing the reset database file so the reset db button will work again
 var ResetDatabase = require('./resetdatabase');
-
-// Support receiving text in HTTP request bodies
-// app.use(bodyParser.text());
-// // Support receiving JSON in HTTP request bodies
-// app.use(bodyParser.json());
-
 
 //importing mongodb
 var mongo_express = require('mongo-express/lib/middleware');
@@ -235,7 +220,6 @@ MongoClient.connect(url, function(err, db) {
             user.Sunday = calendarObject.slice(satLength, sunLength);
             res.send(user);
             }
-
         });
 
     }
@@ -753,19 +737,6 @@ MongoClient.connect(url, function(err, db) {
           } else {
             var calenderId = user.calendarId;
           }
-          //now that we have the calendar id from the user, update it
-          //ok to just use update because we're sending the user in the end
-          // db.collection("calendars").updateOne({_id:calenderId},
-          //    {
-          //       $set: {
-          //          ["calendar." + weekno + day + meal] :new ObjectID(recipeid)
-          //       }
-          //    }, function(err) {
-          //       if (err) {
-          //          res.status(500).send("Database Error: " + err);
-          //       }
-          //    }
-          // );
           db.collection("calendars").findAndModify({_id:calenderId}, [['_id', 'asc']], {
             $set: {[weekno + "." + day + "."+ meal]:new ObjectID(recipeid)}
           }, {"new": true}, function(err, calendar) {
@@ -781,23 +752,6 @@ MongoClient.connect(url, function(err, db) {
           res.send(user);
         });
 
-        // var recipeid = parseInt(req.params.recipeid, 10);
-        // var day = req.params.dayid;
-        // var user = readDocument("users", userid);
-        // var calendar = readDocument("calendars", user.calendarId);
-        // // var week = calendar[2];
-        // var weekno = 2;
-        // var weekCal = calendar[weekno];
-        // // console.log(weekCal[day]);
-        // if (weekCal[day][3]) {
-        //    weekCal[day][3] = recipeid;
-        // } else {
-        //    weekCal[day][3];
-        // }
-        // // console.log(weekCal[day]);
-        // writeDocument("users", user);
-        // writeDocument("calendars", calendar);
-        // res.send(user);
       } else {
         res.status(401).end();
       }
