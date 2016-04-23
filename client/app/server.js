@@ -111,7 +111,7 @@ export function getRecipe(recipeId, cb) {
  * @param cb The callback function to be called at the end
  */
 export function getUserRestrictions(user, cb) {
-  sendXHR('GET', '/user/' + user, undefined, (xhr) => {
+  sendXHR('GET', '/user/' + user + '/restriction', undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   })
 }
@@ -157,14 +157,9 @@ export function getFeedData(restrictions, cb) {
  * Returns an array of the recipes whose names match the searched keyword.
  */
 export function findRecipe(searchText, cb) {
-  var xhr = new XMLHttpRequest();
-  //console.log(searchText)
-  xhr.open('POST', '/results');
-  xhr.addEventListener('load', function() {
+  sendXHR('POST', '/results', searchText, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
-  xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-  xhr.send(searchText);
 }
 
 /**
@@ -233,13 +228,17 @@ export function getShoppingList(userId) {
   * @param ingredientsList is the list of ingredients entered in instamode
   */
 export function findRecipeByIngredients(ingredientsList, cb) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/instaresults');
-    xhr.addEventListener('load', function() {
+    var ingredientString = "";
+    for (var i = 0; i < ingredientsList.length; i++) {
+      if (i===0) {
+        ingredientString += ingredientsList[i];
+      } else {
+        ingredientString += '='+ingredientsList[i];
+      }
+    }
+    sendXHR("POST", '/instaresults/'+ ingredientString, undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
-    });
-    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-    xhr.send(ingredientsList);
+    })
 }
 
 /**
@@ -247,11 +246,15 @@ export function findRecipeByIngredients(ingredientsList, cb) {
   * @param ingredientsList is the list of ingredients entered in instamode
   */
 export function findRecipeByOnlyIngredients(ingredientsList, cb) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/instaresults/ingredientsONLY');
-    xhr.addEventListener('load', function() {
-      cb(JSON.parse(xhr.responseText));
-    });
-    xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-    xhr.send(ingredientsList);
+  var ingredientString = "";
+  for (var i = 0; i < ingredientsList.length; i++) {
+    if (i===0) {
+      ingredientString += ingredientsList[i];
+    } else {
+      ingredientString += '='+ingredientsList[i];
+    }
+  }
+  sendXHR("POST", '/instaresults/ingredientsONLY/'+ ingredientString, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  })
 }

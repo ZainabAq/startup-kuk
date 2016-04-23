@@ -93,7 +93,6 @@ var initialData = {
        "img": "http://www.eat-yourself-skinny.com/wp-content/uploads/2013/09/113.jpg",
        "description": "This healthy, tasty smoothie is the perfect way to start your work week"
     }
-
    },
    "calendars": {
      "1": {
