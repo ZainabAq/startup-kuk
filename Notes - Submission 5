@@ -1,0 +1,14 @@
+(Hopefully Helpful) Notes about Submission 5:
+
+run npm install in both folders before you do anything
+make sure you’re running npm run watch before you try to load up the node page (it just loads a blank screen if you’re not careful)
+
+Not all pages are going to need user authorization (maybe calendar, favorites,
+and profile page? Only things which are private)
+   - going to need to figure out if favoriting from the recipe page will require
+   being logged in or not
+   - this is the thing with Authorization: Bearer where Bearer is a random string
+
+Seems like functions that call emulateServerReturn need to have the xhr thing in
+them instead (this is what will allow the client-side server to interact with the
+real server)
