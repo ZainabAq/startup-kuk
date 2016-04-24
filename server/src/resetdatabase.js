@@ -96,8 +96,20 @@ var initialData = {
        "img": "http://www.eat-yourself-skinny.com/wp-content/uploads/2013/09/113.jpg",
        "description": "This healthy, tasty smoothie is the perfect way to start your work week"
     },
-
     "7": {
+       "_id": new ObjectID("000000000000000000000007"),
+       "name": "Lemon Ricotta Pancakes with Blueberry Sauce",
+       "ingredients": ["2 tablespoons lemon juice", "1 tablespoon cornstarch", "2 cups frozen blueberries", "3 tablespoons white sugar", "1 cup ricotta cheese", "2/3 cup milk", "2 eggs", "1/2 teaspoon ground nutmeg", "1/4 teaspoon salt", "1 cup all-purpose flour", "1 tablespoon baking powder"],
+       "cuisine": "American",
+       "mealType": "Main Course",
+       "averageRating": [5, 5, 4],
+       "instructions": ["Mix 2 tablespoons lemon juice and cornstarch together in a bowl until cornstarch dissolves.", "Stir blueberries and 3 tablespoons sugar in a saucepan over medium-high heat. Bring to a boil; reduce heat to low and simmer for 5 minutes. Pour cornstarch mixture into blueberry mixture; cook and stir until mixture thickens slightly. Cover saucepan and remove from heat.", "Whisk ricotta cheese, milk, eggs, sugar, juice from 1 lemon, lemon zest, nutmeg, and salt together in a bowl until well blended. Add flour and baking powder; whisk to combine.", "Heat a lightly oiled griddle or skillet over medium-high heat. Drop batter in 1/4 cup portions onto the griddle and cook until bubbles form and the edges are dry. Flip and cook until browned on the other side. Repeat with remaining batter. Top pancakes with blueberry sauce."],
+       "time": "30 mins",
+       "restrictions": [new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000005")],
+       "img": "http://images.media-allrecipes.com/userphotos/600x600/1538703.jpg",
+       "description": "These pancakes are light and don't leave you feeling too full"
+    },
+    "8": {
       "_id": new ObjectID("000000000000000000000100"),
       "name": "Please add a recipe here!",
       "averageRating": [0],
