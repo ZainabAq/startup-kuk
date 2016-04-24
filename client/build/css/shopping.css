@@ -28,5 +28,11 @@
 }
 
 .shopping .form-control {
-  padding-left: 100px;
+  padding-left: 10px;
+  width: 250px;
+  margin-left: 10px;
+}
+
+.shopping .btn {
+  margin-left: 1%;
 }
