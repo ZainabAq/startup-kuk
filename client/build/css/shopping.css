@@ -18,3 +18,7 @@
 .shopping .title {
    text-align: center;
 }
+
+.shopping ul {
+  list-style: none;
+}

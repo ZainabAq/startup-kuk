@@ -9,6 +9,7 @@ import Instamode from './components/instamode';
 import Favorites from './components/favorites';
 import Calendar from './components/calendar';
 import Navbar from './components/navbar';
+import ShoppingList from './components/shopping';
 import ErrorBanner from './components/errorbanner';
 import {ResetDatabase} from './components/resetbutton';
 
@@ -76,6 +77,15 @@ class CalendarPage extends React.Component {
   }
 }
 
+/**
+ * ShoppingList page
+ */
+class ShoppingPage extends React.Component {
+  render() {
+    return <ShoppingList user={this.props.params.id} />
+  }
+}
+
 class App extends React.Component {
   render() {
     return (
@@ -101,6 +111,7 @@ ReactDOM.render((
         <Route path="instamode" component={InstaPage} />
         <Route path="favorites/:id" component={FavoritesPage} />
         <Route path="calendar/:id" component={CalendarPage} />
+        <Route path="shoppingList/:id" component={ShoppingPage} />
       </Route>
     </Router>
     <ResetDatabase />

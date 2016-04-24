@@ -47,11 +47,11 @@ export default class Shopping extends React.Component {
    render() {
       return (
          <div className="shopping">
+            <h1 className="center">Shopping List</h1>
             <div className="col-md-3">
             </div>
             <div className="col-md-6">
             <div className="panel-body main-background">
-               <h1 className="title">Weekly Shopping List</h1><br />
                <input type="text" className="form-control add-item" placeholder="Add item" value={this.state.value} onChange={(e) => this.handleChange(e)} onKeyUp={(e)=>this.handleKeyUp(e)}></input>
                <hr />
                <div className="ingredient-bar">
