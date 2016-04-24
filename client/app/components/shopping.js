@@ -48,22 +48,19 @@ export default class Shopping extends React.Component {
       return (
          <div className="shopping">
             <h1 className="center">Shopping List</h1>
-            <div className="col-md-3">
-            </div>
-            <div className="col-md-6">
-            <div className="panel-body main-background">
-               <input type="text" className="form-control add-item" placeholder="Add item" value={this.state.value} onChange={(e) => this.handleChange(e)} onKeyUp={(e)=>this.handleKeyUp(e)}></input>
-               <hr />
-               <div className="ingredient-bar">
-               <ul>
-                  {this.state.list.map(function(listItem, index) {
-                     return <li key={index}>{listItem}</li>;
-                  })}
-               </ul>
-               </div>
-               </div>
-          </div>
-            <div className="col-md-3">
+            <div className="col-md-offset-3 col-md-6 col-md-offset-3">
+              <div className="panel-body main-background">
+                 <input type="text" className="form-control add-item" placeholder="Add item" value={this.state.value} onChange={(e) => this.handleChange(e)} onKeyUp={(e)=>this.handleKeyUp(e)}></input>
+                 <hr />
+                 <div className="ingredient-bar">
+                   <ul>
+                      {this.state.list.map(function(listItem, index) {
+                         return <li key={index}>{listItem}</li>;
+                      })}
+                   </ul>
+                 </div>
+                 <button className="btn btn-default"><i className="fa fa-shopping-cart"></i>Order Now</button>
+              </div>
             </div>
          </div>
       );

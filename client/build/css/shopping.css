@@ -22,3 +22,11 @@
 .shopping ul {
   list-style: none;
 }
+
+.shopping .fa {
+  padding-right: 10px;
+}
+
+.shopping .form-control {
+  padding-left: 100px;
+}
