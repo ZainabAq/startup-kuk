@@ -62,6 +62,10 @@
 
 }
 
+.glyphicon-filter {
+  padding-right: 5px;
+}
+
 .info {
   bottom:-100px;
   font-size: 20px;

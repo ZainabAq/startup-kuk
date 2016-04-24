@@ -18,6 +18,10 @@
   padding-top: none;
 }
 
+.results .list-inline {
+  padding-left: 15px;
+}
+
 .results .list-group {
   margin: 0 !important;
 }
@@ -38,8 +42,4 @@
 
 .padThai {
   padding-top: 10px;
-}
-
-.searchButton {
-  background-color: #fff !important;
 }

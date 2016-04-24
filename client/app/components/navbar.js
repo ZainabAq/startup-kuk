@@ -43,7 +43,7 @@ export default class Navbar extends React.Component {
                   <li><Link to="/favorites/000000000000000000000001">Favorites</Link></li>
                   <li><Link to="/calendar/000000000000000000000001">Calendar</Link></li>
                   <li><Link to="/shoppingList/000000000000000000000001">ShoppingList</Link></li>
-                  <hr />
+                  <li className="divider"></li>
                   <li><a href="#">Log out</a></li>
                 </ul></div></li>
               </ul>

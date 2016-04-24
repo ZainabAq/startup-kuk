@@ -21,6 +21,11 @@
   margin-left: 20px;
   margin-right:20px;
   width:auto;
+  padding-left: 30px;
+}
+
+.favorites .font1 {
+  padding-left: 60px;
 }
 
 .favorites .heartspace {

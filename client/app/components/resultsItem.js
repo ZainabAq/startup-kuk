@@ -65,8 +65,8 @@ export default class ResultsItem extends React.Component {
                         })()}
                       </li>
                       <li className="time-icons">
-                          {this.state.time}&nbsp;
-                         <span className="fa fa-clock-o"></span>
+                         <span className="fa fa-clock-o fa-lg"></span>
+                         &nbsp;{this.state.time}
                       </li>
                     </ul>
                   </div>

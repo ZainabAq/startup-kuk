@@ -125,7 +125,7 @@ export default class Recipe extends React.Component {
                                        })()}
                                     </li>
                                     <li className="time-icons">
-                                      <span className="fa fa-clock-o"></span>
+                                      <span className="fa fa-clock-o fa-lg"></span>
                                        &nbsp;{this.state.time}
                                     </li>
 

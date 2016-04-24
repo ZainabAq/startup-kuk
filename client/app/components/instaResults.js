@@ -59,7 +59,7 @@ export default class InstaResults extends React.Component {
                 }}/>Find recipes that ONLY contain these ingredients
             </label>
           </div>
-          <button type="submit" className="findrecipe-btn" onClick={() => this.onSearch()}>Find a Recipe! </button>
+          <button type="submit" className="btn findrecipe-btn" onClick={() => this.onSearch()}>Find a Recipe! </button>
         </div>
       );
     } else if (this.state.recipes.length > 0 ){
@@ -70,14 +70,14 @@ export default class InstaResults extends React.Component {
               <ResultsItem key={recipe._id} data={recipe} />
             );
           })}
-          <button type="submit" className="findrecipe-btn" onClick={() => this.handleClear()}>Clear Search</button>
+          <button type="submit" className="btn findrecipe-btn" onClick={() => this.handleClear()}>Clear Search</button>
         </div>
       );
     } else {
       return(
         <div>
           <p>We were unable to find anything matching the ingredient(s) you entered. Please try again.</p>
-          <button type="submit" className="findrecipe-btn" onClick={() => this.handleClear()}>Clear Search</button>
+          <button type="submit" className="btn findrecipe-btn" onClick={() => this.handleClear()}>Clear Search</button>
         </div>
       )
     }
