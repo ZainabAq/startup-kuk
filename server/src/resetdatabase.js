@@ -136,6 +136,19 @@ var initialData = {
        "description": "Surprise your guests with this delicioso appetizer"
     },
     "10": {
+       "_id": new ObjectID("000000000000000000000010"),
+       "name": "Quinoa Tabbouleh",
+       "ingredients": ["2 cups water", "1 cup quinoa", "1 pinch salt", "1/4 cup olive oil", "1/2 teaspoon sea salt", "1/4 cup lemon juice", "3 tomatoes, diced", "1 cucumber, diced", "2 bunches green onions, diced", "2 carrots, grated", "1 cup fresh parsley, chopped"],
+       "cuisine": "Levantine",
+       "mealType": "Main Course",
+       "averageRating": [1, 4, 5],
+       "instructions": ["In a saucepan bring water to a boil. Add quinoa and a pinch of salt. Reduce heat to low, cover and simmer for 15 minutes. Allow to cool to room temperature; fluff with a fork.", "Meanwhile, in a large bowl, combine olive oil, sea salt, lemon juice, tomatoes, cucumber, green onions, carrots and parsley. Stir in cooled quinoa."],
+       "time": "30 mins",
+       "restrictions": [],
+       "img": "http://images.media-allrecipes.com/userphotos/720x405/398651.jpg",
+       "description": "Instead of using bulgur like traditional tabouli, this recipe uses quinoa"
+    },
+    "11": {
       "_id": new ObjectID("000000000000000000000100"),
       "name": "Please add a recipe here!",
       "averageRating": [0],
