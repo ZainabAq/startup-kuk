@@ -18,6 +18,8 @@ var mongo_express = require('mongo-express/lib/middleware');
 var mongo_express_config = require('mongo-express/config.default.js');
 app.use('/mongo_express', mongo_express(mongo_express_config));
 
+
+
 var MongoDB = require('mongodb');
 var MongoClient = MongoDB.MongoClient;
 var ObjectID = MongoDB.ObjectID;
@@ -75,60 +77,19 @@ MongoClient.connect(url, function(err, db) {
   }
 
   /**
-  * Get the feed data leaving out particular restrictions
-  * @param list of restrictions
-  * @param callback
-  */
-  function getFeedData(restrictions, callback) {
-    var feedData = [];
-    db.collection('recipe').find().toArray(function(err, recipes) {
-      if (err) {
-        callback(err);
-      } else {
-        if (restrictions.length == 0) {
-          recipes.forEach((recipe) => {
-            feedData.push(recipe);
-          });
-          callback(null, feedData);
-        } else if (restrictions.length > 0) {
-          // get the unique set of recipes that have restrictions
-          var recipeSet = [];
-          var badRecipeIds = [];
-
-          for (var id in restrictions) {
-            var restrictionsId = hexify(restrictions[id])
-            db.collection('restrictions').findOne({_id: new ObjectID(restrictionsId)}, function(err, restriction) {
-              if (err) {
-                callback(err);
-              } else {
-               restriction.recipes.forEach((recipeid) => {
-                 // if it's not already in recipeSet, add it
-                 var found = false;
-                 for (var i in badRecipeIds) {
-                   if (badRecipeIds[i].equals(recipeid)) {
-                     found = true;
-                   }
-                 } // end for
-                 if (!found) {
-                   badRecipeIds.push(recipeid);
-                   var errored = false;
-                   getRecipe(recipeid, function(err, recipe) {
-                     if (errored) {
-                       return;
-                     } else if (err) {
-                       callback(err);
-                     }
-                     recipeSet.push(recipe);
-                     console.log(recipe._id);
-                   })
-                 }
-               }); // end forEach
-              //  console.log(badRecipeIds);
-              //  console.log(recipeSet);
-              } // end else
-            }); // end db.findOne
-          } // end for
-         callback(null, feedData);
+   * Get the feed data for a particular user.
+   */
+   function getFeedData(restrictions, callback) {
+     var feedData = [];
+     db.collection('recipe').find().toArray(function(err, recipes) {
+       if (err) {
+         callback(err);
+       } else {
+         if (restrictions.length == 0) {
+           recipes.forEach((recipe) => {
+             feedData.push(recipe);
+           });
+           callback(null, feedData);
          }
        }
      });
@@ -257,8 +218,9 @@ MongoClient.connect(url, function(err, db) {
             user.Saturday = calendarObject.slice(friLength, satLength);
             var sunLength = calendar[week].Sunday.length + satLength;
             user.Sunday = calendarObject.slice(satLength, sunLength);
-            res.send(user);
+            //res.send(user);
             }
+            res.send(user);
         });
 
     }
