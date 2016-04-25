@@ -37,7 +37,7 @@ var initialData = {
        "averageRating": [4, 3],
        "instructions": ["Cut chicken in half horizontally. Pound each piece until 1/2 inch thick. Sprinkle with salt and pepper.", "Add flour to a shallow dish.", "Add egg to a shallow bowl and whisk, set aside.", "Add breadcrumbs and Parmesan cheese to a shallow bowl and mix to combine.", "Starting with the flour and ending with breadcrumbs, dip the chicken into the flour, egg and Parmesan breadcrumbs.", "Add oil to a large skillet.", "Add chicken two at a time to the skillet. Cook 2-3 minutes on each side or until golden grown and cooked all the way through.", "Place chicken in a pan or sheet tray and top with mozzarella cheese.", "Broil on high until melted and bubbly. Top with tomato sauce and and a sprinkle of basil for serving, if desired. Serve immediately."],
        "time": "30 mins",
-       "restrictions": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"),8],
+       "restrictions": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000008")],
        "img": "http://farm3.static.flickr.com/2786/4280658636_a707c75ebc.jpg",
        "description":"A traditional Italian dish, this chicken parmesan is seasonally flavored"
      },
@@ -51,7 +51,7 @@ var initialData = {
        "averageRating": [4, 5, 5],
        "instructions": ["Wash and dry napa cabbage leaves. Green leafy parts may be left in larger pieces (2″ or so), but white parts must be diced small (cut white parts vertically into 1/4″ wide sticks, then cut sticks into 1/4″ dice).", "Cut zucchini in 1/4″ dice also (slice lengthwise into 1/4″ strips, then strips into 1/4″ sticks, then sticks into 1/4″ dice).", "Heat 2 tablespoons of cooking oil in a skillet over medium heat. Add onion and cook until softened; remove to a bowl. Add a bit more oil and cook cabbage until edges look translucent; remove and add to bowl. Add zucchini and cook briefly, just to coat with a bit of oil; remove and add to other vegetables.", "Heat a bit more oil and cook ground meat, breaking it up well with a spatula. When all traces of pink are gone, remove meat to a separate bowl.", "Heat 3 tablespoons of oil in the skillet with the ginger slices. Add ground bean sauce and hoisin sauce (also chunjang and miso, if using) and cook, stirring, until the sauces are bubbling hot and mostly mixed into the oil.", "Add meat back in (try and leave out any juice that may have accumulated), and mix well with sauce. Cook for another minute, then remove ginger slices. Add back vegetables and stir.", "Add soy sauce, water and chicken broth (you may substitute 3 tablespoons water plus 1 tablespoon soy sauce if you don’t have chicken broth) and stir. Cook to heat.", "Mix cornstarch with water, then stir into the skillet. Cook until sauce thickens. Add sesame oil to finish.", "Slice cucumber thinly on the diagonal. Then take one little stack of cucumber slices at a time and cut thin matchsticks. Set aside for garnish.", "Cook fresh noodles in boiling water (if you can’t read the directions, just know that fresh noodles cook quickly, so taste it after 3 minutes and check). Serve immediately, as the noodles get gummy and stick together as they cool. Top with meat sauce and garnish with slivered cucumber."],
        "time": "1 hour",
-       "restrictions": [new ObjectID("000000000000000000000004"),10],
+       "restrictions": [new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000010")],
        "img": "http://www.sbs.com.au/food/sites/sbs.com.au.food/files/styles/full/public/bejing-zha-pork-noodles_2.jpg?itok=ov2ONR2x&mtime=1382441740",
        "description":"The bestest best dish on the website"
      },
@@ -65,7 +65,7 @@ var initialData = {
        "averageRating": [4, 5, 5],
        "instructions": ["Whisk onion, soy sauce, brown sugar, garlic, sesame oil, sesame seeds, cayenne pepper, salt, and black pepper together in a bowl until marinade is smooth.", "Cook and stir chicken and marinade together in a large skillet over medium-high heat until chicken is cooked through, about 15 minutes."],
        "time": "30 mins",
-       "restrictions": [new ObjectID("000000000000000000000004"),8],
+       "restrictions": [new ObjectID("000000000000000000000004"), new ObjectID("000000000000000000000008")],
        "img": "http://www.chowstatic.com/assets/recipe_photos/25679_korean_grilled_chicken.jpg",
        "description":"A Korean dish renowened for its simplicity and flavor"
      },
@@ -145,7 +145,7 @@ var initialData = {
        "instructions": ["In a saucepan bring water to a boil. Add quinoa and a pinch of salt. Reduce heat to low, cover and simmer for 15 minutes. Allow to cool to room temperature; fluff with a fork.", "Meanwhile, in a large bowl, combine olive oil, sea salt, lemon juice, tomatoes, cucumber, green onions, carrots and parsley. Stir in cooled quinoa."],
        "time": "30 mins",
        "restrictions": [],
-       "img": "http://images.media-allrecipes.com/userphotos/720x405/398651.jpg",
+       "img": "http://assets.epicurious.com/photos/54b0b5bec6a78d1a4a60b208/1:1/w_600,h_600/395939_quinoa-tabbouleh_1x1.jpg",
        "description": "Instead of using bulgur like traditional tabouli, this recipe uses quinoa"
     },
     "11": {
