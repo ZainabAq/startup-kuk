@@ -82,9 +82,10 @@ export default class Recipe extends React.Component {
    /** adds a recipe to the user's calender (in the dinner slot) when the user
    * clicks on the calendar button
    */
-   handleCalendarClick(clickEvent, day) {
+   handleCalendarClick(clickEvent, week, day, meal) {
       // just adds to the calendar so it doesn't return anything
-      addRecipeToCalendar(this.state._id, '000000000000000000000001', day, (data) => {});
+      console.log(day);
+      addRecipeToCalendar(this.state._id, '000000000000000000000001', week, day, meal, (data) => {});
       alert("Recipe added to calendar!");
    }
 
@@ -133,22 +134,106 @@ export default class Recipe extends React.Component {
                               </div>
                               <div className="col-xs-2">
                                  <ul className="list-inline pull-right">
-                                    <li className="presentation">
-                                       <button type="button" className="btn btn-default favButton" onClick={(e)=>this.handleFavoriteClick(e)}><span className={favButtonIcon}></span></button>
-                                    </li>
+
                                     <li className="presentation">
                                        <button type="button" className="btn btn-default dropdown-toggle calButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-calendar-check-o fa-lg"></i>
-                                    </button>
+                                       </button>
 
-                                    <ul className="dropdown-menu multiple">
-                                       <li><a onClick={(e)=>this.handleCalendarClick(e, "Monday")}>Monday</a></li>
-                                       <li><a onClick={(e)=>this.handleCalendarClick(e, "Tuesday")}>Tuesday</a></li>
-                                       <li><a onClick={(e)=>this.handleCalendarClick(e, "Wednesday")}>Wednesday</a></li>
-                                       <li><a onClick={(e)=>this.handleCalendarClick(e, "Thursday")}>Thursday</a></li>
-                                       <li><a onClick={(e)=>this.handleCalendarClick(e, "Friday")}>Friday</a></li>
-                                       <li><a onClick={(e)=>this.handleCalendarClick(e, "Saturday")}>Saturday</a></li>
-                                       <li><a onClick={(e)=>this.handleCalendarClick(e, "Sunday")}>Sunday</a></li>
+                                    <ul className="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                    <li className="dropdown-submenu">
+                                          <a tabIndex="-1" href="#">Week One</a>
+                                          <ul className="dropdown-menu">
+                                             {(() => {
+                                                var results = [];
+                                                var days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                                                days.forEach((day) => {
+                                                   var dayOfWeek = day;
+                                                   results.push(<li className="dropdown-submenu">
+                                                      <a href="#">{dayOfWeek}</a>
+                                                      <ul className="dropdown-menu">
+                                                         <li><a onClick={(e)=>this.handleCalendarClick(e, 1, day, 0)}>Breakfast</a></li>
+                                                         <li><a onClick={(e)=>this.handleCalendarClick(e, 1, day, 1)}>Lunch</a></li>
+                                                         <li><a onClick={(e)=>this.handleCalendarClick(e, 1, day, 2)}>Snack</a></li>
+                                                         <li><a onClick={(e)=>this.handleCalendarClick(e, 1, day, 3)}>Dinner</a></li>
+                                                      </ul>
+                                                   </li>)
+                                                });
+                                                return results;
+                                             })()}
+                                          </ul>
+                                       </li>
+                                       <li className="dropdown-submenu">
+                                             <a tabIndex="-1" href="#">Week Two</a>
+                                             <ul className="dropdown-menu">
+                                                {(() => {
+                                                   var results = [];
+                                                   var days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                                                   days.forEach((day) => {
+                                                      results.push(<li className="dropdown-submenu">
+                                                         <a href="#">{day}</a>
+                                                         <ul className="dropdown-menu">
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 2, day, 0)}>Breakfast</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 2, day, 1)}>Lunch</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 2, day, 2)}>Snack</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 2, day, 3)}>Dinner</a></li>
+                                                         </ul>
+                                                      </li>)
+                                                   });
+                                                   return results;
+                                                })()}
+                                             </ul>
+                                       </li>
+                                       <li className="dropdown-submenu">
+                                             <a tabIndex="-1" href="#">Week Three</a>
+                                             <ul className="dropdown-menu">
+                                                {(() => {
+                                                   var results = [];
+                                                   var days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                                                   days.forEach((day) => {
+                                                      var dayOfWeek = day;
+                                                      results.push(<li className="dropdown-submenu">
+                                                         <a href="#">{dayOfWeek}</a>
+                                                         <ul className="dropdown-menu">
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 0)}>Breakfast</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 1)}>Lunch</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 2)}>Snack</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 3)}>Dinner</a></li>
+                                                         </ul>
+                                                      </li>)
+                                                   });
+                                                   return results;
+                                                })()}
+                                             </ul>
+                                       </li>
+                                       <li className="dropdown-submenu">
+                                             <a tabIndex="-1" href="#">Week Four</a>
+                                             <ul className="dropdown-menu">
+                                                {(() => {
+                                                   var results = [];
+                                                   var days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                                                   days.forEach((day) => {
+                                                      var dayOfWeek = day;
+                                                      results.push(<li className="dropdown-submenu">
+                                                         <a href="#">{dayOfWeek}</a>
+                                                         <ul className="dropdown-menu">
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 0)}>Breakfast</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 1)}>Lunch</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 2)}>Snack</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 3)}>Dinner</a></li>
+                                                         </ul>
+                                                      </li>)
+                                                   });
+                                                   return results;
+                                                })()}
+                                             </ul>
+                                       </li>
+
                                     </ul>
+
+
+                                 </li>
+                                 <li className="presentation">
+                                    <button type="button" className="btn btn-default favButton" onClick={(e)=>this.handleFavoriteClick(e)}><span className={favButtonIcon}></span></button>
                                  </li>
                               </ul>
                            </div>

@@ -76,23 +76,76 @@ MongoClient.connect(url, function(err, db) {
     return newId;
   }
 
-  /**
-   * Get the feed data for a particular user.
-   */
-   function getFeedData(restrictions, callback) {
-     var feedData = [];
-     db.collection('recipe').find().toArray(function(err, recipes) {
-       if (err) {
-         callback(err);
-       } else {
-         if (restrictions.length == 0) {
-           recipes.forEach((recipe) => {
-             feedData.push(recipe);
-           });
-           callback(null, feedData);
-         }
-       }
-     });
+
+  function getFeedData(restrictions, callback) {
+    var feedData = [];
+    db.collection('recipe').find().toArray(function(err, recipes) {
+      var recipeSet = [];
+      var badRecipeIds = [];
+      var badRecipesTemp = [];
+      var count = 0;
+
+      function processRestriction(err, restriction) {
+        if (err) {
+          callback(err);
+        } else {
+          restriction.recipes.forEach((recipeid) => {
+            badRecipesTemp.push(recipeid);
+            if (badRecipesTemp.length === restriction.recipes.length) {
+              // Recipes for this restriction are completely checked
+              // Add all recipes in temp array to final array and reset temp
+              for (var j = 0; j < badRecipesTemp.length; j++) {
+                if (badRecipeIds.indexOf(badRecipesTemp[j]) === -1) {
+                  badRecipeIds.push(badRecipesTemp[j]);
+                }
+              }
+              badRecipesTemp = [];
+              count++;
+              if (count === restrictions.length) {
+                // Last restriction to process
+                // Create recipe array to be resolved.
+                for (var k = 0; k < recipes.length -1; k++) {
+                  var found = false;
+                  for (var i = 0; i < badRecipeIds.length; i++) {
+                    if (badRecipeIds[i].equals(recipes[k]._id)) {
+                      found = true;
+                      break
+                    }
+                  }
+                  if (!found) {
+                    if (!recipes[k]._id.equals(new ObjectID("000000000000000000000100"))) {
+                      recipeSet.push(recipes[k]);
+                    }
+                  }
+                }
+                // Call callback function with recipeSet
+                callback(null, recipeSet);
+              }
+            }
+          });
+        }
+      }
+
+      if (err) {
+        callback(err);
+      } else {
+        if (restrictions.length == 0) {
+          recipes.forEach((recipe) => {
+            if (!recipe._id.equals(new ObjectID("000000000000000000000100"))) {
+              feedData.push(recipe);
+            }
+          });
+          callback(null, feedData);
+        } else if (restrictions.length > 0) {
+          // get the unique set of recipes that have restrictions
+
+          for (var i = 0; i < restrictions.length; i++) {
+            var restrictionsId = hexify(restrictions[i]);
+            db.collection('restrictions').findOne({ _id: new ObjectID(restrictionsId)}, processRestriction);
+          }
+        }
+      }
+    });
    }
 
    /**
@@ -605,7 +658,11 @@ MongoClient.connect(url, function(err, db) {
             var name = recipes[j].name.toLowerCase().split(" ");
             for (var k=0; k<text.length; k++) {
               for (var h=0; h<name.length; h++) {
-                if (text[k] == name[h]) {
+                if (text[k] === name[h]) {
+                  // if user searches the recipe placeholder, break
+                  if (recipes[j]._id == "000000000000000000000100") {
+                    break;
+                  }
                   match.push(recipes[j]._id);
                 }
               }
@@ -723,14 +780,17 @@ MongoClient.connect(url, function(err, db) {
     * clicks on the calendar button, this gets called)
     */
     //need to resolve this - right now it's hardcoding both the meal and the week
-    app.put("/recipe/:recipeid/user/:userid/calendar/:dayid", function(req, res) {
+    app.put("/recipe/:recipeid/user/:userid/calendar/:weekid/:dayid/:mealid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       var recipeid = hexify(req.params.recipeid);
-      var weekno = 1;
-      var meal = 3;
+      var weekno = req.params.weekid;
+      var meal = req.params.mealid;
+      console.log("mealid: ", meal);
+      console.log("weekid: ", weekno);
       if (userid === fromUser) {
         var day = req.params.dayid;
+        console.log("dayid: ", day);
         userid = new ObjectID(userid);
         db.collection("users").findOne({_id:userid}, function(err, user) {
           if (err) {
@@ -746,7 +806,7 @@ MongoClient.connect(url, function(err, db) {
             } else if (calendar == null) {
               console.log("No document found!");
             } else {
-              console.log(calendar.value[weekno][day]);
+              console.log(calendar.value[weekno][day][meal]);
             }
           });
           //now finding the user object so that we can return it

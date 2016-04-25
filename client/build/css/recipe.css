@@ -18,6 +18,7 @@
 .recipe .food-pic {
    border-color: #074F57;
    border-width:medium;
+   margin-left: 10px;
 }
 
 .recipe .instruction {
@@ -53,11 +54,66 @@
 .recipe .fa-star {
    color: #9C102E;
 }
-
-/*.recipe .btn {
+/*
+.recipe .btn {
    color: black !important;
 }*/
 .recipe .panel-heading2 {
   background-color: white !important;
   padding: 10px 10px 10px 10px;
+}
+
+
+.recipe .dropdown-submenu {
+    position: relative;
+}
+
+.recipe .dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: -100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.recipe .dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.recipe .dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: left;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: 10px;
+    -webkit-transform: rotate(180deg);
+    transform:rotate(180deg);
+}
+
+.recipe .dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.recipe .dropdown-submenu .pull-left {
+    float: none;
+}
+
+.recipe .dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.recipe .dropdown-menu .dropdown-submenu {
+   /*padding-left:100px;*/
 }
