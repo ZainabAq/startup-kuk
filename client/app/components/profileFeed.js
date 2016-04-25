@@ -112,7 +112,7 @@ export default class ProfileFeed extends React.Component {
                   </div>
                 </div>
 
-                <ProfileRestrictions user={this.state._id} restrictions={this.state.restrictions} checks={this.getRestrictionChecks()} getChecks={this.getRestrictionChecks} />
+                <ProfileRestrictions user={this.state._id} restrictions={this.state.restrictions} checks={this.getRestrictionChecks()} />
             </div>
           </div>
         </div>

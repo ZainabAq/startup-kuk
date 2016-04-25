@@ -106,7 +106,7 @@ MongoClient.connect(url, function(err, db) {
               if (count === restrictions.length) {
                 // Last restriction to process
                 // Create recipe array to be resolved.
-                for (var k = 0; k < recipes.length -1; k++) {
+                for (var k = 0; k < recipes.length - 1; k++) {
                   var found = false;
                   for (var i = 0; i < badRecipeIds.length; i++) {
                     if (badRecipeIds[i].equals(recipes[k]._id)) {
@@ -170,6 +170,19 @@ MongoClient.connect(url, function(err, db) {
      });
    });
 
+   // Get restrictionIDs for the current user if user exists; otherwise send an empty array
+   app.get('/user/restrictions', function(req, res) {
+     var fromUser = getUserIdFromToken(req.get('Authorization'));
+     db.collection('users').findOne({ _id: new ObjectID(fromUser) }, function(err, userData) {
+       if (err) {
+         res.status(500).send("Database Error: " + err);
+       } else if (userData === null) {
+         res.send([]);
+       } else {
+         res.send(userData.restrictions);
+       }
+     });
+   });
 
    /*
    * Given a recipe ID, returns a recipe object with references resolved.
@@ -427,7 +440,6 @@ MongoClient.connect(url, function(err, db) {
     function getRestrictionStrings(ids, callback) {
       var strings = [];
       var errored = false;
-      console.log("here");
 
       function processRestrictions(err, restrictionData) {
         if (errored) {

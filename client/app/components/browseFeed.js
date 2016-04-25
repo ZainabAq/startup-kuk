@@ -1,7 +1,7 @@
 import React from 'react';
 import FeedItem from './feeditem';
 import FilterBar from './filter';
-import {getFeedData} from '../server';
+import {getFeedData, getCurrentUserRestrictions} from '../server';
 
 export default class BrowseFeed extends React.Component {
   constructor(props) {
@@ -11,7 +11,8 @@ export default class BrowseFeed extends React.Component {
       // filter bar is offscreen by default
       condition: true,
       recipes: [],
-      restrictions: []
+      restrictions: [],
+      loading: true
     };
   }
 
@@ -29,12 +30,23 @@ export default class BrowseFeed extends React.Component {
     }, 4);
   }
 
+  /** Gets current user's restrictions, if they exist */
+  getRestrictions() {
+    getCurrentUserRestrictions((newRestrictions) => {
+      this.setState({ restrictions : newRestrictions });
+    });
+  }
+
   /**
    *  refreshes the feed
    *  populates the feed with a set amount of recipes from the database
    */
   refresh() {
     getFeedData(this.state.restrictions, (feedData) => {
+      getCurrentUserRestrictions((newRestrictions) => {
+        this.setState({ restrictions : newRestrictions });
+        this.setState({ loading : false });
+      });
       this.setState({recipes: feedData});
     });
   }
@@ -52,30 +64,47 @@ export default class BrowseFeed extends React.Component {
   // the animation when loaded is false, and set loaded to true once the server
   // response comes back in.
   render() {
-    return (
-      <div>
-        <div id="wrapper" className={this.state.condition ? "toggled" :""}>
-          <div id="sidebar-wrapper">
-              <FilterBar onFilter={(filteredRestrictions) => this.onFilter(filteredRestrictions)} />
-          </div>
-          <div id="page-content-wrapper">
-            <div className="container-fluid">
-              <h1 className="center">Browse Our Recipes</h1>
-              <button className="btn btn-default" onClick={(e) => this.handleClick(e)}>
-                <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
-                Filter
-              </button>
-              <ul id="categories" className="clr">
-                {this.state.recipes.map((recipe, i) => {
-                  return (
-                    <li key={i}><FeedItem key={recipe._id} data={recipe} /></li>
-                  )
-                })}
-              </ul>
+    if (!this.state.loading) {
+      return (
+        <div>
+          <div id="wrapper" className={this.state.condition ? "toggled" : ""}>
+            <div id="sidebar-wrapper">
+                <FilterBar onFilter={(filteredRestrictions) => this.onFilter(filteredRestrictions)} restrictions={this.state.restrictions} />
+            </div>
+            <div id="page-content-wrapper">
+              <div className="container-fluid">
+                <h1 className="center">Browse Our Recipes</h1>
+                <button className="btn btn-default" onClick={(e) => this.handleClick(e)}>
+                  <span className="glyphicon glyphicon-filter" color="#337ab7" aria-hidden="true"></span>
+                  Filter
+                </button>
+                <ul id="categories" className="clr">
+                  {this.state.recipes.map((recipe, i) => {
+                    return (
+                      <li key={i}><FeedItem key={recipe._id} data={recipe} /></li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    )
+      );
+    } else {
+      return (
+        <div>
+          <div className="container-fluid">
+            <h1 className="center">Browse Our Recipes</h1>
+            <ul id="categories" className="clr">
+              {this.state.recipes.map((recipe, i) => {
+                return (
+                  <li key={i}><FeedItem key={recipe._id} data={recipe} /></li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      );
+    }
   }
 }
