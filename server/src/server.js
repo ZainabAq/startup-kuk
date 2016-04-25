@@ -7,15 +7,6 @@ var express = require('express');
 var app = express();
 //var async = require('async');
 
-
-//importing methods from the database
-var database = require('./database');
-var readDocument = database.readDocument;
-var writeDocument = database.writeDocument;
-var getCollection = database.getCollection;
-
-// app.use(express.static('../client/build'));
-
 var bodyParser = require('body-parser');
 
 //importing the reset database file so the reset db button will work again

@@ -135,6 +135,12 @@ h2 {
     color: #999999;
 }
 
+/** 404 Page Not Found **/
+img .404 !important{
+    padding-top: 50px;
+}
+/** ----------------- **/
+
 #db-reset {
   position: fixed;
   bottom: 5%;
