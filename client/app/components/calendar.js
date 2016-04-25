@@ -89,7 +89,6 @@ export default class Calendar extends React.Component {
         <ul className = "day list-inline">
           <li><h5 className="days Mon">Monday</h5></li>
              {this.state.Monday.map((meal, i) => {
-               //console.log(this.state.Monday[i]);
               return (
                 <CalendarEntry key={i} data={meal} day="Monday" type={this.checkMealType(i)} onRemove={(e) => this.onRemoveRecipe(e, "Monday", i)}/>
               )

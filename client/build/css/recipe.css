@@ -18,6 +18,7 @@
 .recipe .food-pic {
    border-color: #074F57;
    border-width:medium;
+   margin-left: 10px;
 }
 
 .recipe .instruction {

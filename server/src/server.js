@@ -12,19 +12,11 @@ var bodyParser = require('body-parser');
 //importing the reset database file so the reset db button will work again
 var ResetDatabase = require('./resetdatabase');
 
-// Support receiving text in HTTP request bodies
-// app.use(bodyParser.text());
-// // Support receiving JSON in HTTP request bodies
-// app.use(bodyParser.json());
-
-
 //importing mongodb
 var mongo_express = require('mongo-express/lib/middleware');
 // import the default Mongo Express configuration
 var mongo_express_config = require('mongo-express/config.default.js');
 app.use('/mongo_express', mongo_express(mongo_express_config));
-
-
 
 var MongoDB = require('mongodb');
 var MongoClient = MongoDB.MongoClient;
@@ -83,22 +75,77 @@ MongoClient.connect(url, function(err, db) {
   }
 
   /**
-   * Get the feed data for a particular user.
-   */
-   function getFeedData(restrictions, callback) {
-     var feedData = [];
-     db.collection('recipe').find().toArray(function(err, recipes) {
-       if (err) {
-         callback(err);
-       } else {
-         if (restrictions.length == 0) {
-           recipes.forEach((recipe) => {
-             feedData.push(recipe);
-           });
-           callback(null, feedData);
-         }
-       }
-     });
+  * Get the feed data leaving out particular restrictions
+  * @param list of restrictions
+  * @param callback
+  */
+  function getFeedData(restrictions, callback) {
+    var feedData = [];
+    db.collection('recipe').find().toArray(function(err, recipes) {
+      var recipeSet = [];
+      var badRecipeIds = [];
+      var badRecipesTemp = [];
+      var count = 0;
+
+      function processRestriction(err, restriction) {
+        if (err) {
+          callback(err);
+        } else {
+          restriction.recipes.forEach((recipeid) => {
+            badRecipesTemp.push(recipeid);
+            if (badRecipesTemp.length === restriction.recipes.length) {
+              // Recipes for this restriction are completely checked
+              // Add all recipes in temp array to final array and reset temp
+              for (var j = 0; j < badRecipesTemp.length; j++) {
+                if (badRecipeIds.indexOf(badRecipesTemp[j]) === -1) {
+                  badRecipeIds.push(badRecipesTemp[j]);
+                }
+              }
+              badRecipesTemp = [];
+              count++;
+              if (count === restrictions.length) {
+                // Last restriction to process
+                // Create recipe array to be resolved.
+                for (var k = 0; k < recipes.length -1; k++) {
+                  var found = false;
+                  for (var i = 0; i < badRecipeIds.length; i++) {
+                    if (badRecipeIds[i].equals(recipes[k]._id)) {
+                      found = true;
+                      break
+                    }
+                  }
+                  if (!found) {
+                    recipeSet.push(recipes[k]);
+                  }
+                }
+                // Call callback function with recipeSet
+                callback(null, recipeSet);
+              }
+            }
+          });
+        }
+      }
+
+      if (err) {
+        callback(err);
+      } else {
+        if (restrictions.length == 0) {
+          recipes.forEach((recipe) => {
+            if (!recipe._id.equals(new ObjectID("000000000000000000000100"))) {
+              feedData.push(recipe);
+            }
+          });
+          callback(null, feedData);
+        } else if (restrictions.length > 0) {
+          // get the unique set of recipes that have restrictions
+
+          for (var i = 0; i < restrictions.length; i++) {
+            var restrictionsId = hexify(restrictions[i]);
+            db.collection('restrictions').findOne({ _id: new ObjectID(restrictionsId)}, processRestriction);
+          }
+        }
+      }
+    });
    }
 
    /**
@@ -226,7 +273,6 @@ MongoClient.connect(url, function(err, db) {
             user.Sunday = calendarObject.slice(satLength, sunLength);
             res.send(user);
             }
-
         });
 
     }
@@ -241,20 +287,30 @@ MongoClient.connect(url, function(err, db) {
     app.delete('/user/:userid/calendar/:week/:day/:meal', function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var week = req.params.week;
-      var userid = parseInt(req.params.userid, 10);
+      var userid = req.params.userid;
       var day = req.params.day;
       var meal = parseInt(req.params.meal, 10);
       if (fromUser === userid) {
-        var userData = readDocument('users', userid);
-        var calId = userData.calendarId;
-        var calendar = readDocument('calendars', calId);
-        var weekno = parseInt(week, 10);
-        var weekCal = calendar[weekno];
-        if (meal !== -1) {
-          weekCal[day].splice(meal, 1);
-          writeDocument('calendars', calendar);
-          res.send(calendar);
-        }
+        userid = new ObjectID(userid);
+        db.collection("users").findOne({_id:userid}, function(err, user) {
+          if (err) {
+            res.status(500).send("Database error occured: "+err);
+          } else {
+            var calenderId = user.calendarId;
+          }
+
+          db.collection("calendars").findAndModify({_id:calenderId}, [['_id', 'asc']], {
+            $set: {[week + "." + day + "."+ meal]: new ObjectID("000000000000000000000100")}
+          }, {"new": true}, function(err, calendar) {
+            if (err) {
+              res.status(500).send("Database error occured: "+err);
+            } else if (calendar == null) {
+              console.log("No document found!");
+            }
+          });
+
+          res.send(user);
+        });
       }
       else {
         res.status(401).end();
@@ -723,7 +779,7 @@ MongoClient.connect(url, function(err, db) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
       var recipeid = hexify(req.params.recipeid);
-      var weekno = 2;
+      var weekno = 1;
       var meal = 3;
       if (userid === fromUser) {
         var day = req.params.dayid;
@@ -734,19 +790,6 @@ MongoClient.connect(url, function(err, db) {
           } else {
             var calenderId = user.calendarId;
           }
-          //now that we have the calendar id from the user, update it
-          //ok to just use update because we're sending the user in the end
-          // db.collection("calendars").updateOne({_id:calenderId},
-          //    {
-          //       $set: {
-          //          ["calendar." + weekno + day + meal] :new ObjectID(recipeid)
-          //       }
-          //    }, function(err) {
-          //       if (err) {
-          //          res.status(500).send("Database Error: " + err);
-          //       }
-          //    }
-          // );
           db.collection("calendars").findAndModify({_id:calenderId}, [['_id', 'asc']], {
             $set: {[weekno + "." + day + "."+ meal]:new ObjectID(recipeid)}
           }, {"new": true}, function(err, calendar) {
@@ -762,23 +805,6 @@ MongoClient.connect(url, function(err, db) {
           res.send(user);
         });
 
-        // var recipeid = parseInt(req.params.recipeid, 10);
-        // var day = req.params.dayid;
-        // var user = readDocument("users", userid);
-        // var calendar = readDocument("calendars", user.calendarId);
-        // // var week = calendar[2];
-        // var weekno = 2;
-        // var weekCal = calendar[weekno];
-        // // console.log(weekCal[day]);
-        // if (weekCal[day][3]) {
-        //    weekCal[day][3] = recipeid;
-        // } else {
-        //    weekCal[day][3];
-        // }
-        // // console.log(weekCal[day]);
-        // writeDocument("users", user);
-        // writeDocument("calendars", calendar);
-        // res.send(user);
       } else {
         res.status(401).end();
       }
