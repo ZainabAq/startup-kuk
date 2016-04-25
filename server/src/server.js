@@ -82,56 +82,72 @@ MongoClient.connect(url, function(err, db) {
   function getFeedData(restrictions, callback) {
     var feedData = [];
     db.collection('recipe').find().toArray(function(err, recipes) {
+      var recipeSet = [];
+      var badRecipeIds = [];
+      var badRecipesTemp = [];
+      var count = 0;
+
+      function processRestriction(err, restriction) {
+        if (err) {
+          callback(err);
+        } else {
+          restriction.recipes.forEach((recipeid) => {
+            badRecipesTemp.push(recipeid);
+            if (badRecipesTemp.length === restriction.recipes.length) {
+              // Recipes for this restriction are completely checked
+              // Add all recipes in temp array to final array and reset temp
+              for (var j = 0; j < badRecipesTemp.length; j++) {
+                if (badRecipeIds.indexOf(badRecipesTemp[j]) === -1) {
+                  badRecipeIds.push(badRecipesTemp[j]);
+                }
+              }
+              badRecipesTemp = [];
+              count++;
+              if (count === restrictions.length) {
+                // Last restriction to process
+                // Create recipe array to be resolved.
+                for (var k = 0; k < recipes.length -1; k++) {
+                  var found = false;
+                  for (var i = 0; i < badRecipeIds.length; i++) {
+                    if (badRecipeIds[i].equals(recipes[k]._id)) {
+                      found = true;
+                      break
+                    }
+                  }
+                  if (!found) {
+                    if (!recipes[k]._id.equals(new ObjectID("000000000000000000000100"))) {
+                      recipeSet.push(recipes[k]);
+                    }
+                  }
+                }
+                // Call callback function with recipeSet
+                callback(null, recipeSet);
+              }
+            }
+          });
+        }
+      }
+
       if (err) {
         callback(err);
       } else {
         if (restrictions.length == 0) {
           recipes.forEach((recipe) => {
-            feedData.push(recipe);
+            if (!recipe._id.equals(new ObjectID("000000000000000000000100"))) {
+              feedData.push(recipe);
+            }
           });
           callback(null, feedData);
         } else if (restrictions.length > 0) {
           // get the unique set of recipes that have restrictions
-          var recipeSet = [];
-          var badRecipeIds = [];
 
-          for (var id in restrictions) {
-            var restrictionsId = hexify(restrictions[id])
-            db.collection('restrictions').findOne({_id: new ObjectID(restrictionsId)}, function(err, restriction) {
-              if (err) {
-                callback(err);
-              } else {
-               restriction.recipes.forEach((recipeid) => {
-                 // if it's not already in recipeSet, add it
-                 var found = false;
-                 for (var i in badRecipeIds) {
-                   if (badRecipeIds[i].equals(recipeid)) {
-                     found = true;
-                   }
-                 } // end for
-                 if (!found) {
-                   badRecipeIds.push(recipeid);
-                   var errored = false;
-                   getRecipe(recipeid, function(err, recipe) {
-                     if (errored) {
-                       return;
-                     } else if (err) {
-                       callback(err);
-                     }
-                     recipeSet.push(recipe);
-                     console.log(recipe._id);
-                   })
-                 }
-               }); // end forEach
-              //  console.log(badRecipeIds);
-              //  console.log(recipeSet);
-              } // end else
-            }); // end db.findOne
-          } // end for
-         callback(null, feedData);
-         }
-       }
-     });
+          for (var i = 0; i < restrictions.length; i++) {
+            var restrictionsId = hexify(restrictions[i]);
+            db.collection('restrictions').findOne({ _id: new ObjectID(restrictionsId)}, processRestriction);
+          }
+        }
+      }
+    });
    }
 
    /**
