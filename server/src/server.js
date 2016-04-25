@@ -106,7 +106,7 @@ MongoClient.connect(url, function(err, db) {
               if (count === restrictions.length) {
                 // Last restriction to process
                 // Create recipe array to be resolved.
-                for (var k = 0; k < recipes.length; k++) {
+                for (var k = 0; k < recipes.length -1; k++) {
                   var found = false;
                   for (var i = 0; i < badRecipeIds.length; i++) {
                     if (badRecipeIds[i].equals(recipes[k]._id)) {
@@ -131,7 +131,9 @@ MongoClient.connect(url, function(err, db) {
       } else {
         if (restrictions.length == 0) {
           recipes.forEach((recipe) => {
-            feedData.push(recipe);
+            if (!recipe._id.equals(new ObjectID("000000000000000000000100"))) {
+              feedData.push(recipe);
+            }
           });
           callback(null, feedData);
         } else if (restrictions.length > 0) {
