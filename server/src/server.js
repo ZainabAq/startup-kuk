@@ -659,7 +659,11 @@ MongoClient.connect(url, function(err, db) {
             var name = recipes[j].name.toLowerCase().split(" ");
             for (var k=0; k<text.length; k++) {
               for (var h=0; h<name.length; h++) {
-                if (text[k] == name[h]) {
+                if (text[k] === name[h]) {
+                  // if user searches the recipe placeholder, break
+                  if (recipes[j]._id == "000000000000000000000100") {
+                    break;
+                  }
                   match.push(recipes[j]._id);
                 }
               }
