@@ -95,9 +95,18 @@ var initialData = {
        "restrictions": [new ObjectID("000000000000000000000001")],
        "img": "http://www.eat-yourself-skinny.com/wp-content/uploads/2013/09/113.jpg",
        "description": "This healthy, tasty smoothie is the perfect way to start your work week"
+    },
+
+    "7": {
+      "_id": new ObjectID("000000000000000000000100"),
+      "name": "Please add a recipe here!",
+      "averageRating": [0],
+      "instructions": ["If you don't want to stay hungry for that meal of the day, go to our browse selection and add a recipe"],
+      "img": "http://www.taher.com/wp-content/uploads/2015/01/why-are-you-hungry.jpg"
     }
 
    },
+
    "calendars": {
      "1": {
      "_id": new ObjectID("000000000000000000000001"),
