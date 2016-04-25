@@ -110,6 +110,32 @@ var initialData = {
        "description": "These pancakes are light and don't leave you feeling too full"
     },
     "8": {
+       "_id": new ObjectID("000000000000000000000008"),
+       "name": "Greek Omelet with Asparagus and Feta Cheese",
+       "ingredients": ["2 tablespoons olive oil", "6 spears fresh asparagus, trimmed and chopped", "1/2 red bell pepper, chopped", "1/2 cup cherry tomatoes, halved", "1/2 cup chopped fresh spinach", "1/2 teaspoon minced garlic", "1/2 teaspoon dried oregano", "1/2 teaspoon dried basil", "2 tablespoons butter", "6 large eggs", "1/4 cup whole milk", "1/2 cup crumbled feta cheese", "1/4 cup shredded cheddar cheese"],
+       "cuisine": "Greek",
+       "mealType": "Main Course",
+       "averageRating": [5, 5, 5],
+       "instructions": ["Heat olive oil in a large skillet over medium heat; cook and stir asparagus and red bell pepper until the vegetables start to soften, about 3 minutes. Stir in cherry tomatoes, spinach, garlic, oregano, basil, and salt and continue cooking until tomatoes are soft and spinach has cooked down, another 3 to 5 minutes. Remove from heat and transfer vegetables to a plate.", "Melt butter in clean skillet over medium heat. Whisk eggs and milk in a bowl and pour into hot butter, swirling skillet to cover entire bottom with egg mixture. Pull up an edge of the omelet with a spatula and tilt pan to allow unset egg to run underneath and cook; continue around pan, lifting omelet edge and tilting pan, until all the egg mixture is set. Sprinkle omelet with salt.", "Spoon cooked asparagus mixture onto one side of the omelet and sprinkle with feta and Cheddar cheeses. Gently fold half the omelet over the vegetables and cheese and press edges lightly to seal in the filling. Cook until filling is hot and Cheddar cheese has melted, 1 to 2 more minutes. Cut in slices to serve."],
+       "time": "30 mins",
+       "restrictions": [new ObjectID("000000000000000000000001"), new ObjectID("000000000000000000000002")],
+       "img": "http://hungryjackpotatoes.com/wp-content/uploads/2013/04/omlet.jpg",
+       "description": "This omelet is filled with a mixture of cherry tomatoes, spinach, bell pepper, and asparagus"
+    },
+    "9": {
+       "_id": new ObjectID("000000000000000000000009"),
+       "name": "Shrimp Cocktail",
+       "ingredients": ["1 quart canola oil", "1 pack of egg roll skins cut into 1/2-inch rounds", "1 pound rock shrimp", "1/2 cup Old Bay seasoning", "2 lemons", "2 bay leaves", "2 cups ketchup", "1/2 cup prepared horseradish", "1 tablespoon Worcestershire sauce", "fresh chive and candied lemon zest for garnish (optional)"],
+       "cuisine": "Mexican",
+       "mealType": "Appetizer",
+       "averageRating": [3, 4, 5],
+       "instructions": ["In a sauce pan heat canola oil to approximately 325 degrees using a candy thermometer (if you do not have a candy thermometer, keep the oil over a medium high heat).", "Place the egg roll skins into the hot oil one at a time, flipping them when hey become crisply. Remove from the oil and set on a paper towel to drip dry.", "Fill a sauce pan with enough water to cover the shrimp and bring it to a simmer.", "Add Old Bay seasoning, juice of 1 lemon and bay leaves.", "Bring back up to a simmer and add the rock shrimp. The rock shrimp should only take about 5–7 minutes to poach.", "Strain the shrimp from the water and rapidly cool under cold water. Set aside.", "Blend ketchup in a mixing bowl with horseradish, juice of 1 lemon and 1 tablespoon of Worcestershire sauce.", "Toss the shrimp in your cocktail sauce and place them on top of wonton discs. Garnish with chive and candied lemon zest."],
+       "time": "20 mins",
+       "restrictions": [new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000007")],
+       "img": "http://saltlakemagazine.com/site_media/uploads/February2014/shrimpcocktails99.jpg",
+       "description": "Surprise your guests with this delicioso appetizer"
+    },
+    "10": {
       "_id": new ObjectID("000000000000000000000100"),
       "name": "Please add a recipe here!",
       "averageRating": [0],
