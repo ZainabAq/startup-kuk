@@ -115,7 +115,9 @@ MongoClient.connect(url, function(err, db) {
                     }
                   }
                   if (!found) {
-                    recipeSet.push(recipes[k]);
+                    if (!recipes[k]._id.equals(new ObjectID("000000000000000000000100"))) {
+                      recipeSet.push(recipes[k]);
+                    }
                   }
                 }
                 // Call callback function with recipeSet
