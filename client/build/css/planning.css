@@ -102,3 +102,52 @@ body {
 .day {
     padding-bottom: 100px;
 }
+
+.calender-divider {
+  border-top: 1px solid #000;
+}
+
+.mealtypes {
+  font-size: 15px;
+  padding: 20px 150px;
+}
+
+.mealtypes li:first-child {
+  padding-right: 170px;
+}
+
+.mealtypes li:nth-child(2) {
+  padding-right: 185px;
+}
+
+.mealtypes li:nth-child(3) {
+  padding-right: 187px;
+}
+
+.Mon {
+  padding-right: 22px;
+}
+
+.Tues {
+  padding-right: 20px;
+}
+
+.Wed {
+  padding-right: 0px;
+}
+
+.Thur {
+  padding-right: 18px;
+}
+
+.Fri {
+  padding-right: 40px;
+}
+
+.Sat {
+  padding-right: 20px;
+}
+
+.Sun {
+  padding-right: 30px;
+}

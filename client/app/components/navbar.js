@@ -42,8 +42,8 @@ export default class Navbar extends React.Component {
                   <li><Link to={"/profile/000000000000000000000001"}>Profile</Link></li>
                   <li><Link to="/favorites/000000000000000000000001">Favorites</Link></li>
                   <li><Link to="/calendar/000000000000000000000001">Calendar</Link></li>
-                  <li><Link to="/shopping/000000000000000000000001">Shopping List</Link></li>
-                  <li role="separator" className="divider"></li>
+                  <li><Link to="/shoppingList/000000000000000000000001">ShoppingList</Link></li>
+                  <li className="divider"></li>
                   <li><a href="#">Log out</a></li>
                 </ul></div></li>
               </ul>
