@@ -72,7 +72,7 @@ var initialData = {
 
      "5": {
        "_id": new ObjectID("000000000000000000000005"),
-       "name": "Creamy Smoked Salmon Pasta",
+       "name": "Smoked Salmon Pasta",
        "ingredients": ["6 tablespoons butter", "1/2 onion, finely chopped", "2 tablespoons all-purpose flour", "2 teaspoons garlic powder", "2 cups skim milk", "1/2 cup grated Romano cheese",  "1  cup frozen green peas, thawed and drained", "1/2 cup canned mushrooms, drained", "10 ounces smoked salmon, chopped", "1 (16 ounce) package penne pasta"],
        "cuisine": "Italian",
        "mealType": "Main Course",
@@ -137,7 +137,7 @@ var initialData = {
     },
     "10": {
        "_id": new ObjectID("000000000000000000000010"),
-       "name": "Greek Omelet with Asparagus and Feta Cheese",
+       "name": "Greek Omelet",
        "ingredients": ["2 tablespoons olive oil", "6 spears fresh asparagus, trimmed and chopped", "1/2 red bell pepper, chopped", "1/2 cup cherry tomatoes, halved", "1/2 cup chopped fresh spinach", "1/2 teaspoon minced garlic", "1/2 teaspoon dried oregano", "1/2 teaspoon dried basil", "2 tablespoons butter", "6 large eggs", "1/4 cup whole milk", "1/2 cup crumbled feta cheese", "1/4 cup shredded cheddar cheese"],
        "cuisine": "Greek",
        "mealType": "Main Course",
@@ -150,7 +150,7 @@ var initialData = {
     },
     "11": {
        "_id": new ObjectID("000000000000000000000011"),
-       "name": "Classic Spanish Sangria",
+       "name": "Classic Sangria",
        "ingredients": ["1 lemon", "1 lime", "1 orange", "1 1/2 cups rum", "1/2 cup white sugar", "1 (750 milliliter) bottle dry red wine", "1 cup orange juice"],
        "cuisine": "Spanish",
        "mealType": "Snack",
@@ -163,7 +163,7 @@ var initialData = {
     },
     "12": {
        "_id": new ObjectID("000000000000000000000012"),
-       "name": "Green Tea Muffin with White Chocolate",
+       "name": "Green Tea Muffin",
        "ingredients": ["100g unsalted butter", "1/2 cup cane sugar", "1/2 milk", "1 1/2 cup flour", "1 1/2 teaspoon baking powder", "2 tablespoons green tea matcha powder", "1/2 to 1 cup chunked white chocolate"],
        "cuisine": "Japanese",
        "mealType": "Dessert",
@@ -176,7 +176,7 @@ var initialData = {
     },
     "13": {
        "_id": new ObjectID("000000000000000000000013"),
-       "name": "Vegan Morning Smoothie",
+       "name": "Vegan Smoothie",
        "ingredients": ["1 banana", "1/3 cup frozen chopped spinach", "1/2 cup frozen mixed fruit", "1 tablespoon flax seed meal", "1/2 scoop vegan protein powder", "1 tablespoon chia seeds", "1/2 teaspoon matcha green tea powder"],
        "cuisine": "American",
        "mealType": "Snack",
@@ -189,7 +189,7 @@ var initialData = {
     },
     "14": {
        "_id": new ObjectID("000000000000000000000014"),
-       "name": "Chocolate Hazelnut Fruit Crepes",
+       "name": "Hazelnut Fruit Crepes",
        "ingredients": ["2 cup chocolate-flavored hazelnut spread", "8 bananas, sliced", "1 can (7 ounce) pressurized whipped cream", "1 cup all-purpose flour", "2 egg", "1⁄2 cup milk", "1⁄2 cup water", "1⁄4 tsp salt", "2 tbsp butter, melted"],
        "cuisine": "French",
        "mealType": "Dessert",
