@@ -36,7 +36,7 @@ export default class Navbar extends React.Component {
                 <li className="presentation"><div className="btn-group"><button type="button"
                   className="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
-                  PIC
+                  <span className="glyphicon glyphicon-user"></span>
                 </button>
                 <ul className="dropdown-menu">
                   <li><Link to={"/profile/000000000000000000000001"}>Profile</Link></li>

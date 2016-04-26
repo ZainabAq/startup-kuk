@@ -79,12 +79,11 @@ export default class Calendar extends React.Component {
               <Link to={"/favorites/" + this.props.user}><button type="button" className="btn btn-default pull-left font1">Add recipes</button></Link>
             <button type="button" className="btn btn-default next pull-right font1" onClick={(e) =>this.handleCalChangeNext(e)}>Next week</button>
           </div>
-        <hr className="calender-divider" />
         <ul className="list-inline mealtypes">
-          <li>Breakfast</li>
-          <li>Lunch</li>
-          <li>Snack</li>
-          <li>Dinner</li>
+          <li><strong>Breakfast</strong></li>
+          <li><strong>Lunch</strong></li>
+          <li><strong>Snack</strong></li>
+          <li><strong>Dinner</strong></li>
         </ul>
         <ul className = "day list-inline">
           <li><h5 className="days Mon">Monday</h5></li>
