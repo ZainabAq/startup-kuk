@@ -17,3 +17,21 @@
 .shopping .title {
    text-align: center;
 }
+
+.shopping ul {
+  list-style: none;
+}
+
+.shopping .fa {
+  padding-right: 10px;
+}
+
+.shopping .form-control {
+  padding-left: 10px;
+  width: 250px;
+  margin-left: 10px;
+}
+
+.shopping .btn {
+  margin-left: 1%;
+}

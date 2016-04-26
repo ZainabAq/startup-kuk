@@ -32,6 +32,10 @@ icon will appear depending on the status. */
   }
 
   render() {
+    var name= this.props.data.name;
+    if (name.length > 20) {
+      name= name.trim().substring(0, 18)+'...';
+    }
     /* sets the appropriate icon to the favorited status */
     var favButtonIcon = "fa fa-heart-o fa-lg";
     if (this.state.favoriteStatus) {
@@ -39,7 +43,7 @@ icon will appear depending on the status. */
     }
     return (
       <div className="col-md-2 thumbnail">
-        <h5 align="center"><Link to={"/recipe/" + this.props.data._id}>{this.props.data.name}</Link></h5>
+        <h5 align="center"><Link to={"/recipe/" + this.props.data._id}>{name}</Link></h5>
         <div className="imagespace">
         <img src={this.props.data.img} alt={this.props.data._id} className="img-rounded croppedimg" />
           <div className="heartspace">

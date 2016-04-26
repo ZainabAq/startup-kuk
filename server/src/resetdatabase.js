@@ -203,6 +203,7 @@ var initialData = {
     "16": {
       "_id": new ObjectID("000000000000000000000100"),
       "name": "Please add a recipe here!",
+      "ingredients":["STARVATION"],
       "averageRating": [0],
       "instructions": ["If you don't want to stay hungry for that meal of the day, go to our browse selection and add a recipe"],
       "img": "http://www.taher.com/wp-content/uploads/2015/01/why-are-you-hungry.jpg"
@@ -371,17 +372,17 @@ var initialData = {
      "1": {
        "_id": new ObjectID("000000000000000000000001"),
        "tag": "Dairy",
-       "recipes": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"),new ObjectID("000000000000000000000006")]
+       "recipes": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"),new ObjectID("000000000000000000000006"), new ObjectID("000000000000000000000007"), new ObjectID("000000000000000000000010"), new ObjectID("000000000000000000000012"), new ObjectID("000000000000000000000014")]
      },
      "2": {
        "_id": new ObjectID("000000000000000000000002"),
        "tag": "Eggs",
-       "recipes": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002")]
+       "recipes": [new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"), new ObjectID("000000000000000000000007"), new ObjectID("000000000000000000000009"), new ObjectID("000000000000000000000010"), new ObjectID("000000000000000000000012"), new ObjectID("000000000000000000000014")]
      },
      "3": {
        "_id": new ObjectID("000000000000000000000003"),
        "tag": "Nuts",
-       "recipes":[]
+       "recipes":[new ObjectID("000000000000000000000014")]
      },
      "4": {
        "_id": new ObjectID("000000000000000000000004"),
@@ -391,7 +392,11 @@ var initialData = {
      "5": {
        "_id": new ObjectID("000000000000000000000005"),
        "tag": "Gluten",
+<<<<<<< HEAD
        "recipes":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000007")]
+=======
+       "recipes":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000007"), new ObjectID("000000000000000000000012"), new ObjectID("0000000000000000000000014")]
+>>>>>>> 5bc52e5dd6f0f1880c4b902ae733db656aab3268
      },
      "6": {
        "_id": new ObjectID("000000000000000000000006"),
@@ -401,7 +406,7 @@ var initialData = {
      "7": {
        "_id": new ObjectID("000000000000000000000007"),
        "tag": "Shellfish",
-       "recipes":[]
+       "recipes":[new ObjectID("000000000000000000000009")]
      },
      "8": {
        "_id": new ObjectID("000000000000000000000008"),

@@ -2,9 +2,7 @@
     background-color: #F1F4F3;
     margin: 1em;
     padding: 2em;
-    border: 1px solid #3d5467;
     border-radius: 30px 30px 30px 30px;
-    /*border-radius: 0px 30px 30px 0px;*/
 }
 
 .instamode .container h1 {
@@ -25,14 +23,18 @@
 .instamode .enter-ingredients {
   width: 505px !important;
   padding: 5px;
-  /*margin-bottom: 0.5em;*/
   margin:auto;
   width: 50%;
   border-radius: 30px 30px 30px 30px;
-  border-color: #9c102e;
+  border-color: #ccc;
   margin-bottom:0.75em;
   background-color: white;
   color: #686963;
+  padding-left: 15px;
+}
+
+.instamode .enter-ingredients: focus {
+  border: none;
 }
 
 .instamode .description {
@@ -50,10 +52,9 @@
 .instamode .ingredients-box {
   margin: auto;
   width:95%;
-  border: 1px solid #3d5467;
-  /*background-color: #8aa29e;*/
   background-color: white;
   border-radius: 30px 30px 30px 30px;
+  border: 1px solid #ccc;
   padding: 20px;
   padding-bottom:7em;
   margin-bottom: 1em;
@@ -74,9 +75,7 @@
 .instamode .findrecipe-btn{
   border-radius: 30px 30px 30px 30px;
   margin-top: 1em;
-  /*color: #9c102e;
-  background-color: #8aa29e;*/
-  color: white;
+  border: none;
   background-color: #9c102e;
   padding:0.5em;
   padding-left: 1em;

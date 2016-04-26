@@ -9,10 +9,10 @@ import Instamode from './components/instamode';
 import Favorites from './components/favorites';
 import Calendar from './components/calendar';
 import Navbar from './components/navbar';
+import ShoppingList from './components/shopping';
 import ErrorBanner from './components/errorbanner';
 import {ResetDatabase} from './components/resetbutton';
 import Shopping from './components/shopping';
-
 
 /**
  * A recipe page
@@ -91,9 +91,9 @@ class App extends React.Component {
     return (
       <div>
         <Navbar />
-          <div className="col-md-12">
-                <ErrorBanner />
-              </div>
+        <div className="col-md-12">
+            <ErrorBanner />
+        </div>
         <div>{this.props.children}</div>
       </div>
     )
@@ -103,7 +103,7 @@ class App extends React.Component {
 ReactDOM.render((
   <div>
     <Router history={hashHistory}>
-      <Route path="/" component={App}>
+      <Route name = "Kuk" path="/" component={App}>
         <IndexRoute component={BrowsePage} />
         <Route path="recipe/:id" component={RecipePage} />
         <Route path="profile/:id" component={ProfilePage} />

@@ -18,6 +18,8 @@ var mongo_express = require('mongo-express/lib/middleware');
 var mongo_express_config = require('mongo-express/config.default.js');
 app.use('/mongo_express', mongo_express(mongo_express_config));
 
+
+
 var MongoDB = require('mongodb');
 var MongoClient = MongoDB.MongoClient;
 var ObjectID = MongoDB.ObjectID;
@@ -74,11 +76,7 @@ MongoClient.connect(url, function(err, db) {
     return newId;
   }
 
-  /**
-  * Get the feed data leaving out particular restrictions
-  * @param list of restrictions
-  * @param callback
-  */
+
   function getFeedData(restrictions, callback) {
     var feedData = [];
     db.collection('recipe').find().toArray(function(err, recipes) {
@@ -106,7 +104,7 @@ MongoClient.connect(url, function(err, db) {
               if (count === restrictions.length) {
                 // Last restriction to process
                 // Create recipe array to be resolved.
-                for (var k = 0; k < recipes.length -1; k++) {
+                for (var k = 0; k < recipes.length - 1; k++) {
                   var found = false;
                   for (var i = 0; i < badRecipeIds.length; i++) {
                     if (badRecipeIds[i].equals(recipes[k]._id)) {
@@ -170,6 +168,19 @@ MongoClient.connect(url, function(err, db) {
      });
    });
 
+   // Get restrictionIDs for the current user if user exists; otherwise send an empty array
+   app.get('/user/restrictions', function(req, res) {
+     var fromUser = getUserIdFromToken(req.get('Authorization'));
+     db.collection('users').findOne({ _id: new ObjectID(fromUser) }, function(err, userData) {
+       if (err) {
+         res.status(500).send("Database Error: " + err);
+       } else if (userData === null) {
+         res.send([]);
+       } else {
+         res.send(userData.restrictions);
+       }
+     });
+   });
 
    /*
    * Given a recipe ID, returns a recipe object with references resolved.
@@ -272,9 +283,15 @@ MongoClient.connect(url, function(err, db) {
             var satLength = calendar[week].Saturday.length + friLength;
             user.Saturday = calendarObject.slice(20, 24);
             var sunLength = calendar[week].Sunday.length + satLength;
+<<<<<<< HEAD
             user.Sunday = calendarObject.slice(24, 28);
             res.send(user);
+=======
+            user.Sunday = calendarObject.slice(satLength, sunLength);
+            //res.send(user);
+>>>>>>> 5bc52e5dd6f0f1880c4b902ae733db656aab3268
             }
+            res.send(user);
         });
 
     }
@@ -427,7 +444,6 @@ MongoClient.connect(url, function(err, db) {
     function getRestrictionStrings(ids, callback) {
       var strings = [];
       var errored = false;
-      console.log("here");
 
       function processRestrictions(err, restrictionData) {
         if (errored) {
@@ -659,7 +675,11 @@ MongoClient.connect(url, function(err, db) {
             var name = recipes[j].name.toLowerCase().split(" ");
             for (var k=0; k<text.length; k++) {
               for (var h=0; h<name.length; h++) {
-                if (text[k] == name[h]) {
+                if (text[k] === name[h]) {
+                  // if user searches the recipe placeholder, break
+                  if (recipes[j]._id == "000000000000000000000100") {
+                    break;
+                  }
                   match.push(recipes[j]._id);
                 }
               }

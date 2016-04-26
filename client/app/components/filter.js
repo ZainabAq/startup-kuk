@@ -2,19 +2,31 @@ import React from 'react';
 
 export default class FilterBar extends React.Component {
   constructor(props) {
-      super(props);
-      this.state = {
-        restrictions: [],
-        checks: []
-      };
-    }
+    super(props);
+    this.state = {
+      restrictions: this.props.restrictions,
+      checks: []
+    };
+    this.props.onFilter(this.state.restrictions);
+  }
 
   getChecks() {
     var restrictions = this.state.restrictions;
-    var iterable = [1,2,3,4,5,6,7,8,9,10];
+    var iterable = [
+      "000000000000000000000001",
+      "000000000000000000000002",
+      "000000000000000000000003",
+      "000000000000000000000004",
+      "000000000000000000000005",
+      "000000000000000000000006",
+      "000000000000000000000007",
+      "000000000000000000000008",
+      "000000000000000000000009",
+      "000000000000000000000010"
+    ];
     var booleans = [];
     for (let num of iterable) {
-      if (restrictions.includes(num.toString())) {
+      if (restrictions.includes(num)) {
         booleans.push(true);
       } else {
         booleans.push(false);
@@ -58,76 +70,86 @@ export default class FilterBar extends React.Component {
           <form role="form">
             <div className="row">
              <div className="col-xs-10 col-xs-offset-1 row">
-                <div className="checkbox">
-                  <label>
-                    <input value={1} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[0]} />Dairy
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={2} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[1]} />Eggs
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={3} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[2]} />Nuts
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={4} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[3]} />Soy
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={5} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[4]} />Gluten
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={6} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[5]} />Fish
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={7} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[6]} />Shellfish
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={8} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[7]} />Poultry
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={9} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[8]} />Beef
-                  </label>
-                </div>
-                <div className="checkbox">
-                  <label>
-                    <input value={10} type="checkbox" onChange={(e) => {
-                        this.handleChange(e);
-                      }} checked={this.state.checks[9]} />Pork
-                  </label>
-                </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000001" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000001")}
+                     checked={this.state.checks[0]} />Dairy
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000002" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000002")}
+                     checked={this.state.checks[1]} />Eggs
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000003" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000003")}
+                     checked={this.state.checks[2]} />Nuts
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000004" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000004")}
+                     checked={this.state.checks[3]} />Soy
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000005" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000005")}
+                     checked={this.state.checks[4]} />Gluten
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000006" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000006")}
+                     checked={this.state.checks[5]} />Fish
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000007" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000007")}
+                     checked={this.state.checks[6]} />Shellfish
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000008" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000008")}
+                     checked={this.state.checks[7]} />Poultry
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000009" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000009")}
+                     checked={this.state.checks[8]} />Beef
+                 </label>
+               </div>
+               <div className="checkbox">
+                 <label>
+                   <input value="000000000000000000000010" type="checkbox" onChange={(e) => {
+                       this.handleChange(e);
+                     }} defaultChecked={this.state.restrictions.includes("000000000000000000000010")}
+                     checked={this.state.checks[9]} />Pork
+                 </label>
+               </div>
              </div>
             </div>
             <hr />

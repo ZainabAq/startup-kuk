@@ -10,7 +10,7 @@ function sendXHR(verb, resource, body, cb) {
   xhr.open(verb, resource);
   xhr.setRequestHeader('Authorization', 'Bearer ' + token);
 
-  // The below comment tells ESLint that FacebookError is a global.
+  // The below comment tells ESLint that KukError is a global.
   // Otherwise, ESLint would complain about it! (See what happens in Atom if
   // you remove the comment...)
   /*global KukError*/
@@ -133,11 +133,21 @@ export function addUserRestriction(restrictionId, userId, cb) {
  * @param restrictionId The id of the restriction to be removed
  * @param userId The id of the user whose restrictions are to be modified
  * @param cb The callback function to be called at the end
- * Calls cb on an object holding the user's modified restrictions array (unresolved)
- * and the checkbox.
+ * Calls cb on the user's modified restrictions array (unresolved)
  */
 export function removeUserRestriction(restrictionId, userId, cb) {
   sendXHR('DELETE', '/user/' + userId + '/restriction/' + restrictionId, undefined, (xhr) => {
+    cb(JSON.parse(xhr.responseText));
+  });
+}
+
+/**
+ * @param cb The callback function to be called at the end
+ * Calls cb on either an empty array or an array of the current user's
+ * restrictions, based on whether or not the user has an account.
+ */
+export function getCurrentUserRestrictions(cb) {
+  sendXHR('GET', '/user/restrictions', undefined, (xhr) => {
     cb(JSON.parse(xhr.responseText));
   });
 }
