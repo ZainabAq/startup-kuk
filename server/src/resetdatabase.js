@@ -391,7 +391,7 @@ var initialData = {
      "5": {
        "_id": new ObjectID("000000000000000000000005"),
        "tag": "Gluten",
-       "recipes":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005")]
+       "recipes":[new ObjectID("000000000000000000000001"),new ObjectID("000000000000000000000002"),new ObjectID("000000000000000000000005"), new ObjectID("000000000000000000000007")]
      },
      "6": {
        "_id": new ObjectID("000000000000000000000006"),
