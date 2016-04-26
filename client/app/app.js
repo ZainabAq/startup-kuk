@@ -11,11 +11,7 @@ import Calendar from './components/calendar';
 import Navbar from './components/navbar';
 import ShoppingList from './components/shopping';
 import ErrorBanner from './components/errorbanner';
-import NotFound from './components/notfound';
 import {ResetDatabase} from './components/resetbutton';
-
-var NotFoundRoute = Router.NotFoundRoute;
-
 
 /**
  * A recipe page
@@ -115,7 +111,6 @@ ReactDOM.render((
         <Route path="favorites/:id" component={FavoritesPage} />
         <Route path="calendar/:id" component={CalendarPage} />
         <Route path="shoppingList/:id" component={ShoppingPage} />
-        <Route path="*" component={NotFound} />
       </Route>
     </Router>
     <ResetDatabase />
