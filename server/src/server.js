@@ -283,15 +283,9 @@ MongoClient.connect(url, function(err, db) {
             var satLength = calendar[week].Saturday.length + friLength;
             user.Saturday = calendarObject.slice(20, 24);
             var sunLength = calendar[week].Sunday.length + satLength;
-<<<<<<< HEAD
             user.Sunday = calendarObject.slice(24, 28);
             res.send(user);
-=======
-            user.Sunday = calendarObject.slice(satLength, sunLength);
-            //res.send(user);
->>>>>>> 5bc52e5dd6f0f1880c4b902ae733db656aab3268
-            }
-            res.send(user);
+          }
         });
 
     }
@@ -800,11 +794,11 @@ MongoClient.connect(url, function(err, db) {
       var recipeid = hexify(req.params.recipeid);
       var weekno = req.params.weekid;
       var meal = req.params.mealid;
-      console.log("mealid: ", meal);
-      console.log("weekid: ", weekno);
+      // console.log("mealid: ", meal);
+      // console.log("weekid: ", weekno);
       if (userid === fromUser) {
         var day = req.params.dayid;
-        console.log("dayid: ", day);
+        // console.log("dayid: ", day);
         userid = new ObjectID(userid);
         db.collection("users").findOne({_id:userid}, function(err, user) {
           if (err) {
@@ -819,9 +813,9 @@ MongoClient.connect(url, function(err, db) {
             if (err) {
               res.status(500).send("Database error occured: "+err);
             } else if (calendar == null) {
-              console.log("No document found!");
+              // console.log("No document found!");
             } else {
-              console.log(calendar.value[weekno][day]);
+              // console.log(calendar.value[weekno][day]);
             }
           });
           //now finding the user object so that we can return it
@@ -856,7 +850,7 @@ MongoClient.connect(url, function(err, db) {
                            }
                         }
                      }
-                     console.log(ingredientList);
+                    //  console.log(ingredientList);
                      res.send(ingredientList);
                   }
                });

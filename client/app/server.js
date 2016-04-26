@@ -226,7 +226,7 @@ export function addRecipeToCalendar(recipeId, userId, week, day, meal, cb) {
 * list based on the calendar.
 */
 export function getShoppingList(userId, cb) {
-   sendXHR("GET", "/user/" +userId + "/shoppinglist/",
+   sendXHR("GET", "/user/" +userId + "/shoppingList/",
    undefined, (xhr) => {
       cb(JSON.parse(xhr.responseText));
    })

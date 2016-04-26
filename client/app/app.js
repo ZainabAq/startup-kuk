@@ -111,7 +111,7 @@ ReactDOM.render((
         <Route path="instamode" component={InstaPage} />
         <Route path="favorites/:id" component={FavoritesPage} />
         <Route path="calendar/:id" component={CalendarPage} />
-        <Route path="shopping/:id" component={ShoppingPage} />
+        <Route path="shoppingList/:id" component={ShoppingPage} />
       </Route>
     </Router>
     <ResetDatabase />
