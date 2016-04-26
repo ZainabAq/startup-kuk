@@ -271,20 +271,25 @@ MongoClient.connect(url, function(err, db) {
             sendDatabaseError(res, err);
           } else {
             var monLength = calendar[week].Monday.length;
-            user.Monday = calendarObject.slice(0, monLength);
+            user.Monday = calendarObject.slice(0, 4);
             var tueLength = calendar[week].Tuesday.length + monLength;
-            user.Tuesday = calendarObject.slice(monLength, tueLength);
+            user.Tuesday = calendarObject.slice(4, 8);
             var wedLength = calendar[week].Wednesday.length + tueLength;
-            user.Wednesday = calendarObject.slice(tueLength, wedLength);
+            user.Wednesday = calendarObject.slice(8, 12);
             var thurLength = calendar[week].Thursday.length + wedLength;
-            user.Thursday = calendarObject.slice(wedLength, thurLength);
+            user.Thursday = calendarObject.slice(12, 16);
             var friLength = calendar[week].Friday.length + thurLength;
-            user.Friday = calendarObject.slice(thurLength, friLength);
+            user.Friday = calendarObject.slice(16, 20);
             var satLength = calendar[week].Saturday.length + friLength;
-            user.Saturday = calendarObject.slice(friLength, satLength);
+            user.Saturday = calendarObject.slice(20, 24);
             var sunLength = calendar[week].Sunday.length + satLength;
+<<<<<<< HEAD
+            user.Sunday = calendarObject.slice(24, 28);
+            res.send(user);
+=======
             user.Sunday = calendarObject.slice(satLength, sunLength);
             //res.send(user);
+>>>>>>> 5bc52e5dd6f0f1880c4b902ae733db656aab3268
             }
             res.send(user);
         });
@@ -749,9 +754,7 @@ MongoClient.connect(url, function(err, db) {
       }
     });
 
-    /**
-    * Gets the favorites data for a particular user.
-    */
+
     /**
     * Gets the favorites data for a particular user.
     */
@@ -791,7 +794,6 @@ MongoClient.connect(url, function(err, db) {
     * Add's a recipe to the user's calendar. Used on the recipe page (when a user
     * clicks on the calendar button, this gets called)
     */
-    //need to resolve this - right now it's hardcoding both the meal and the week
     app.put("/recipe/:recipeid/user/:userid/calendar/:weekid/:dayid/:mealid", function(req, res) {
       var fromUser = getUserIdFromToken(req.get('Authorization'));
       var userid = req.params.userid;
@@ -810,15 +812,16 @@ MongoClient.connect(url, function(err, db) {
           } else {
             var calenderId = user.calendarId;
           }
+          //[weekno + "." + day + "."+ meal]
           db.collection("calendars").findAndModify({_id:calenderId}, [['_id', 'asc']], {
             $set: {[weekno + "." + day + "."+ meal]:new ObjectID(recipeid)}
-          }, {"new": true}, function(err, calendar) {
+         }, {"new": true}, function(err, calendar) {
             if (err) {
               res.status(500).send("Database error occured: "+err);
             } else if (calendar == null) {
               console.log("No document found!");
             } else {
-              console.log(calendar.value[weekno][day][meal]);
+              console.log(calendar.value[weekno][day]);
             }
           });
           //now finding the user object so that we can return it
@@ -829,6 +832,41 @@ MongoClient.connect(url, function(err, db) {
         res.status(401).end();
       }
     });
+
+    /**ADDING IN SHOPPING LIST FUNCTIONALITY*/
+    app.get("/user/:userid/shoppinglist", function(req, res) {
+      var fromUser = getUserIdFromToken(req.get('Authorization'));
+      var userid = req.params.userid;
+      var ingredientList = [];
+      if (fromUser === userid) {
+         console.log("you've been accepted");
+         db.collection("users").findOne({_id:hexify(userid)}, function(err, user) {
+            if (err) {
+               sendDatabaseError(res, err);
+            } else {
+               getWeekCal(user, 1, function(err, calendarObject, calendar) {
+                  if(err) {
+                     sendDatabaseError(res, err);
+                  } else {
+                     for (var i=0; i<calendarObject.length; i++) {
+                        var recipe = calendarObject[i];
+                        for (var key in recipe.ingredients) {
+                           if (ingredientList.indexOf(recipe.ingredients[key]) == -1) {
+                              ingredientList.push(recipe.ingredients[key]);
+                           }
+                        }
+                     }
+                     console.log(ingredientList);
+                     res.send(ingredientList);
+                  }
+               });
+            }
+         });
+      } else {
+      res.status(401).end();
+      }
+   });
+
 
     /**
     * Posts the results from searching with instamode (when a user

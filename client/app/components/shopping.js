@@ -9,7 +9,7 @@ export default class Shopping extends React.Component {
       super(props);
       this.state = {
          value: this.props.value,
-         list:['Chicken', 'Pork', 'Milk']
+         list: []
       };
    }
 
@@ -22,8 +22,10 @@ export default class Shopping extends React.Component {
    }
 
    getWeeklyList() {
-      this.setState({list:['vindaloo', 'garlic', 'beef']});
-      getShoppingList('000000000000000000000001');
+      // this.setState({list:['vindaloo', 'garlic', 'beef']});
+      getShoppingList('000000000000000000000001', (newList) => {
+         this.setState({list:newList});
+      });
    }
 
    onEnter() {
@@ -59,7 +61,6 @@ export default class Shopping extends React.Component {
                       })}
                    </ul>
                  </div>
-                 <button className="btn btn-default"><i className="fa fa-shopping-cart"></i>Order Now</button>
               </div>
             </div>
          </div>

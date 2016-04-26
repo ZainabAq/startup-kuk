@@ -39,7 +39,7 @@ export default class Calendar extends React.Component {
         return "Breakfast";
       } else if (i === 1) {
         return "Lunch";
-      } else if (i === 2) {
+     } else if (i === 2) {
         return "Snack";
       } else {
         return "Dinner";

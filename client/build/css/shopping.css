@@ -1,6 +1,6 @@
 
 .shopping .ingredient-bar {
-   font-size: 1.35em;
+   font-size: 1.2em;
    /*font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;*/
    font-family: "Century Gothic","CenturyGothic","AppleGothic",sans-serif;
 }
@@ -12,7 +12,6 @@
 .shopping .main-background {
    /*background-color: white;*/
    border-radius: 20px;
-   margin-top: 40px;
 }
 
 .shopping .title {

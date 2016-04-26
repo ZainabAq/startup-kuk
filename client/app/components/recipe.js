@@ -84,7 +84,7 @@ export default class Recipe extends React.Component {
    */
    handleCalendarClick(clickEvent, week, day, meal) {
       // just adds to the calendar so it doesn't return anything
-      console.log(day);
+      console.log("week=", week, "day=", day, "meal=", meal);
       addRecipeToCalendar(this.state._id, '000000000000000000000001', week, day, meal, (data) => {});
       alert("Recipe added to calendar!");
    }
@@ -216,10 +216,10 @@ export default class Recipe extends React.Component {
                                                       results.push(<li className="dropdown-submenu">
                                                          <a href="#">{dayOfWeek}</a>
                                                          <ul className="dropdown-menu">
-                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 0)}>Breakfast</a></li>
-                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 1)}>Lunch</a></li>
-                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 2)}>Snack</a></li>
-                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 3, day, 3)}>Dinner</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 4, day, 0)}>Breakfast</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 4, day, 1)}>Lunch</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 4, day, 2)}>Snack</a></li>
+                                                            <li><a onClick={(e)=>this.handleCalendarClick(e, 4, day, 3)}>Dinner</a></li>
                                                          </ul>
                                                       </li>)
                                                    });
